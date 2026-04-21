@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZENITH Work & Wellbeing</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-hover: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #7d8590;
+    --text-dim: #484f58;
+    --mood-empty: #161b22;
+    --mood-1: #da3633;
+    --mood-2: #e8853a;
+    --mood-3: #d4a72c;
+    --mood-4: #2ea043;
+    --mood-5: #7ee87e;
+    --accent: #58a6ff;
+    --warn: #d4a72c;
+    --healthy: #2ea043;
+    --deepwork: #a371f7;
+    --stop-color: #f47067;
+  }
+
+  /* ═══════════ LIGHT MODE ═══════════ */
+  body.light {
+    --bg: #f2f2f7;
+    --surface: #ffffff;
+    --surface-hover: #f0f0f5;
+    --border: #d0d7de;
+    --text: #1f2328;
+    --text-muted: #57606a;
+    --text-dim: #8c959f;
+    --mood-empty: #eaeef2;
+    --accent: #0969da;
+    --warn: #9a6700;
+    --healthy: #1a7f37;
+    --deepwork: #8250df;
+    --stop-color: #d1242f;
+  }
+
+  body.light .cell { border-color: rgba(0,0,0,0.06); }
+  body.light .cell.future:hover { border-color: rgba(0,0,0,0.06); }
+
+  /* ═══════════ THEME TOGGLE SWITCH ═══════════ */
+  .theme-toggle-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 9px 10px;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .theme-toggle-item:hover { background: var(--surface-hover); color: var(--text); }
+
+  .toggle-switch {
+    position: relative;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    border-radius: 9px;
+    transition: background 0.2s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 3px;
+    top: 3px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
+  .toggle-switch input:checked + .toggle-slider::before {
+    transform: translateX(14px);
+    background: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .app { max-width: 1120px; margin: 0 auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 44px; }
+
+  .support-wrap {
+    position: fixed;
+    top: 12px;
+    left: 14px;
+    z-index: 220;
+  }
+  .support-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .support-btn:hover,
+  .support-btn:focus-visible {
+    color: var(--text);
+    border-color: var(--text-dim);
+    outline: none;
+  }
+
+  .settings-wrap {
+    position: fixed;
+    top: 12px;
+    right: 14px;
+    z-index: 220;
+  }
+  .settings-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .settings-btn:hover,
+  .settings-btn:focus-visible {
+    color: var(--text);
+    border-color: var(--text-dim);
+    outline: none;
+  }
+  .settings-menu {
+    position: absolute;
+    top: 44px;
+    right: 0;
+    min-width: 220px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.45);
+    padding: 8px;
+    display: none;
+  }
+  .settings-menu.open { display: block; }
+  .settings-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 9px 10px;
+    text-align: left;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .settings-item:hover,
+  .settings-item:focus-visible {
+    background: var(--surface-hover);
+    color: var(--text);
+    outline: none;
+  }
+  .settings-sep {
+    border-top: 1px solid var(--border);
+    margin: 7px 4px;
+  }
+
+  /* ═══════════ MODE TOGGLE ═══════════ */
+  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .top-brand {
+    width: 52px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .top-brand img { width: 100%; height: 100%; object-fit: contain; }
+
+  .mode-toggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
+
+  .mode-btn {
+    padding: 7px 16px; border: none; border-radius: 8px; background: transparent;
+    color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .mode-btn:hover { color: var(--text-muted); }
+  .mode-btn.active-healthy { background: rgba(46,160,67,0.12); color: var(--healthy); }
+  .mode-btn.active-deep { background: rgba(163,113,247,0.12); color: var(--deepwork); }
+  .mode-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* ═══════════ TIMER ═══════════ */
+  .timer-status { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; }
+
+  .timer-display {
+    font-family: 'JetBrains Mono', monospace; font-size: 88px; font-weight: 300;
+    letter-spacing: -2px; color: var(--text); transition: color 0.8s; line-height: 1;
+    min-width: 400px; text-align: center;
+  }
+  .timer-display.warning { color: var(--warn); animation: pulse 2s ease-in-out infinite; }
+  .timer-display.break-mode { color: var(--healthy); }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+
+  .timer-controls { display: flex; gap: 14px; align-items: center; }
+
+  .timer-btn {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 16px;
+  }
+  .timer-btn:hover { background: var(--surface-hover); color: var(--text); border-color: var(--text-dim); }
+
+  .timer-btn.primary { width: 56px; height: 56px; background: var(--accent); border-color: var(--accent); color: var(--bg); font-size: 20px; }
+  .timer-btn.primary:hover { opacity: 0.85; color: var(--bg); }
+  .timer-btn.primary.break-btn { background: var(--healthy); border-color: var(--healthy); }
+  .timer-btn.primary.break-btn:hover { opacity: 0.85; color: var(--bg); }
+
+  .timer-btn.stop-btn { background: rgba(244,112,103,0.1); border-color: var(--stop-color); color: var(--stop-color); font-size: 14px; }
+  .timer-btn.stop-btn:hover { background: rgba(244,112,103,0.2); color: var(--stop-color); border-color: var(--stop-color); }
+
+  .timer-meta { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .queue-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--deepwork); opacity: 0; transition: opacity 0.3s; height: 16px; }
+  .queue-badge.visible { opacity: 1; }
+
+  /* ═══════════ BANNERS ═══════════ */
+  .banner-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+  .banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); pointer-events: auto; animation: bannerIn 0.4s ease; max-width: 420px; }
+  .banner.healthy-style { border-color: var(--healthy); box-shadow: 0 0 20px rgba(46,160,67,0.15), 0 12px 40px rgba(0,0,0,0.5); }
+  .banner.queued-style { border-color: var(--deepwork); box-shadow: 0 0 20px rgba(163,113,247,0.15), 0 12px 40px rgba(0,0,0,0.5); }
+  .banner-icon { font-size: 20px; flex-shrink: 0; }
+  .banner-text { display: flex; flex-direction: column; gap: 2px; }
+  .banner-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .banner-body { font-size: 11px; color: var(--text-muted); }
+  .banner-close { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 4px; margin-left: 8px; transition: color 0.15s; }
+  .banner-close:hover { color: var(--text); }
+  @keyframes bannerIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+  .banner.removing { animation: bannerOut 0.3s ease forwards; }
+  @keyframes bannerOut { to { opacity:0; transform:translateY(-12px); } }
+
+  /* ═══════════ HEATMAP ═══════════ */
+  .heatmap-section { display: flex; flex-direction: column; gap: 12px; width: fit-content; max-width: 100%; margin: 0 auto; }
+  .heatmap-header { display: flex; justify-content: space-between; align-items: center; }
+  .heatmap-info { font-size: 13px; color: var(--text-muted); }
+  .year-nav { display: flex; align-items: center; gap: 12px; }
+  .year-nav button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 4px; transition: color 0.2s; }
+  .year-nav button:hover { color: var(--text); background: var(--surface); }
+  .year-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); min-width: 40px; text-align: center; }
+  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
+  .heatmap-grid {
+    display: inline-grid;
+    grid-template-rows: auto repeat(7, 1fr);
+    grid-template-columns: 32px;
+    grid-auto-flow: column;
+    grid-auto-columns: 14px;
+    gap: 3px;
+  }
+  .heatmap-month { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; grid-row: 1; padding-bottom: 4px; min-width: 14px; }
+  .heatmap-day { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; min-width: 28px; }
+  .cell { width: 14px; height: 14px; border-radius: 2px; background: var(--mood-empty); border: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: all 0.12s; position: relative; }
+  .cell:hover { border-color: var(--text-dim); transform: scale(1.4); z-index: 2; }
+  .cell.future { opacity: 0.25; cursor: default; }
+  .cell.future:hover { transform: none; border-color: rgba(255,255,255,0.03); }
+  .cell.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .cell.m1 { background: var(--mood-1); }
+  .cell.m2 { background: var(--mood-2); }
+  .cell.m3 { background: var(--mood-3); }
+  .cell.m4 { background: var(--mood-4); }
+  .cell.m5 { background: var(--mood-5); }
+  .heatmap-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .heatmap-summary { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .legend { display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--text-dim); }
+  .legend-wrap { display: flex; align-items: center; gap: 14px; }
+  .legend-box { width: 11px; height: 11px; border-radius: 2px; }
+  .legend span { margin: 0 5px; }
+  .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+  .heatmap-header,
+  .heatmap-footer,
+  .actions,
+  .data-path { width: 100%; }
+  .action-btn { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 5px 12px; border-radius: 6px; font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.2s; }
+  .action-btn:hover { color: var(--text-muted); border-color: var(--text-dim); }
+  .data-path { display: none; }
+
+  /* ═══════════ TOOLTIP ═══════════ */
+  .tip { position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 12px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.12s; min-width: 200px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+  .tip.show { opacity: 1; }
+  .tip-date { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); margin-bottom: 8px; font-size: 11px; }
+  .tip-row { display: flex; justify-content: space-between; padding: 2px 0; }
+  .tip-label { color: var(--text-muted); }
+  .tip-val { color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  .tip-note { color: var(--text-dim); font-style: italic; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px; font-size: 11px; }
+  .tip-empty { color: var(--text-dim); font-size: 11px; }
+  .tip-sessions { margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
+  .tip-session-row { display: flex; justify-content: space-between; padding: 1px 0; font-size: 11px; }
+  .tip-session-tag { color: var(--accent); }
+  .tip-session-dur { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
+  /* ═══════════ OVERLAY / MODAL ═══════════ */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; visibility: hidden; transition: all 0.25s; }
+  .overlay.open { opacity: 1; visibility: visible; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; width: 90%; max-width: 420px; transform: translateY(16px) scale(0.97); transition: transform 0.25s; max-height: 85vh; overflow-y: auto; }
+  .overlay.open .modal { transform: translateY(0) scale(1); }
+  .modal h2 { font-size: 17px; font-weight: 500; margin-bottom: 2px; }
+  .modal-sub { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-bottom: 24px; }
+  .field { margin-bottom: 18px; }
+  .field label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; letter-spacing: 0.3px; }
+  .scale { display: flex; gap: 6px; }
+  .scale button { flex: 1; height: 38px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 14px; cursor: pointer; transition: all 0.12s; }
+  .scale button:hover { border-color: var(--text-dim); color: var(--text-muted); }
+  .scale button.on { border-color: var(--accent); color: var(--text); background: rgba(88,166,255,0.08); }
+  .input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  .input:focus { border-color: var(--accent); }
+  textarea.input { font-family: 'DM Sans', sans-serif; resize: vertical; min-height: 56px; font-size: 13px; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
+  .btn { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; font-weight: 500; }
+  .btn-ghost { background: var(--bg); color: var(--text-muted); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
+  .btn-fill { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .btn-fill:hover { opacity: 0.85; }
+
+  /* ═══════════ TAG POPUP ═══════════ */
+  .tag-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .tag-chip { padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--text-dim); font-size: 12px; cursor: pointer; transition: all 0.15s; font-family: 'JetBrains Mono', monospace; }
+  .tag-chip:hover { border-color: var(--text-dim); color: var(--text-muted); }
+  .tag-chip.selected { border-color: var(--accent); color: var(--text); background: rgba(88,166,255,0.08); }
+  .tag-duration { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 300; color: var(--text); text-align: center; margin-bottom: 8px; }
+
+  /* ═══════════ DAY SESSION BARS ═══════════ */
+  .day-sessions { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+  .day-sessions-title { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .session-bar-group { margin-bottom: 10px; }
+  .session-bar-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 3px; }
+  .session-bar-name { color: var(--text-muted); }
+  .session-bar-time { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .session-bar-track { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+  .session-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.3s; }
+  .final-field { border: 1px solid var(--healthy); border-radius: 10px; padding: 14px; background: rgba(46,160,67,0.08); }
+  .final-field label { font-size: 15px !important; font-weight: 600; color: var(--text); }
+  .trend-up { color: var(--healthy); }
+  .trend-down { color: var(--mood-1); }
+  .trend-flat { color: var(--text-dim); }
+
+  /* ═══════════ REMINDERS MODAL ═══════════ */
+  .reminder-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: var(--bg);
+  }
+  .reminder-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .reminder-header .input { flex: 1; }
+  .reminder-interval-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .input-interval { width: 64px; text-align: center; padding: 6px 8px; }
+  .reminder-del {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .reminder-del:hover { color: var(--stop-color); background: rgba(244,112,103,0.08); }
+
+  /* ═══════════ VERSION BADGE ═══════════ */
+  .version-badge {
+    position: fixed;
+    bottom: 14px;
+    right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 10;
+    text-decoration: none;
+  }
+  .version-badge:hover { color: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .timer-display { font-size: 56px; min-width: 280px; }
+    .app { padding: 32px 16px; gap: 36px; }
+    .mode-btn { padding: 6px 10px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner-container" id="bannerContainer"></div>
+<button class="version-badge" id="versionBadge">v1.0.0</button>
+<div class="support-wrap">
+  <button
+    class="support-btn"
+    id="supportToggle"
+    aria-label="Support öffnen"
+    title="Support"
+  >&#9825;</button>
+</div>
+<div class="settings-wrap">
+  <button
+    class="settings-btn"
+    id="settingsToggle"
+    aria-label="Einstellungen öffnen"
+    aria-haspopup="true"
+    aria-expanded="false"
+    title="Einstellungen"
+  >⚙</button>
+  <div class="settings-menu" id="settingsMenu" role="menu" aria-label="Einstellungsmenü">
+    <button class="settings-item" role="menuitem" type="button" id="remindersBtn">Erinnerungen</button>
+    <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Tracker</button>
+    <label class="theme-toggle-item" role="menuitem" id="themeToggleItem">
+      <span>Lightmode</span>
+      <div class="toggle-switch">
+        <input type="checkbox" id="themeToggle" aria-label="Light Mode aktivieren">
+        <span class="toggle-slider"></span>
+      </div>
+    </label>
+    <div class="settings-sep"></div>
+    <button class="settings-item" role="menuitem" type="button">Hilfe</button>
+    <button class="settings-item" role="menuitem" type="button">Über ZENITH</button>
+    <button class="settings-item" role="menuitem" type="button">Impressum</button>
+  </div>
+</div>
+
+<div class="app">
+  <section class="timer-section">
+    <div class="top-brand" aria-label="ZENITH Logo">
+      <img src="assets/zenith-logo-mark.svg" alt="ZENITH Logo">
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active-healthy" id="modeHealthy"><span class="mode-dot"></span> Healthy</button>
+      <button class="mode-btn" id="modeDeep"><span class="mode-dot"></span> Deep Work</button>
+    </div>
+    <div class="timer-status" id="timerStatus">ready</div>
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    <div class="timer-controls">
+      <button class="timer-btn" id="resetBtn" title="Reset">&#8634;</button>
+      <button class="timer-btn primary" id="playBtn" title="Start / Pause">&#9654;</button>
+      <button class="timer-btn stop-btn" id="stopBtn" title="Session beenden" style="display:none">&#9632;</button>
+    </div>
+    <div class="queue-badge" id="queueBadge"></div>
+    <div class="timer-meta" id="timerMeta"></div>
+  </section>
+
+  <section class="heatmap-section">
+    <div class="heatmap-header">
+      <span class="heatmap-info" id="heatmapInfo"></span>
+      <div class="year-nav">
+        <button id="prevYear">&#9666;</button>
+        <span class="year-label" id="yearLabel"></span>
+        <button id="nextYear">&#9656;</button>
+      </div>
+    </div>
+    <div class="heatmap-scroll"><div class="heatmap-grid" id="grid"></div></div>
+    <div class="heatmap-footer">
+      <div class="heatmap-summary" id="summary"></div>
+      <div class="legend-wrap">
+        <div class="legend">
+          <span>schlecht</span>
+          <div class="legend-box" style="background:var(--mood-empty);border:1px solid rgba(255,255,255,0.05)"></div>
+          <div class="legend-box" style="background:var(--mood-1)"></div>
+          <div class="legend-box" style="background:var(--mood-2)"></div>
+          <div class="legend-box" style="background:var(--mood-3)"></div>
+          <div class="legend-box" style="background:var(--mood-4)"></div>
+          <div class="legend-box" style="background:var(--mood-5)"></div>
+          <span>gut</span>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="action-btn" id="csvBtn">&#8595; CSV</button>
+      <button class="action-btn" id="jsonBtn">&#8595; Backup</button>
+      <button class="action-btn" id="importBtn">&#8593; Import</button>
+    </div>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+    <div class="data-path" id="dataPath"></div>
+  </section>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<!-- CHECK-IN MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="mainModal"></div>
+</div>
+
+<!-- SUPPORT MODAL -->
+<div class="overlay" id="supportOverlay">
+  <div class="modal">
+    <h2>Danke für deine Unterstützung</h2>
+    <div class="modal-sub">ZENITH Work & Wellbeing</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.6">
+      Dieses Programm ist kostenlos.
+      Wenn du mich unterstützen möchtest, kannst du hier eine Kleinigkeit spenden:
+      <a
+        href="#"
+        id="donateLink"
+        style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)"
+      >XXX</a>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-fill" id="supportCloseBtn">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- REMINDERS MODAL -->
+<div class="overlay" id="remindersOverlay">
+  <div class="modal" style="max-width:500px">
+    <h2>Erinnerungen</h2>
+    <div class="modal-sub">Wiederkehrende Benachrichtigungen</div>
+    <div id="remindersList"></div>
+    <button class="action-btn" id="addReminderBtn" style="margin-top:4px;margin-bottom:8px">+ Neue Erinnerung</button>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="remindersCancelBtn">Abbrechen</button>
+      <button class="btn btn-fill" id="remindersSaveBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKER MODAL -->
+<div class="overlay" id="trackerOverlay">
+  <div class="modal" style="max-width:500px">
+    <h2>Tracker</h2>
+    <div class="modal-sub">Kategorien im Check-in & Zusammenfassung</div>
+    <div id="trackerList"></div>
+    <button class="action-btn" id="addTrackerBtn" style="margin-top:4px;margin-bottom:8px">+ Neue Kategorie</button>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="trackerCancelBtn">Abbrechen</button>
+      <button class="btn btn-fill" id="trackerSaveBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAG MODAL -->
+<div class="overlay" id="tagOverlay">
+  <div class="modal">
+    <h2>Session beenden</h2>
+    <div class="tag-duration" id="tagDuration"></div>
+    <div class="modal-sub">Woran hast du gearbeitet?</div>
+    <div class="tag-choices" id="tagChoices"></div>
+    <div style="margin-top:8px">
+      <input class="input" id="customTagInput" placeholder="Oder eigenes Tag eingeben..." style="font-size:12px">
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="tagSkip">Ohne Tag</button>
+      <button class="btn btn-fill" id="tagSave">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+var DATA = {};
+var TAGS = ['Coden', 'Recherche', 'Orga', 'Meeting', 'Schreiben', 'Lernen', 'Design', 'E-Mails'];
+
+async function loadData() {
+  if (window.api) { DATA = await window.api.loadData(); }
+  else { try { DATA = JSON.parse(localStorage.getItem('df') || '{}'); } catch { DATA = {}; } }
+  return DATA;
+}
+
+async function saveAllData() {
+  if (window.api) { await window.api.saveData(DATA); }
+  else { localStorage.setItem('df', JSON.stringify(DATA)); }
+}
+
+function dk(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+function today() { return dk(new Date()); }
+
+// ═══════════════════ MODE ═══════════════════
+var mode = 'healthy';
+var notificationQueue = [];
+var $modeHealthy = document.getElementById('modeHealthy');
+var $modeDeep = document.getElementById('modeDeep');
+var $queueBadge = document.getElementById('queueBadge');
+var $settingsToggle = document.getElementById('settingsToggle');
+var $settingsMenu = document.getElementById('settingsMenu');
+var $supportToggle = document.getElementById('supportToggle');
+var $supportOverlay = document.getElementById('supportOverlay');
+
+// ═══════════════════ THEME ═══════════════════
+var $themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(isLight) {
+  document.body.classList.toggle('light', isLight);
+  $themeToggle.checked = isLight;
+}
+
+$themeToggle.onchange = function() {
+  var isLight = $themeToggle.checked;
+  applyTheme(isLight);
+  localStorage.setItem('zenith-theme', isLight ? 'light' : 'dark');
+};
+
+applyTheme(localStorage.getItem('zenith-theme') === 'light');
+
+function closeSettingsMenu() {
+  $settingsMenu.classList.remove('open');
+  $settingsToggle.setAttribute('aria-expanded', 'false');
+}
+
+function toggleSettingsMenu() {
+  var isOpen = $settingsMenu.classList.contains('open');
+  if (isOpen) closeSettingsMenu();
+  else {
+    $settingsMenu.classList.add('open');
+    $settingsToggle.setAttribute('aria-expanded', 'true');
+  }
+}
+
+$settingsToggle.onclick = function(e) {
+  e.stopPropagation();
+  toggleSettingsMenu();
+};
+
+document.addEventListener('click', function(e) {
+  if (!$settingsMenu.contains(e.target) && e.target !== $settingsToggle) {
+    closeSettingsMenu();
+  }
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeSettingsMenu();
+    closeSupportModal();
+  }
+});
+
+function openSupportModal() {
+  $supportOverlay.classList.add('open');
+}
+
+function closeSupportModal() {
+  $supportOverlay.classList.remove('open');
+}
+
+$supportToggle.onclick = function() {
+  openSupportModal();
+};
+
+document.getElementById('supportCloseBtn').onclick = function() {
+  closeSupportModal();
+};
+
+$supportOverlay.onclick = function(e) {
+  if (e.target === $supportOverlay) closeSupportModal();
+};
+
+function setMode(m) {
+  mode = m;
+  $modeHealthy.className = m === 'healthy' ? 'mode-btn active-healthy' : 'mode-btn';
+  $modeDeep.className = m === 'deep' ? 'mode-btn active-deep' : 'mode-btn';
+  if (timerRunning) {
+    $status.textContent = m === 'deep' ? 'deep focus' : 'focus';
+    $status.style.color = m === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
+  }
+  updateQueueBadge();
+}
+
+$modeHealthy.onclick = function() { setMode('healthy'); };
+$modeDeep.onclick = function() { setMode('deep'); };
+
+function updateQueueBadge() {
+  if (notificationQueue.length > 0 && mode === 'deep') {
+    $queueBadge.textContent = notificationQueue.length + ' reminder' + (notificationQueue.length > 1 ? 's' : '') + ' queued';
+    $queueBadge.classList.add('visible');
+  } else { $queueBadge.classList.remove('visible'); }
+}
+
+// ═══════════════════ BANNERS ═══════════════════
+var $banners = document.getElementById('bannerContainer');
+
+function showBanner(icon, title, body, cls) {
+  var b = document.createElement('div');
+  b.className = 'banner ' + (cls || '');
+  b.innerHTML = '<span class="banner-icon">' + icon + '</span><div class="banner-text"><div class="banner-title">' + title + '</div><div class="banner-body">' + body + '</div></div><button class="banner-close">&#10005;</button>';
+  b.querySelector('.banner-close').onclick = function() { b.classList.add('removing'); setTimeout(function() { b.remove(); }, 300); };
+  $banners.appendChild(b);
+  setTimeout(function() { if (b.parentNode) { b.classList.add('removing'); setTimeout(function() { if (b.parentNode) b.remove(); }, 300); } }, 8000);
+}
+
+function sendReminder(icon, title, body, isHealth) {
+  if (isHealth && mode === 'deep' && timerRunning) {
+    notificationQueue.push({ icon: icon, title: title, body: body });
+    updateQueueBadge();
+    return;
+  }
+  showBanner(icon, title, body, isHealth ? 'healthy-style' : '');
+  if (window.api) window.api.showNotification(title, body);
+}
+
+function flushQueue() {
+  if (notificationQueue.length === 0) return;
+  var c = notificationQueue.length;
+  showBanner('\ud83d\udccb', c + ' Erinnerung' + (c > 1 ? 'en' : '') + ' w\u00e4hrend Deep Work', notificationQueue.map(function(n) { return n.title; }).join(' \u00b7 '), 'queued-style');
+  if (window.api) window.api.showNotification(c + ' verpasste Erinnerung' + (c > 1 ? 'en' : ''), notificationQueue.map(function(n) { return n.body; }).join(' | '));
+  notificationQueue = [];
+  updateQueueBadge();
+}
+
+// ═══════════════════ TIMER ═══════════════════
+var timerRunning = false;
+var timerSecs = 0;
+var timerInterval = null;
+var timerStartMs = null;
+var timerAccumulatedMs = 0;
+var sessionCount = 0;
+var totalSessionMins = 0;
+var warned52 = false;
+var warned30 = false;
+
+var $time = document.getElementById('timerDisplay');
+var $status = document.getElementById('timerStatus');
+var $play = document.getElementById('playBtn');
+var $stop = document.getElementById('stopBtn');
+var $meta = document.getElementById('timerMeta');
+
+// Always show HH:MM:SS to avoid layout jumps
+function fmt(totalSec) {
+  var hrs = Math.floor(totalSec / 3600);
+  var mins = Math.floor((totalSec % 3600) / 60);
+  var sec = totalSec % 60;
+  return String(hrs).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+
+function tick() {
+  // Reale verstrichene Zeit anhand von Timestamps berechnen,
+  // damit der Timer auch im Hintergrund korrekt läuft.
+  var baseMs = timerAccumulatedMs;
+  if (timerRunning && timerStartMs !== null) {
+    baseMs += Date.now() - timerStartMs;
+  }
+  var newSecs = Math.floor(baseMs / 1000);
+  if (newSecs === timerSecs) return;
+  timerSecs = newSecs;
+  $time.textContent = fmt(timerSecs);
+
+  if (timerSecs >= 30 * 60 && !warned30) {
+    warned30 = true;
+    sendReminder('\u23f1', '30 Minuten', '30 Minuten sind vergangen.', true);
+  }
+  if (timerSecs >= 52 * 60 && !warned52) {
+    warned52 = true;
+    $time.classList.add('warning');
+    $status.textContent = '52 min \u2014 pause?';
+    $status.style.color = 'var(--warn)';
+    sendReminder('\ud83d\ude4c', 'Stretch und aufstehen', '52 Minuten Focus \u2014 Zeit f\u00fcr Bewegung!', true);
+  }
+  if (timerSecs > 52 * 60 && timerSecs % (30 * 60) === 0) {
+    sendReminder('\u26a0\ufe0f', 'Noch aktiv?', Math.floor(timerSecs / 60) + ' Min ohne Pause.', true);
+  }
+}
+
+function updateStopBtn() {
+  $stop.style.display = (timerSecs > 0 || timerRunning) ? '' : 'none';
+}
+
+function timerStart() {
+  timerRunning = true;
+  $play.innerHTML = '\u275a\u275a';
+  $status.textContent = mode === 'deep' ? 'deep focus' : 'focus';
+  $status.style.color = mode === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
+  timerStartMs = Date.now();
+  timerInterval = setInterval(tick, 1000);
+  updateStopBtn();
+}
+
+function timerPause() {
+  timerRunning = false;
+  if (timerStartMs !== null) {
+    timerAccumulatedMs += Date.now() - timerStartMs;
+    timerStartMs = null;
+  }
+  $play.innerHTML = '\u25b6';
+  $status.textContent = 'paused';
+  $status.style.color = 'var(--text-dim)';
+  clearInterval(timerInterval);
+  if (mode === 'deep') flushQueue();
+  updateStopBtn();
+}
+
+function timerStop() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerStartMs = null;
+  timerAccumulatedMs = 0;
+  if (mode === 'deep') flushQueue();
+  if (timerSecs > 60) {
+    showTagPopup(timerSecs);
+  } else {
+    timerReset();
+  }
+}
+
+function timerReset() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerStartMs = null;
+  timerAccumulatedMs = 0;
+  timerSecs = 0;
+  warned52 = false;
+  warned30 = false;
+  $time.classList.remove('warning');
+  $time.textContent = '00:00:00';
+  $play.innerHTML = '\u25b6';
+  $status.textContent = 'ready';
+  $status.style.color = 'var(--text-dim)';
+  updateStopBtn();
+}
+
+$play.onclick = function() {
+  if (onBreak) {
+    // Skip break, go straight to ready
+    endBreak(false);
+    return;
+  }
+  timerRunning ? timerPause() : timerStart();
+};
+$stop.onclick = function() { if (!onBreak) timerStop(); };
+document.getElementById('resetBtn').onclick = function() {
+  if (onBreak) { endBreak(false); return; }
+  timerReset();
+};
+
+// ═══════════════════ TAG POPUP ═══════════════════
+var pendingSessionSecs = 0;
+var selectedTag = null;
+
+function showTagPopup(sessSecs) {
+  pendingSessionSecs = sessSecs;
+  selectedTag = null;
+  document.getElementById('tagDuration').textContent = fmt(sessSecs);
+  var choices = document.getElementById('tagChoices');
+  choices.innerHTML = '';
+
+  var allTags = TAGS.slice();
+  // Also add custom tags from today's sessions
+  var todayEntry = DATA[today()];
+  if (todayEntry && todayEntry.sessions) {
+    todayEntry.sessions.forEach(function(s) {
+      if (s.tag && allTags.indexOf(s.tag) === -1) allTags.push(s.tag);
+    });
+  }
+
+  allTags.forEach(function(tag) {
+    var chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.textContent = tag;
+    chip.onclick = function() {
+      choices.querySelectorAll('.tag-chip').forEach(function(c) { c.classList.remove('selected'); });
+      chip.classList.add('selected');
+      selectedTag = tag;
+      document.getElementById('customTagInput').value = '';
+    };
+    choices.appendChild(chip);
+  });
+
+  document.getElementById('customTagInput').value = '';
+  document.getElementById('tagOverlay').classList.add('open');
+}
+
+document.getElementById('customTagInput').oninput = function() {
+  if (this.value.trim()) {
+    selectedTag = null;
+    document.querySelectorAll('#tagChoices .tag-chip').forEach(function(c) { c.classList.remove('selected'); });
+  }
+};
+
+document.getElementById('tagSave').onclick = async function() {
+  var tag = selectedTag || document.getElementById('customTagInput').value.trim() || null;
+  await saveSession(pendingSessionSecs, tag);
+  document.getElementById('tagOverlay').classList.remove('open');
+  finishSession();
+};
+
+document.getElementById('tagSkip').onclick = async function() {
+  await saveSession(pendingSessionSecs, null);
+  document.getElementById('tagOverlay').classList.remove('open');
+  finishSession();
+};
+
+document.getElementById('tagOverlay').onclick = function(e) {
+  if (e.target === document.getElementById('tagOverlay')) {
+    saveSession(pendingSessionSecs, null);
+    document.getElementById('tagOverlay').classList.remove('open');
+    finishSession();
+  }
+};
+
+async function saveSession(sessSecs, tag) {
+  var key = today();
+  if (!DATA[key]) DATA[key] = {};
+  if (!DATA[key].sessions) DATA[key].sessions = [];
+  DATA[key].sessions.push({
+    minutes: Math.floor(sessSecs / 60),
+    tag: tag,
+    time: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+  });
+  await saveAllData();
+}
+
+function finishSession() {
+  sessionCount++;
+  totalSessionMins += Math.floor(pendingSessionSecs / 60);
+  $meta.textContent = totalSessionMins + 'm total \u00b7 ' + sessionCount + ' session' + (sessionCount !== 1 ? 's' : '');
+  renderMap();
+  // Start break countdown
+  startBreak(pendingSessionSecs);
+}
+
+// ═══════════════════ BREAK TIMER ═══════════════════
+var breakRemaining = 0;
+var breakInterval = null;
+var onBreak = false;
+var breakEndMs = null;
+
+function startBreak(workSecs) {
+  var workMins = Math.floor(workSecs / 60);
+  var breakDurationSecs = Math.max(60, Math.round(workMins * 0.2 * 60)); // at least 1 min
+  breakRemaining = breakDurationSecs;
+  onBreak = true;
+
+  // Reset timer visual state
+  timerSecs = 0;
+  warned52 = false;
+  warned30 = false;
+  $time.classList.remove('warning');
+
+  // Set break appearance
+  $time.classList.add('break-mode');
+  $time.textContent = fmt(breakRemaining);
+  $status.textContent = 'pause \u00b7 ' + Math.round(breakRemaining / 60) + ' min';
+  $status.style.color = 'var(--healthy)';
+  $play.innerHTML = '\u25b6'; // skip icon acts as "end break early"
+  $play.classList.add('break-btn');
+  $stop.style.display = 'none';
+
+  breakEndMs = Date.now() + breakDurationSecs * 1000;
+  breakInterval = setInterval(breakTick, 1000);
+}
+
+function breakTick() {
+  if (!onBreak || breakEndMs === null) return;
+  var remainingMs = breakEndMs - Date.now();
+  var newRemaining = Math.max(0, Math.round(remainingMs / 1000));
+  if (newRemaining === breakRemaining) return;
+  breakRemaining = newRemaining;
+  if (breakRemaining <= 0) {
+    endBreak(true);
+    return;
+  }
+  $time.textContent = fmt(breakRemaining);
+}
+
+function endBreak(natural) {
+  clearInterval(breakInterval);
+  onBreak = false;
+  breakRemaining = 0;
+  breakEndMs = null;
+  $time.classList.remove('break-mode');
+  $play.classList.remove('break-btn');
+
+  if (natural) {
+    // Pause is over — notify
+    showBanner('\u2705', 'Pause vorbei', 'Bereit f\u00fcr die n\u00e4chste Session!', 'healthy-style');
+    if (window.api) window.api.showNotification('Pause vorbei', 'Bereit f\u00fcr die n\u00e4chste Session!');
+  }
+
+  timerReset();
+}
+
+// ═══════════════════ TRACKER CONFIG ═══════════════════
+var TRACKER_DEFAULTS = [
+  { id: 'sport',      label: 'Aktivität',   question: 'Wie aktiv warst du gestern körperlich?',                            type: 'scale',  enabled: true, showInSummary: true },
+  { id: 'meditation', label: 'Meditation',  question: 'Wie sehr hast du gestern auf deine mentale Erholung geachtet?',     type: 'scale',  enabled: true, showInSummary: true },
+  { id: 'sleep',      label: 'Schlaf',      question: 'Wie erholsam war dein Schlaf letzte Nacht?',                       type: 'scale',  enabled: true, showInSummary: true },
+  { id: 'steps',      label: 'Schritte',    question: 'Wie viele Schritte hast du gestern gemacht?', placeholder: 'z.B. 8500', type: 'number', enabled: true, showInSummary: true },
+  { id: 'mood',       label: 'Morgengeführ', question: 'Wie fühlst du dich heute Morgen?',                                type: 'scale',  enabled: true, showInSummary: true, locked: true }
+];
+
+var trackersConfig = [];
+
+function loadTrackers() {
+  try {
+    var saved = localStorage.getItem('zenith-trackers');
+    trackersConfig = saved ? JSON.parse(saved) : TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
+  } catch(e) {
+    trackersConfig = TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
+  }
+}
+
+function saveTrackers(list) {
+  trackersConfig = list;
+  localStorage.setItem('zenith-trackers', JSON.stringify(list));
+}
+
+// ═══════════════════ HEATMAP ═══════════════════
+var viewYear = new Date().getFullYear();
+var MO = ['Jan','Feb','M\u00e4r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var DA = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+
+function avgMetric(entries, key) {
+  var nums = entries.map(function(e) { return Number(e[key]); }).filter(function(v) { return Number.isFinite(v); });
+  if (!nums.length) return null;
+  return nums.reduce(function(sum, v) { return sum + v; }, 0) / nums.length;
+}
+
+function trendArrow(current, previous) {
+  if (current === null || previous === null) return '<span class="trend-flat trend-arrow">\u25b6</span>';
+  if (current > previous) return '<span class="trend-up trend-arrow">\u25b2</span>';
+  if (current < previous) return '<span class="trend-down trend-arrow">\u25bc</span>';
+  return '<span class="trend-flat trend-arrow">\u25b6</span>';
+}
+
+function trendForMetric(metric) {
+  var keys = Object.keys(DATA).sort();
+  var entries = keys.map(function(k) { return DATA[k]; }).filter(function(e) { return e && typeof e === 'object'; });
+  if (entries.length < 2) return '<span class="trend-flat trend-arrow">\u25b6</span>';
+  var currentWeek = entries.slice(-7);
+  var prevWeek = entries.slice(-14, -7);
+  return trendArrow(avgMetric(currentWeek, metric), avgMetric(prevWeek, metric));
+}
+
+function renderMap() {
+  var grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  document.getElementById('yearLabel').textContent = viewYear;
+  var now = new Date(), todayStr = today();
+
+  var corner = document.createElement('div');
+  corner.className = 'heatmap-month';
+  grid.appendChild(corner);
+  DA.forEach(function(d) { var el = document.createElement('div'); el.className = 'heatmap-day'; el.textContent = d; grid.appendChild(el); });
+
+  var jan1 = new Date(viewYear, 0, 1);
+  var startDow = (jan1.getDay() + 6) % 7;
+  var dec31 = new Date(viewYear, 11, 31);
+  var totalDays = Math.floor((dec31 - jan1) / 86400000) + 1;
+  var curMonth = 0, tracked = 0, sums = {}, counts = {};
+  trackersConfig.forEach(function(t) { sums[t.id] = 0; counts[t.id] = 0; });
+
+  var ml0 = document.createElement('div'); ml0.className = 'heatmap-month'; ml0.textContent = 'Jan'; grid.appendChild(ml0);
+  for (var i = 0; i < startDow; i++) { var b = document.createElement('div'); b.style.cssText = 'width:14px;height:14px'; grid.appendChild(b); }
+
+  var dow = startDow;
+  for (var d = 0; d < totalDays; d++) {
+    var date = new Date(viewYear, 0, 1 + d);
+    var key = dk(date);
+    var mo = date.getMonth();
+    if (dow === 0 && d > 0) { var ml = document.createElement('div'); ml.className = 'heatmap-month'; if (mo !== curMonth) { ml.textContent = MO[mo]; curMonth = mo; } grid.appendChild(ml); }
+
+    var c = document.createElement('div');
+    c.className = 'cell';
+    var entry = DATA[key];
+    if (entry && entry.mood) { c.classList.add('m' + entry.mood); tracked++; }
+    if (entry) { trackersConfig.forEach(function(t) { if (entry[t.id]) { sums[t.id] += Number(entry[t.id]); counts[t.id]++; } }); }
+    if (date > now && key !== todayStr) c.classList.add('future');
+    if (key === todayStr) c.classList.add('today');
+
+    (function(cellEl, k, ent) {
+      cellEl.addEventListener('mouseenter', function(e) { showTip(e, k, ent); });
+      cellEl.addEventListener('mouseleave', hideTip);
+      cellEl.addEventListener('click', function() { if (!cellEl.classList.contains('future')) openCheckin(k); });
+    })(c, key, entry);
+
+    grid.appendChild(c);
+    dow = (dow + 1) % 7;
+  }
+
+  var summaryParts = trackersConfig.filter(function(t) { return t.showInSummary !== false; }).map(function(t) {
+    var avg = counts[t.id] > 0
+      ? (t.type === 'number' ? Math.round(sums[t.id] / counts[t.id]).toLocaleString('de-DE') : (sums[t.id] / counts[t.id]).toFixed(1))
+      : '\u2013';
+    return '\u00d8 ' + t.label + ': ' + avg + ' ' + trendForMetric(t.id);
+  });
+  document.getElementById('summary').innerHTML = summaryParts.join(' \u00b7 ');
+  document.getElementById('heatmapInfo').textContent = tracked > 0 ? tracked + ' Eintr\u00e4ge in ' + viewYear : 'Noch keine Eintr\u00e4ge';
+}
+
+document.getElementById('prevYear').onclick = function() { viewYear--; renderMap(); };
+document.getElementById('nextYear').onclick = function() { viewYear++; renderMap(); };
+
+// ═══════════════════ TOOLTIP ═══════════════════
+var $tip = document.getElementById('tip');
+
+function showTip(e, key, entry) {
+  var p = key.split('-');
+  var h = '<div class="tip-date">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
+  if (entry) {
+    trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
+      var val = entry[t.id];
+      var display = val ? (t.type === 'number' ? Number(val).toLocaleString('de-DE') : val) : '\u2013';
+      h += '<div class="tip-row"><span class="tip-label">' + t.label + '</span><span class="tip-val">' + display + '</span></div>';
+    });
+    if (entry.note) h += '<div class="tip-note">' + entry.note + '</div>';
+    if (entry.sessions && entry.sessions.length > 0) {
+      h += '<div class="tip-sessions">';
+      entry.sessions.forEach(function(s) {
+        h += '<div class="tip-session-row"><span class="tip-session-tag">' + (s.tag || 'Untagged') + '</span><span class="tip-session-dur">' + s.minutes + 'm' + (s.time ? ' \u00b7 ' + s.time : '') + '</span></div>';
+      });
+      h += '</div>';
+    }
+  } else {
+    h += '<div class="tip-empty">Kein Eintrag \u2014 klicken</div>';
+  }
+  $tip.innerHTML = h;
+  $tip.classList.add('show');
+  var r = e.target.getBoundingClientRect();
+  var left = r.left + r.width / 2 - 100;
+  var top = r.top - $tip.offsetHeight - 8;
+  if (top < 4) top = r.bottom + 8;
+  if (left < 4) left = 4;
+  if (left + 200 > window.innerWidth) left = window.innerWidth - 208;
+  $tip.style.left = left + 'px';
+  $tip.style.top = top + 'px';
+}
+
+function hideTip() { $tip.classList.remove('show'); }
+
+document.getElementById('summary').addEventListener('mouseover', function(e) {
+  var arrow = e.target.closest('.trend-arrow');
+  if (!arrow) return;
+  $tip.innerHTML =
+    '<div class="tip-date">Trend-Berechnung</div>' +
+    '<div style="font-size:11px;color:var(--text-muted);line-height:1.7">' +
+      'Vergleich: \u00d8 der letzten 7 Tage<br>vs. \u00d8 der 7 Tage davor.<br><br>' +
+      '<span class="trend-up">\u25b2</span>&nbsp;Durchschnitt gestiegen<br>' +
+      '<span class="trend-down">\u25bc</span>&nbsp;Durchschnitt gesunken<br>' +
+      '<span class="trend-flat">\u25b6</span>&nbsp;Keine \u00c4nderung / zu wenig Daten' +
+    '</div>';
+  $tip.classList.add('show');
+  var r = arrow.getBoundingClientRect();
+  var left = r.left + r.width / 2 - 100;
+  var top = r.top - $tip.offsetHeight - 8;
+  if (top < 4) top = r.bottom + 8;
+  if (left < 4) left = 4;
+  if (left + 200 > window.innerWidth) left = window.innerWidth - 208;
+  $tip.style.left = left + 'px';
+  $tip.style.top = top + 'px';
+});
+document.getElementById('summary').addEventListener('mouseleave', hideTip);
+
+// ═══════════════════ CHECK-IN MODAL ═══════════════════
+var editKey = null;
+var $overlay = document.getElementById('overlay');
+var $modal = document.getElementById('mainModal');
+var vals = { sleep: null, sport: null, mood: null, meditation: null };
+
+function openCheckin(key) {
+  editKey = key;
+  var p = key.split('-');
+  // Always read fresh from DATA
+  var entry = DATA[key] || {};
+
+  vals = {};
+  trackersConfig.forEach(function(t) { if (t.type === 'scale') vals[t.id] = entry[t.id] || null; });
+
+  var html = '<h2>Daily Check-in</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
+
+  trackersConfig.filter(function(t) { return t.enabled && t.type === 'scale' && !t.locked; }).forEach(function(t) {
+    html += '<div class="field"><label>' + t.question + '</label><div class="scale" data-field="' + t.id + '">';
+    for (var i = 1; i <= 5; i++) {
+      html += '<button data-v="' + i + '" class="' + (entry[t.id] === i ? 'on' : '') + '">' + i + '</button>';
+    }
+    html += '</div></div>';
+  });
+
+  trackersConfig.filter(function(t) { return t.enabled && t.type === 'number'; }).forEach(function(t) {
+    html += '<div class="field"><label>' + t.question + '</label><input type="number" class="input" id="f_' + t.id + '" placeholder="' + (t.placeholder || '') + '" min="0" value="' + (entry[t.id] || '') + '"></div>';
+  });
+
+  html += '<div class="field"><label>Kommentar <span style="color:var(--text-dim)">(optional)</span></label><textarea class="input" id="fNote" placeholder="Optionaler Kommentar...">' + (entry.note || '') + '</textarea></div>';
+
+  var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
+  if (moodTracker && moodTracker.enabled) {
+    html += '<div class="field final-field"><label>' + moodTracker.question + '</label><div class="scale" data-field="' + moodTracker.id + '">';
+    for (var moodValue = 1; moodValue <= 5; moodValue++) {
+      html += '<button data-v="' + moodValue + '" class="' + (entry[moodTracker.id] === moodValue ? 'on' : '') + '">' + moodValue + '</button>';
+    }
+    html += '</div></div>';
+  }
+
+  // Session stats
+  if (entry.sessions && entry.sessions.length > 0) {
+    html += '<div class="day-sessions"><div class="day-sessions-title">Sessions</div>';
+    var tagMap = {}, totalSessMins = 0;
+    entry.sessions.forEach(function(s) {
+      var t = s.tag || 'Untagged';
+      if (!tagMap[t]) tagMap[t] = 0;
+      tagMap[t] += s.minutes;
+      totalSessMins += s.minutes;
+    });
+    Object.keys(tagMap).sort(function(a, b) { return tagMap[b] - tagMap[a]; }).forEach(function(tag) {
+      var mins = tagMap[tag];
+      var pct = totalSessMins > 0 ? Math.round((mins / totalSessMins) * 100) : 0;
+      html += '<div class="session-bar-group"><div class="session-bar-label"><span class="session-bar-name">' + tag + '</span><span class="session-bar-time">' + mins + 'm (' + pct + '%)</span></div><div class="session-bar-track"><div class="session-bar-fill" style="width:' + pct + '%"></div></div></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">\u00dcberspringen</button><button class="btn btn-fill" id="saveBtn">Speichern</button></div>';
+
+  $modal.innerHTML = html;
+
+  // Wire up scale buttons after DOM is set
+  setTimeout(function() {
+    $modal.querySelectorAll('.scale').forEach(function(g) {
+      var field = g.dataset.field;
+      g.querySelectorAll('button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          g.querySelectorAll('button').forEach(function(x) { x.classList.remove('on'); });
+          btn.classList.add('on');
+          vals[field] = parseInt(btn.dataset.v);
+        });
+      });
+    });
+
+    var saveEl = document.getElementById('saveBtn');
+    if (saveEl) {
+      saveEl.addEventListener('click', async function() {
+        if (!editKey) return;
+        var existing = DATA[editKey] || {};
+        var newEntry = { sessions: existing.sessions || [], ts: new Date().toISOString() };
+        trackersConfig.forEach(function(t) {
+          if (t.type === 'scale') { newEntry[t.id] = vals[t.id] || null; }
+          else if (t.type === 'number') { var el = document.getElementById('f_' + t.id); newEntry[t.id] = el && el.value ? parseInt(el.value) : null; }
+        });
+        newEntry.note = document.getElementById('fNote').value.trim() || null;
+        DATA[editKey] = newEntry;
+        await saveAllData();
+        closeCheckin();
+        renderMap();
+      });
+    }
+
+    var skipEl = document.getElementById('skipBtn');
+    if (skipEl) {
+      skipEl.addEventListener('click', closeCheckin);
+    }
+  }, 10);
+
+  $overlay.classList.add('open');
+}
+
+function closeCheckin() { $overlay.classList.remove('open'); editKey = null; }
+$overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
+
+// ═══════════════════ EXPORT ═══════════════════
+document.getElementById('csvBtn').onclick = function() {
+  var keys = Object.keys(DATA).sort();
+  if (!keys.length) return;
+  var csv = 'Datum,Schlaf,Schritte,Aktivitaet,Morgengefuehl,Meditation,Notiz,Sessions\n';
+  keys.forEach(function(k) {
+    var e = DATA[k];
+    var sessStr = (e.sessions || []).map(function(s) { return (s.tag || '?') + ':' + s.minutes + 'm'; }).join('; ');
+    csv += k + ',' + (e.sleep||'') + ',' + (e.steps||'') + ',' + (e.sport||'') + ',' + (e.mood||'') + ',' + (e.meditation||'') + ',"' + (e.note||'').replace(/"/g,'""') + '","' + sessStr + '"\n';
+  });
+  dl(csv, 'dailyflow_' + today() + '.csv', 'text/csv');
+};
+
+document.getElementById('jsonBtn').onclick = function() { dl(JSON.stringify(DATA, null, 2), 'dailyflow_backup_' + today() + '.json', 'application/json'); };
+
+function dl(c, n, t) { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], {type:t})); a.download = n; a.click(); }
+
+document.getElementById('importBtn').onclick = function() { document.getElementById('importFile').click(); };
+document.getElementById('importFile').onchange = async function(e) {
+  var file = e.target.files[0]; if (!file) return;
+  try { var imp = JSON.parse(await file.text()); Object.assign(DATA, imp); await saveAllData(); renderMap(); }
+  catch(err) { alert('Ung\u00fcltige JSON-Datei.'); }
+  e.target.value = '';
+};
+
+// ═══════════════════ TRACKER MODAL ═══════════════════
+var $trackerOverlay = document.getElementById('trackerOverlay');
+var trackerEditData = [];
+
+function renderTrackerList() {
+  var list = document.getElementById('trackerList');
+  list.innerHTML = '';
+  trackerEditData.forEach(function(t, i) {
+    var item = document.createElement('div');
+    item.className = 'reminder-item';
+    var typeBadge = t.type === 'number' ? 'Zahl' : 'Skala 1–5';
+    item.innerHTML =
+      '<div class="reminder-header">' +
+        '<input class="input trk-label" placeholder="Name" value="' + escHtml(t.label) + '">' +
+        '<label class="toggle-switch" style="pointer-events:auto" title="Aktiv">' +
+          '<input type="checkbox" class="trk-enabled"' + (t.enabled ? ' checked' : '') + '>' +
+          '<span class="toggle-slider"></span>' +
+        '</label>' +
+        (t.locked
+          ? '<span style="font-size:11px;color:var(--text-dim);padding:4px 6px;flex-shrink:0" title="Steuert Heatmap-Farbe">&#127752;</span>'
+          : '<button class="reminder-del" title="Löschen">✕</button>') +
+      '</div>' +
+      '<input class="input trk-question" placeholder="Frage im Check-in" value="' + escHtml(t.question) + '" style="margin-bottom:8px">' +
+      '<div class="reminder-interval-row" style="justify-content:space-between;flex-wrap:wrap;gap:8px">' +
+        '<span style="display:flex;align-items:center;gap:6px">Typ:\u00a0' +
+          (t.locked
+            ? '<span style="color:var(--accent);font-family:\'JetBrains Mono\',monospace;font-size:11px">' + typeBadge + '</span>'
+            : '<select class="input trk-type" style="padding:3px 8px;height:auto;font-size:11px;font-family:\'JetBrains Mono\',monospace;width:auto">' +
+                '<option value="scale"' + (t.type !== 'number' ? ' selected' : '') + '>Skala 1\u20135</option>' +
+                '<option value="number"' + (t.type === 'number' ? ' selected' : '') + '>Zahl</option>' +
+              '</select>') +
+        '</span>' +
+        '<label style="display:flex;align-items:center;gap:6px;cursor:pointer">\u00d8\u00a0Zusammenfassung\u00a0' +
+          '<label class="toggle-switch" style="pointer-events:auto">' +
+            '<input type="checkbox" class="trk-summary"' + (t.showInSummary !== false ? ' checked' : '') + '>' +
+            '<span class="toggle-slider"></span>' +
+          '</label>' +
+        '</label>' +
+      '</div>';
+    if (!t.locked) {
+      item.querySelector('.reminder-del').onclick = function() {
+        trackerEditData = collectTrackers();
+        trackerEditData.splice(i, 1);
+        renderTrackerList();
+      };
+    }
+    list.appendChild(item);
+  });
+}
+
+function collectTrackers() {
+  var result = [];
+  document.querySelectorAll('#trackerList .reminder-item').forEach(function(item, i) {
+    var existing = trackerEditData[i] || {};
+    result.push({
+      id: existing.id,
+      label: item.querySelector('.trk-label').value.trim() || 'Kategorie',
+      question: item.querySelector('.trk-question').value.trim(),
+      type: item.querySelector('.trk-type') ? item.querySelector('.trk-type').value : (existing.type || 'scale'),
+      placeholder: existing.placeholder,
+      enabled: item.querySelector('.trk-enabled').checked,
+      showInSummary: item.querySelector('.trk-summary') ? item.querySelector('.trk-summary').checked : (existing.showInSummary !== false),
+      locked: existing.locked || false
+    });
+  });
+  return result;
+}
+
+function openTrackerModal() {
+  trackerEditData = trackersConfig.map(function(t) { return Object.assign({}, t); });
+  renderTrackerList();
+  $trackerOverlay.classList.add('open');
+  closeSettingsMenu();
+}
+
+document.getElementById('trackerBtn').onclick = function() { openTrackerModal(); };
+
+document.getElementById('addTrackerBtn').onclick = function() {
+  trackerEditData = collectTrackers();
+  trackerEditData.push({ id: 'custom_' + Date.now(), label: '', question: '', type: 'scale', enabled: true, locked: false });
+  renderTrackerList();
+  document.querySelector('#trackerOverlay .modal').scrollTop = 9999;
+};
+
+document.getElementById('trackerSaveBtn').onclick = function() {
+  saveTrackers(collectTrackers());
+  renderMap();
+  $trackerOverlay.classList.remove('open');
+};
+
+document.getElementById('trackerCancelBtn').onclick = function() { $trackerOverlay.classList.remove('open'); };
+$trackerOverlay.onclick = function(e) { if (e.target === $trackerOverlay) $trackerOverlay.classList.remove('open'); };
+
+// ═══════════════════ REMINDERS ═══════════════════
+var remindersData = [];
+var $remindersOverlay = document.getElementById('remindersOverlay');
+
+var DEFAULT_REMINDERS = [
+  { id: 1, title: 'Bewegungspause', body: 'Gönn deinem Körper zwei Minuten Freiheit. Kurz aufstehen, strecken und die Beine lockern.', intervalMinutes: 50, enabled: true },
+  { id: 2, title: 'Die Perfekte Atmung', body: 'Mund zu, Zunge an den Gaumen. 5,5 Sekunden ein, 5,5 Sekunden aus.', intervalMinutes: 60, enabled: true }
+];
+
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderRemindersList() {
+  var list = document.getElementById('remindersList');
+  list.innerHTML = '';
+  remindersData.forEach(function(r, i) {
+    var item = document.createElement('div');
+    item.className = 'reminder-item';
+    item.innerHTML =
+      '<div class="reminder-header">' +
+        '<input class="input rem-title" placeholder="Titel" value="' + escHtml(r.title) + '">' +
+        '<label class="toggle-switch" style="pointer-events:auto" title="Aktiv">' +
+          '<input type="checkbox" class="rem-enabled"' + (r.enabled ? ' checked' : '') + '>' +
+          '<span class="toggle-slider"></span>' +
+        '</label>' +
+        '<button class="reminder-del" title="Löschen">✕</button>' +
+      '</div>' +
+      '<textarea class="input rem-body" placeholder="Nachrichtentext" style="min-height:52px">' + escHtml(r.body) + '</textarea>' +
+      '<div class="reminder-interval-row">' +
+        'Alle&nbsp;<input type="number" class="input input-interval rem-interval" min="1" max="1440" value="' + (r.intervalMinutes || 60) + '">&nbsp;Minuten' +
+      '</div>';
+    item.querySelector('.reminder-del').onclick = function() {
+      remindersData = collectReminders();
+      remindersData.splice(i, 1);
+      renderRemindersList();
+    };
+    list.appendChild(item);
+  });
+}
+
+function collectReminders() {
+  var result = [];
+  var maxId = remindersData.reduce(function(m, r) { return Math.max(m, r.id || 0); }, 0);
+  document.querySelectorAll('#remindersList .reminder-item').forEach(function(item, i) {
+    var existing = remindersData[i] || {};
+    result.push({
+      id: existing.id || (++maxId),
+      title: item.querySelector('.rem-title').value.trim() || 'Erinnerung',
+      body: item.querySelector('.rem-body').value.trim(),
+      intervalMinutes: Math.max(1, parseInt(item.querySelector('.rem-interval').value) || 60),
+      enabled: item.querySelector('.rem-enabled').checked
+    });
+  });
+  return result;
+}
+
+async function openRemindersModal() {
+  if (window.api) {
+    remindersData = await window.api.getReminders();
+  } else {
+    try { remindersData = JSON.parse(localStorage.getItem('zenith-reminders') || 'null') || DEFAULT_REMINDERS.slice(); }
+    catch { remindersData = DEFAULT_REMINDERS.slice(); }
+  }
+  renderRemindersList();
+  $remindersOverlay.classList.add('open');
+  closeSettingsMenu();
+}
+
+document.getElementById('remindersBtn').onclick = function() { openRemindersModal(); };
+
+document.getElementById('addReminderBtn').onclick = function() {
+  remindersData = collectReminders();
+  remindersData.push({ id: Date.now(), title: '', body: '', intervalMinutes: 60, enabled: true });
+  renderRemindersList();
+  document.querySelector('#remindersOverlay .modal').scrollTop = 9999;
+};
+
+document.getElementById('remindersSaveBtn').onclick = async function() {
+  var updated = collectReminders();
+  if (window.api) {
+    await window.api.saveReminders(updated);
+  } else {
+    localStorage.setItem('zenith-reminders', JSON.stringify(updated));
+  }
+  remindersData = updated;
+  $remindersOverlay.classList.remove('open');
+};
+
+document.getElementById('remindersCancelBtn').onclick = function() {
+  $remindersOverlay.classList.remove('open');
+};
+
+$remindersOverlay.onclick = function(e) {
+  if (e.target === $remindersOverlay) $remindersOverlay.classList.remove('open');
+};
+
+// ═══════════════════ INIT ═══════════════════
+// GitHub URL hier eintragen sobald das Repo erstellt ist:
+var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
+
+(async function() {
+  loadTrackers();
+  await loadData();
+  renderMap();
+
+  var $versionBadge = document.getElementById('versionBadge');
+  if (window.api) {
+    var version = await window.api.getVersion();
+    $versionBadge.textContent = 'v' + version;
+  }
+  $versionBadge.onclick = function() {
+    if (window.api) window.api.openExternal(GITHUB_URL);
+    else window.open(GITHUB_URL, '_blank');
+  };
+
+  if (window.api) {
+    var p = await window.api.getDataPath();
+    document.getElementById('dataPath').textContent = 'Daten: ' + p;
+  }
+
+  if (!DATA[today()]) {
+    setTimeout(function() { openCheckin(today()); }, 400);
+  }
+})();
+</script>
+</body>
+</html>
