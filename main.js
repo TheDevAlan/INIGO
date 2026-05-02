@@ -112,7 +112,7 @@ function createWindow() {
     height: 780,
     minWidth: 640,
     minHeight: 500,
-    backgroundColor: '#0a0c14',
+    backgroundColor: '#0a0e14',
     icon: APP_ICON_PATH,
     titleBarStyle: 'default',
     title: APP_DISPLAY_NAME,

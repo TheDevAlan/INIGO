@@ -8,43 +8,53 @@
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
   :root {
-    --bg: #0a0c14;
-    --surface: #111520;
-    --surface-hover: #161924;
-    --border: #1e2235;
-    --text: #b8c0d8;
-    --text-muted: #4a5272;
-    --text-dim: #2a2e42;
-    --mood-empty: #131620;
-    --mood-1: #da3633;
-    --mood-2: #e8853a;
-    --mood-3: #d4a72c;
-    --mood-4: #2ea043;
-    --mood-5: #7ee87e;
-    --accent: #4a7bff;
+    /* ── Backgrounds ── */
+    --bg: #0a0e14;
+    --surface: #141a22;
+    --surface-hover: #1a2230;
+    --border: #1f2730;
+    /* ── Text ── */
+    --text: #e8ecf1;
+    --text-muted: #647c86;
+    --text-dim: #3a4550;
+    /* ── Heatmap ── */
+    --mood-empty: #1f2730;
+    --mood-1: #8b3a3a;
+    --mood-2: #b8743a;
+    --mood-3: #c9a94a;
+    --mood-4: #7ba05b;
+    --mood-5: #a8df8e;
+    /* ── Accent ── */
+    --accent: #4a7cff;
     --accent-light: #7aa0ff;
-    --warn: #d4a72c;
-    --healthy: #2ea043;
+    /* ── Semantic ── */
+    --warn: #c9a94a;
+    --healthy: #4a7cff;
     --deepwork: #a371f7;
-    --stop-color: #f47067;
+    --stop-color: #c0544e;
+    /* ── Trend ── */
+    --trend-up: #7ba05b;
+    --trend-down: #b8743a;
   }
 
   /* ═══════════ LIGHT MODE ═══════════ */
   body.light {
     --bg: #eef0f6;
     --surface: #ffffff;
-    --surface-hover: #e2e5ef;
-    --border: #cdd2e4;
-    --text: #0e1228;
-    --text-muted: #8890aa;
-    --text-dim: #b0b8cc;
-    --mood-empty: #dde0ec;
-    --accent: #4a7bff;
+    --surface-hover: #e2e6ee;
+    --border: #cdd3df;
+    --text: #0e1420;
+    --text-muted: #647c86;
+    --text-dim: #9aaab4;
+    --mood-empty: #dce0e8;
+    --accent: #4a7cff;
     --accent-light: #7aa0ff;
-    --warn: #9a6700;
-    --healthy: #1a7f37;
+    --warn: #9a7a00;
+    --healthy: #4a7cff;
     --deepwork: #8250df;
-    --stop-color: #d1242f;
+    --stop-color: #c0544e;
+    --trend-up: #5a8a45;
+    --trend-down: #a0642a;
   }
 
   body.light .cell { border-color: rgba(0,0,0,0.06); }
@@ -115,7 +125,7 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  .app { max-width: 1120px; margin: 0 auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 44px; }
+  .app { max-width: 1120px; margin: 0 auto; padding: 28px 24px; display: flex; flex-direction: column; gap: 28px; }
 
   .support-wrap {
     position: fixed;
@@ -207,7 +217,8 @@
   }
 
   /* ═══════════ MODE TOGGLE ═══════════ */
-  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .timer-status { display: none; }
   .top-brand {
     display: inline-flex;
     flex-direction: column;
@@ -243,7 +254,7 @@
     letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
   }
   .mode-btn:hover { color: var(--text-muted); }
-  .mode-btn.active-healthy { background: rgba(46,160,67,0.12); color: var(--healthy); }
+  .mode-btn.active-healthy { background: rgba(74,124,255,0.12); color: var(--accent); }
   .mode-btn.active-deep { background: rgba(163,113,247,0.12); color: var(--deepwork); }
   .mode-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
@@ -273,8 +284,8 @@
   .timer-btn.primary.break-btn { background: var(--healthy); border-color: var(--healthy); }
   .timer-btn.primary.break-btn:hover { opacity: 0.85; color: var(--bg); }
 
-  .timer-btn.stop-btn { background: rgba(244,112,103,0.1); border-color: var(--stop-color); color: var(--stop-color); font-size: 14px; }
-  .timer-btn.stop-btn:hover { background: rgba(244,112,103,0.2); color: var(--stop-color); border-color: var(--stop-color); }
+  .timer-btn.stop-btn { background: rgba(192,84,78,0.1); border-color: var(--stop-color); color: var(--stop-color); font-size: 14px; }
+  .timer-btn.stop-btn:hover { background: rgba(192,84,78,0.2); color: var(--stop-color); border-color: var(--stop-color); }
 
   .timer-meta { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
   .queue-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--deepwork); opacity: 0; transition: opacity 0.3s; height: 16px; }
@@ -283,7 +294,7 @@
   /* ═══════════ BANNERS ═══════════ */
   .banner-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
   .banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); pointer-events: auto; animation: bannerIn 0.4s ease; max-width: 420px; }
-  .banner.healthy-style { border-color: var(--healthy); box-shadow: 0 0 20px rgba(46,160,67,0.15), 0 12px 40px rgba(0,0,0,0.5); }
+  .banner.healthy-style { border-color: var(--accent); box-shadow: 0 0 20px rgba(74,124,255,0.15), 0 12px 40px rgba(0,0,0,0.5); }
   .banner.queued-style { border-color: var(--deepwork); box-shadow: 0 0 20px rgba(163,113,247,0.15), 0 12px 40px rgba(0,0,0,0.5); }
   .banner-icon { font-size: 20px; flex-shrink: 0; }
   .banner-text { display: flex; flex-direction: column; gap: 2px; }
@@ -333,23 +344,24 @@
 
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 8px; margin-top: 14px; width: 100%; padding-left: 35px; box-sizing: border-box; }
   .stat-tile {
-    background: linear-gradient(135deg, rgba(74,123,255,0.18) 0%, rgba(17,21,32,0.9) 60%, rgba(10,12,20,0.95) 100%);
-    border: 1px solid rgba(74,123,255,0.2);
+    background: linear-gradient(135deg, rgba(74,124,255,0.10) 0%, rgba(20,26,34,0.95) 60%, rgba(10,14,20,0.98) 100%);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px 14px;
     display: flex;
     flex-direction: column;
     gap: 3px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
   }
   body.light .stat-tile {
-    background: linear-gradient(135deg, rgba(74,123,255,0.12) 0%, rgba(255,255,255,0.9) 60%, rgba(238,240,246,0.95) 100%);
-    border: 1px solid rgba(74,123,255,0.2);
+    background: linear-gradient(135deg, rgba(74,124,255,0.07) 0%, rgba(255,255,255,0.95) 60%, rgba(238,240,246,0.98) 100%);
+    border: 1px solid var(--border);
   }
   .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); line-height: 1.1; }
-  .stat-label { font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-  .stat-trend { font-size: 11px; }
+  .stat-label { font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
+  .stat-trend { font-size: 9px; opacity: 0.85; }
+  .sparkline-wrap { margin: 8px 0; }
+  .sparkline-svg { width: 100%; height: 24px; display: block; overflow: visible; }
+  .stat-last-updated { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
 
   /* ═══════════ TOOLTIP ═══════════ */
   .tip { position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 12px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.12s; min-width: 200px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
@@ -404,10 +416,10 @@
   .session-bar-time { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
   .session-bar-track { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
   .session-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.3s; }
-  .final-field { border: 1px solid var(--healthy); border-radius: 10px; padding: 14px; background: rgba(46,160,67,0.08); }
+  .final-field { border: 1px solid var(--accent); border-radius: 10px; padding: 14px; background: rgba(74,124,255,0.06); }
   .final-field label { font-size: 15px !important; font-weight: 600; color: var(--text); }
-  .trend-up { color: var(--healthy); }
-  .trend-down { color: var(--mood-1); }
+  .trend-up { color: var(--trend-up); }
+  .trend-down { color: var(--trend-down); }
   .trend-flat { color: var(--text-dim); }
 
   /* ═══════════ REMINDERS MODAL ═══════════ */
@@ -1220,6 +1232,120 @@ function trendForMetric(metric) {
   return trendArrow(avgMetric(currentWeek, metric), avgMetric(prevWeek, metric));
 }
 
+// ─── Sparkline ───────────────────────────────────────────────────────────────
+function buildSparkline(trackerId) {
+  var keys = Object.keys(DATA).sort();
+  var vals = [];
+  for (var i = keys.length - 1; i >= 0 && vals.length < 7; i--) {
+    var e = DATA[keys[i]];
+    if (e && e[trackerId] != null && e[trackerId] !== '') {
+      vals.unshift(Number(e[trackerId]));
+    }
+  }
+  if (vals.length < 2) return '';
+  var min = Math.min.apply(null, vals);
+  var max = Math.max.apply(null, vals);
+  var range = max - min || 1;
+  var W = 100, H = 24, pad = 3;
+  var step = (W - pad * 2) / (vals.length - 1);
+  var pts = vals.map(function(v, i) {
+    return [(pad + i * step).toFixed(1), (H - pad - ((v - min) / range) * (H - pad * 2)).toFixed(1)];
+  });
+  var d = pts.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]; }).join(' ');
+  var last = pts[pts.length - 1];
+  return '<svg class="sparkline-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2" fill="var(--accent)"/>' +
+    '</svg>';
+}
+
+// ─── Last Updated ─────────────────────────────────────────────────────────────
+function lastUpdatedLabel(trackerId) {
+  var keys = Object.keys(DATA).sort().reverse();
+  for (var i = 0; i < keys.length; i++) {
+    var e = DATA[keys[i]];
+    if (e && e[trackerId] != null && e[trackerId] !== '') {
+      var parts = keys[i].split('-');
+      var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+      var t = new Date(); t.setHours(0, 0, 0, 0);
+      var diff = Math.round((t - d) / 86400000);
+      var when = diff === 0 ? 'Heute' : diff === 1 ? 'Gestern' : 'Vor ' + diff + ' Tagen';
+      return 'Letzte Aktualisierung: ' + when;
+    }
+  }
+  return 'Letzte Aktualisierung: –';
+}
+
+// ─── Context Stats ────────────────────────────────────────────────────────────
+function computeContextStats() {
+  // Streak
+  var streak = 0;
+  var t = new Date(); t.setHours(0, 0, 0, 0);
+  for (var i = 0; i < 400; i++) {
+    var d = new Date(t); d.setDate(d.getDate() - i);
+    var k = dk(d);
+    if (DATA[k] && DATA[k].mood) { streak++; } else { break; }
+  }
+  // Year average
+  var yearKeys = Object.keys(DATA).filter(function(k) { return k.startsWith(viewYear + '-'); });
+  var moodTotal = 0, moodCount = 0;
+  yearKeys.forEach(function(k) {
+    if (DATA[k] && DATA[k].mood) { moodTotal += Number(DATA[k].mood); moodCount++; }
+  });
+  var yearAvg = moodCount > 0 ? (moodTotal / moodCount).toFixed(1) : '–';
+  // Best week
+  var weekMap = {};
+  yearKeys.forEach(function(k) {
+    if (!DATA[k] || !DATA[k].mood) return;
+    var date = new Date(k);
+    var jan4 = new Date(date.getFullYear(), 0, 4);
+    var kw = Math.ceil(((date - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+    if (!weekMap[kw]) weekMap[kw] = { sum: 0, count: 0 };
+    weekMap[kw].sum += Number(DATA[k].mood);
+    weekMap[kw].count++;
+  });
+  var bestKW = '–', bestAvg = -1;
+  Object.keys(weekMap).forEach(function(kw) {
+    var a = weekMap[kw].sum / weekMap[kw].count;
+    if (a > bestAvg) { bestAvg = a; bestKW = 'KW ' + kw; }
+  });
+  // Trend vs prev month
+  var now = new Date();
+  var pad2 = function(n) { return String(n).padStart(2, '0'); };
+  var thisM = now.getMonth(), thisY = now.getFullYear();
+  var lastM = thisM === 0 ? 11 : thisM - 1;
+  var lastY = thisM === 0 ? thisY - 1 : thisY;
+  var thisPrefix = thisY + '-' + pad2(thisM + 1);
+  var lastPrefix = lastY + '-' + pad2(lastM + 1);
+  var thisMoods = [], lastMoods = [];
+  Object.keys(DATA).forEach(function(k) {
+    if (!DATA[k] || !DATA[k].mood) return;
+    if (k.startsWith(thisPrefix)) thisMoods.push(Number(DATA[k].mood));
+    if (k.startsWith(lastPrefix)) lastMoods.push(Number(DATA[k].mood));
+  });
+  var trendStr = '–';
+  if (thisMoods.length > 0 && lastMoods.length > 0) {
+    var tA = thisMoods.reduce(function(a, b) { return a + b; }, 0) / thisMoods.length;
+    var lA = lastMoods.reduce(function(a, b) { return a + b; }, 0) / lastMoods.length;
+    var diff = (tA - lA).toFixed(1);
+    var arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '▶';
+    var color = diff > 0 ? 'var(--trend-up)' : diff < 0 ? 'var(--trend-down)' : 'var(--text-dim)';
+    trendStr = '<span style="color:' + color + '">' + arrow + ' ' + (diff > 0 ? '+' : '') + diff + '</span>';
+  }
+  return { streak: streak, bestKW: bestKW, yearAvg: yearAvg, trend: trendStr };
+}
+
+function renderContextStats() {
+  var el = document.getElementById('heatmapStats');
+  if (!el) return;
+  var s = computeContextStats();
+  el.innerHTML =
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Aktuelle Streak</div><div class="heatmap-stat-value">' + s.streak + ' Tage</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Beste Woche ' + viewYear + '</div><div class="heatmap-stat-value">' + s.bestKW + '</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Durchschnitt ' + viewYear + '</div><div class="heatmap-stat-value">' + s.yearAvg + (s.yearAvg !== '–' ? ' / 5' : '') + '</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Trend vs. Vormonat</div><div class="heatmap-stat-value">' + s.trend + '</div></div>';
+}
+
 function renderMap() {
   var grid = document.getElementById('grid');
   grid.innerHTML = '';
@@ -1270,7 +1396,12 @@ function renderMap() {
     var avg = counts[t.id] > 0
       ? (t.type === 'number' ? Math.round(sums[t.id] / counts[t.id]).toLocaleString('de-DE') : (sums[t.id] / counts[t.id]).toFixed(1))
       : '\u2013';
-    return '<div class="stat-tile"><div style="display:flex;align-items:baseline;gap:5px"><div class="stat-value">' + avg + '</div><div class="stat-trend">' + trendForMetric(t.id) + '</div></div><div class="stat-label">' + t.label + '</div></div>';
+    var sparkline = buildSparkline(t.id);
+    return '<div class="stat-tile">' +
+      '<div style="display:flex;align-items:baseline;gap:5px"><div class="stat-value">' + avg + '</div><div class="stat-trend">' + trendForMetric(t.id) + '</div></div>' +
+      '<div class="stat-label">' + t.label + '</div>' +
+      (sparkline ? '<div class="sparkline-wrap">' + sparkline + '</div>' : '') +
+    '</div>';
   }).join('');
   document.getElementById('summary').innerHTML = summaryHtml;
   document.getElementById('heatmapInfo').textContent = tracked > 0 ? tracked + ' Eintr\u00e4ge in ' + viewYear : 'Noch keine Eintr\u00e4ge';
@@ -1281,6 +1412,8 @@ function renderMap() {
     var section = document.querySelector('.heatmap-section');
     if (gridEl && section) {
       section.style.maxWidth = gridEl.offsetWidth + 'px';
+      section.style.marginLeft = 'auto';
+      section.style.marginRight = 'auto';
     }
   });
 }
