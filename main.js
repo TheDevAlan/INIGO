@@ -61,7 +61,7 @@ function startReminders() {
     if (!r.enabled || !r.intervalMinutes) return;
     reminderIntervals.push(setInterval(() => {
       if (!notificationsEnabled) return;
-      new Notification({ appID: APP_USER_MODEL_ID, title: r.title, body: r.body, icon: APP_ICON_PATH, silent: false }).show();
+      new Notification({ title: r.title, body: r.body, icon: APP_ICON_PATH, silent: false }).show();
     }, r.intervalMinutes * 60 * 1000));
   });
 }
@@ -73,7 +73,6 @@ function stopReminders() {
 
 ipcMain.handle('show-notification', (_event, title, body) => {
   new Notification({
-    appID: APP_USER_MODEL_ID,
     title,
     body,
     icon: APP_ICON_PATH,
@@ -113,7 +112,7 @@ function createWindow() {
     height: 780,
     minWidth: 640,
     minHeight: 500,
-    backgroundColor: '#0d1117',
+    backgroundColor: '#0a0c14',
     icon: APP_ICON_PATH,
     titleBarStyle: 'default',
     title: APP_DISPLAY_NAME,
@@ -127,11 +126,10 @@ function createWindow() {
   mainWindow.loadFile('index.html');
   mainWindow.setMenuBarVisibility(false);
 
-  mainWindow.on('close', (e) => {
-    if (!app.isQuitting) {
-      e.preventDefault();
-      mainWindow.hide();
-    }
+  mainWindow.on('close', () => {
+    app.isQuitting = true;
+    stopReminders();
+    app.quit();
   });
 }
 

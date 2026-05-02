@@ -5,23 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ZENITH Work & Wellbeing</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
 
   :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface-hover: #1c2129;
-    --border: #30363d;
-    --text: #e6edf3;
-    --text-muted: #7d8590;
-    --text-dim: #484f58;
-    --mood-empty: #161b22;
+    --bg: #0a0c14;
+    --surface: #111520;
+    --surface-hover: #161924;
+    --border: #1e2235;
+    --text: #b8c0d8;
+    --text-muted: #4a5272;
+    --text-dim: #2a2e42;
+    --mood-empty: #131620;
     --mood-1: #da3633;
     --mood-2: #e8853a;
     --mood-3: #d4a72c;
     --mood-4: #2ea043;
     --mood-5: #7ee87e;
-    --accent: #58a6ff;
+    --accent: #4a7bff;
+    --accent-light: #7aa0ff;
     --warn: #d4a72c;
     --healthy: #2ea043;
     --deepwork: #a371f7;
@@ -30,15 +31,16 @@
 
   /* ═══════════ LIGHT MODE ═══════════ */
   body.light {
-    --bg: #f2f2f7;
+    --bg: #eef0f6;
     --surface: #ffffff;
-    --surface-hover: #f0f0f5;
-    --border: #d0d7de;
-    --text: #1f2328;
-    --text-muted: #57606a;
-    --text-dim: #8c959f;
-    --mood-empty: #eaeef2;
-    --accent: #0969da;
+    --surface-hover: #e2e5ef;
+    --border: #cdd2e4;
+    --text: #0e1228;
+    --text-muted: #8890aa;
+    --text-dim: #b0b8cc;
+    --mood-empty: #dde0ec;
+    --accent: #4a7bff;
+    --accent-light: #7aa0ff;
     --warn: #9a6700;
     --healthy: #1a7f37;
     --deepwork: #8250df;
@@ -207,13 +209,31 @@
   /* ═══════════ MODE TOGGLE ═══════════ */
   .timer-section { display: flex; flex-direction: column; align-items: center; gap: 18px; }
   .top-brand {
-    width: 52px;
-    height: 52px;
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 5px;
   }
-  .top-brand img { width: 100%; height: 100%; object-fit: contain; }
+  .top-brand img { width: 52px; height: 52px; object-fit: contain; }
+  .top-brand-wordmark {
+    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.30em;
+    color: var(--text);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .top-brand-sub {
+    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: -2px;
+  }
 
   .mode-toggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
 
@@ -239,7 +259,7 @@
   .timer-display.break-mode { color: var(--healthy); }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
 
-  .timer-controls { display: flex; gap: 14px; align-items: center; }
+  .timer-controls { display: flex; gap: 14px; align-items: center; justify-content: center; }
 
   .timer-btn {
     background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
@@ -276,14 +296,14 @@
   @keyframes bannerOut { to { opacity:0; transform:translateY(-12px); } }
 
   /* ═══════════ HEATMAP ═══════════ */
-  .heatmap-section { display: flex; flex-direction: column; gap: 12px; width: fit-content; max-width: 100%; margin: 0 auto; }
-  .heatmap-header { display: flex; justify-content: space-between; align-items: center; }
+  .heatmap-section { display: flex; flex-direction: column; gap: 12px; }
+  .heatmap-header { display: flex; justify-content: space-between; align-items: center; padding-left: 35px; }
   .heatmap-info { font-size: 13px; color: var(--text-muted); }
   .year-nav { display: flex; align-items: center; gap: 12px; }
   .year-nav button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 4px; transition: color 0.2s; }
   .year-nav button:hover { color: var(--text); background: var(--surface); }
   .year-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); min-width: 40px; text-align: center; }
-  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
+  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; width: 100%; }
   .heatmap-grid {
     display: inline-grid;
     grid-template-rows: auto repeat(7, 1fr);
@@ -298,26 +318,38 @@
   .cell:hover { border-color: var(--text-dim); transform: scale(1.4); z-index: 2; }
   .cell.future { opacity: 0.25; cursor: default; }
   .cell.future:hover { transform: none; border-color: rgba(255,255,255,0.03); }
-  .cell.today { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .cell.today { border-color: #ffffff; box-shadow: 0 0 0 1px #ffffff; }
+  body.light .cell.today { border-color: #000000; box-shadow: 0 0 0 1px #000000; }
   .cell.m1 { background: var(--mood-1); }
   .cell.m2 { background: var(--mood-2); }
   .cell.m3 { background: var(--mood-3); }
   .cell.m4 { background: var(--mood-4); }
   .cell.m5 { background: var(--mood-5); }
-  .heatmap-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
-  .heatmap-summary { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
   .legend { display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--text-dim); }
-  .legend-wrap { display: flex; align-items: center; gap: 14px; }
   .legend-box { width: 11px; height: 11px; border-radius: 2px; }
-  .legend span { margin: 0 5px; }
-  .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px; }
-  .heatmap-header,
-  .heatmap-footer,
-  .actions,
-  .data-path { width: 100%; }
-  .action-btn { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 5px 12px; border-radius: 6px; font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.2s; }
-  .action-btn:hover { color: var(--text-muted); border-color: var(--text-dim); }
+  .legend span { margin: 0 4px; }
+  .heatmap-header, .data-path { width: 100%; }
   .data-path { display: none; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 8px; margin-top: 14px; width: 100%; padding-left: 35px; box-sizing: border-box; }
+  .stat-tile {
+    background: linear-gradient(135deg, rgba(74,123,255,0.18) 0%, rgba(17,21,32,0.9) 60%, rgba(10,12,20,0.95) 100%);
+    border: 1px solid rgba(74,123,255,0.2);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  body.light .stat-tile {
+    background: linear-gradient(135deg, rgba(74,123,255,0.12) 0%, rgba(255,255,255,0.9) 60%, rgba(238,240,246,0.95) 100%);
+    border: 1px solid rgba(74,123,255,0.2);
+  }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); line-height: 1.1; }
+  .stat-label { font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  .stat-trend { font-size: 11px; }
 
   /* ═══════════ TOOLTIP ═══════════ */
   .tip { position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 12px; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.12s; min-width: 200px; box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
@@ -422,18 +454,19 @@
     bottom: 14px;
     right: 14px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-dim);
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: transparent;
+    border: none;
     border-radius: 6px;
     padding: 4px 9px;
     cursor: pointer;
     transition: all 0.2s;
-    z-index: 10;
+    z-index: 0;
     text-decoration: none;
+    opacity: 0.35;
   }
-  .version-badge:hover { color: var(--accent); border-color: var(--accent); }
+  .version-badge:hover { opacity: 1; color: var(--accent); }
 
   @media (max-width: 640px) {
     .timer-display { font-size: 56px; min-width: 280px; }
@@ -466,6 +499,7 @@
   <div class="settings-menu" id="settingsMenu" role="menu" aria-label="Einstellungsmenü">
     <button class="settings-item" role="menuitem" type="button" id="remindersBtn">Erinnerungen</button>
     <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Tracker</button>
+    <button class="settings-item" role="menuitem" type="button" id="pauseSettingsBtn">Pausenregel</button>
     <label class="theme-toggle-item" role="menuitem" id="themeToggleItem">
       <span>Lightmode</span>
       <div class="toggle-switch">
@@ -473,6 +507,10 @@
         <span class="toggle-slider"></span>
       </div>
     </label>
+    <div class="settings-sep"></div>
+    <button class="settings-item" role="menuitem" type="button" id="csvBtn">&#8595; CSV exportieren</button>
+    <button class="settings-item" role="menuitem" type="button" id="jsonBtn">&#8595; Backup erstellen</button>
+    <button class="settings-item" role="menuitem" type="button" id="importBtn">&#8593; Backup importieren</button>
     <div class="settings-sep"></div>
     <button class="settings-item" role="menuitem" type="button">Hilfe</button>
     <button class="settings-item" role="menuitem" type="button">Über ZENITH</button>
@@ -484,6 +522,8 @@
   <section class="timer-section">
     <div class="top-brand" aria-label="ZENITH Logo">
       <img src="assets/zenith-logo-mark.svg" alt="ZENITH Logo">
+      <div class="top-brand-wordmark">ZENITH</div>
+      <div class="top-brand-sub">Work &amp; Wellbeing</div>
     </div>
     <div class="mode-toggle">
       <button class="mode-btn active-healthy" id="modeHealthy"><span class="mode-dot"></span> Healthy</button>
@@ -492,7 +532,7 @@
     <div class="timer-status" id="timerStatus">ready</div>
     <div class="timer-display" id="timerDisplay">00:00:00</div>
     <div class="timer-controls">
-      <button class="timer-btn" id="resetBtn" title="Reset">&#8634;</button>
+      <button class="timer-btn" id="resetBtn" title="Reset" style="display:none">&#8634;</button>
       <button class="timer-btn primary" id="playBtn" title="Start / Pause">&#9654;</button>
       <button class="timer-btn stop-btn" id="stopBtn" title="Session beenden" style="display:none">&#9632;</button>
     </div>
@@ -510,26 +550,7 @@
       </div>
     </div>
     <div class="heatmap-scroll"><div class="heatmap-grid" id="grid"></div></div>
-    <div class="heatmap-footer">
-      <div class="heatmap-summary" id="summary"></div>
-      <div class="legend-wrap">
-        <div class="legend">
-          <span>schlecht</span>
-          <div class="legend-box" style="background:var(--mood-empty);border:1px solid rgba(255,255,255,0.05)"></div>
-          <div class="legend-box" style="background:var(--mood-1)"></div>
-          <div class="legend-box" style="background:var(--mood-2)"></div>
-          <div class="legend-box" style="background:var(--mood-3)"></div>
-          <div class="legend-box" style="background:var(--mood-4)"></div>
-          <div class="legend-box" style="background:var(--mood-5)"></div>
-          <span>gut</span>
-        </div>
-      </div>
-    </div>
-    <div class="actions">
-      <button class="action-btn" id="csvBtn">&#8595; CSV</button>
-      <button class="action-btn" id="jsonBtn">&#8595; Backup</button>
-      <button class="action-btn" id="importBtn">&#8593; Import</button>
-    </div>
+    <div class="summary-grid" id="summary"></div>
     <input type="file" id="importFile" accept=".json" style="display:none">
     <div class="data-path" id="dataPath"></div>
   </section>
@@ -544,20 +565,57 @@
 
 <!-- SUPPORT MODAL -->
 <div class="overlay" id="supportOverlay">
-  <div class="modal">
-    <h2>Danke für deine Unterstützung</h2>
+  <div class="modal" style="position:relative">
+    <button id="supportCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.15s,background 0.15s;line-height:1" onmouseover="this.style.color='var(--text)';this.style.background='var(--surface-hover)'" onmouseout="this.style.color='var(--text-dim)';this.style.background='none'">✕</button>
+    <h2>Danke fürs Nutzen ☕</h2>
     <div class="modal-sub">ZENITH Work & Wellbeing</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.6">
-      Dieses Programm ist kostenlos.
-      Wenn du mich unterstützen möchtest, kannst du hier eine Kleinigkeit spenden:
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.7">
+      ZENITH ist kostenlos und bleibt es auch — keine Werbung, kein Abo, keine Cloud.<br><br>
+      Wenn dir die App etwas wert ist und du mich unterstützen möchtest, freue ich mich sehr über einen kleinen Kaffee.
+    </div>
+    <div style="margin-top:20px">
       <a
         href="#"
         id="donateLink"
-        style="color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)"
-      >XXX</a>
+        style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--bg);padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;transition:opacity 0.2s"
+        onmouseover="this.style.opacity='0.85'"
+        onmouseout="this.style.opacity='1'"
+      >☕ Einen Kaffee spendieren</a>
+    </div>
+  </div>
+</div>
+
+<!-- BREAK CONFIG MODAL -->
+<div class="overlay" id="breakOverlay">
+  <div class="modal" style="max-width:400px;position:relative">
+    <button id="breakCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:color 0.15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">✕</button>
+    <h2>Pausenregel</h2>
+    <div class="modal-sub">Wie lange soll die Pause dauern?</div>
+    <div class="field">
+      <label>Modus</label>
+      <div class="mode-toggle" style="margin-top:8px">
+        <button class="mode-btn" id="breakModeAuto">Automatisch</button>
+        <button class="mode-btn" id="breakModeFixed">Fixe Dauer</button>
+      </div>
+    </div>
+    <div class="field" id="breakAutoField">
+      <label>Prozentsatz der Arbeitszeit</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+        <input type="number" class="input" id="breakPercent" min="5" max="100" style="width:72px;text-align:center">
+        <span style="color:var(--text-muted);font-size:13px">%</span>
+        <span id="breakAutoHint" style="color:var(--text-dim);font-size:11px;font-family:'JetBrains Mono',monospace"></span>
+      </div>
+    </div>
+    <div class="field" id="breakFixedField">
+      <label>Pausendauer</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+        <input type="number" class="input" id="breakMins" min="1" max="120" style="width:72px;text-align:center">
+        <span style="color:var(--text-muted);font-size:13px">Minuten</span>
+      </div>
     </div>
     <div class="modal-btns">
-      <button class="btn btn-fill" id="supportCloseBtn">Schließen</button>
+      <button class="btn btn-ghost" id="breakCancelBtn">Abbrechen</button>
+      <button class="btn btn-fill" id="breakSaveBtn">Speichern</button>
     </div>
   </div>
 </div>
@@ -701,6 +759,13 @@ document.getElementById('supportCloseBtn').onclick = function() {
   closeSupportModal();
 };
 
+document.getElementById('donateLink').onclick = function(e) {
+  e.preventDefault();
+  var url = 'https://buymeacoffee.com/TheDevAlan';
+  if (window.api) window.api.openExternal(url);
+  else window.open(url, '_blank');
+};
+
 $supportOverlay.onclick = function(e) {
   if (e.target === $supportOverlay) closeSupportModal();
 };
@@ -814,7 +879,13 @@ function updateStopBtn() {
   $stop.style.display = (timerSecs > 0 || timerRunning) ? '' : 'none';
 }
 
+var hasStartedOnce = false;
+
 function timerStart() {
+  if (!hasStartedOnce) {
+    hasStartedOnce = true;
+    document.getElementById('resetBtn').style.display = '';
+  }
   timerRunning = true;
   $play.innerHTML = '\u275a\u275a';
   $status.textContent = mode === 'deep' ? 'deep focus' : 'focus';
@@ -864,6 +935,8 @@ function timerReset() {
   $play.innerHTML = '\u25b6';
   $status.textContent = 'ready';
   $status.style.color = 'var(--text-dim)';
+  hasStartedOnce = false;
+  document.getElementById('resetBtn').style.display = 'none';
   updateStopBtn();
 }
 
@@ -975,7 +1048,13 @@ var breakEndMs = null;
 
 function startBreak(workSecs) {
   var workMins = Math.floor(workSecs / 60);
-  var breakDurationSecs = Math.max(60, Math.round(workMins * 0.2 * 60)); // at least 1 min
+  var breakDurationSecs;
+  if (breakConfig.mode === 'fixed') {
+    breakDurationSecs = Math.max(60, (breakConfig.fixedMins || 5) * 60);
+  } else {
+    var pct = (breakConfig.percent || 20) / 100;
+    breakDurationSecs = Math.max(60, Math.round(workMins * pct * 60));
+  }
   breakRemaining = breakDurationSecs;
   onBreak = true;
 
@@ -1028,13 +1107,74 @@ function endBreak(natural) {
   timerReset();
 }
 
+// ═══════════════════ BREAK CONFIG ═══════════════════
+var BREAK_CONFIG_DEFAULT = { mode: 'auto', percent: 20, fixedMins: 5 };
+var breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT);
+
+function loadBreakConfig() {
+  try {
+    var saved = localStorage.getItem('zenith-break-config');
+    if (saved) breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT, JSON.parse(saved));
+  } catch(e) {}
+}
+
+function saveBreakConfig(cfg) {
+  breakConfig = cfg;
+  localStorage.setItem('zenith-break-config', JSON.stringify(cfg));
+}
+
+var $breakOverlay = document.getElementById('breakOverlay');
+
+function setBreakModeUI(mode) {
+  var isAuto = mode === 'auto';
+  document.getElementById('breakModeAuto').className = 'mode-btn' + (isAuto ? ' active-healthy' : '');
+  document.getElementById('breakModeFixed').className = 'mode-btn' + (!isAuto ? ' active-healthy' : '');
+  document.getElementById('breakAutoField').style.display = isAuto ? '' : 'none';
+  document.getElementById('breakFixedField').style.display = isAuto ? 'none' : '';
+}
+
+function updateBreakHint() {
+  var pct = parseInt(document.getElementById('breakPercent').value) || 20;
+  var example = Math.round(52 * pct / 100);
+  document.getElementById('breakAutoHint').textContent = '(z.B. 52 Min → ' + example + ' Min Pause)';
+}
+
+document.getElementById('breakModeAuto').onclick = function() { setBreakModeUI('auto'); };
+document.getElementById('breakModeFixed').onclick = function() { setBreakModeUI('fixed'); };
+document.getElementById('breakPercent').oninput = updateBreakHint;
+
+function openBreakModal() {
+  document.getElementById('breakPercent').value = breakConfig.percent || 20;
+  document.getElementById('breakMins').value = breakConfig.fixedMins || 5;
+  setBreakModeUI(breakConfig.mode || 'auto');
+  updateBreakHint();
+  $breakOverlay.classList.add('open');
+  closeSettingsMenu();
+}
+
+document.getElementById('pauseSettingsBtn').onclick = function() { openBreakModal(); };
+
+document.getElementById('breakSaveBtn').onclick = function() {
+  var isFixed = document.getElementById('breakModeFixed').classList.contains('active-healthy');
+  saveBreakConfig({
+    mode: isFixed ? 'fixed' : 'auto',
+    percent: Math.max(5, Math.min(100, parseInt(document.getElementById('breakPercent').value) || 20)),
+    fixedMins: Math.max(1, Math.min(120, parseInt(document.getElementById('breakMins').value) || 5))
+  });
+  $breakOverlay.classList.remove('open');
+};
+
+document.getElementById('breakCancelBtn').onclick = function() { $breakOverlay.classList.remove('open'); };
+document.getElementById('breakCloseBtn').onclick = function() { $breakOverlay.classList.remove('open'); };
+$breakOverlay.onclick = function(e) { if (e.target === $breakOverlay) $breakOverlay.classList.remove('open'); };
+
 // ═══════════════════ TRACKER CONFIG ═══════════════════
 var TRACKER_DEFAULTS = [
   { id: 'sport',      label: 'Aktivität',   question: 'Wie aktiv warst du gestern körperlich?',                            type: 'scale',  enabled: true, showInSummary: true },
   { id: 'meditation', label: 'Meditation',  question: 'Wie sehr hast du gestern auf deine mentale Erholung geachtet?',     type: 'scale',  enabled: true, showInSummary: true },
   { id: 'sleep',      label: 'Schlaf',      question: 'Wie erholsam war dein Schlaf letzte Nacht?',                       type: 'scale',  enabled: true, showInSummary: true },
   { id: 'steps',      label: 'Schritte',    question: 'Wie viele Schritte hast du gestern gemacht?', placeholder: 'z.B. 8500', type: 'number', enabled: true, showInSummary: true },
-  { id: 'mood',       label: 'Morgengeführ', question: 'Wie fühlst du dich heute Morgen?',                                type: 'scale',  enabled: true, showInSummary: true, locked: true }
+  { id: 'mood',       label: 'Morgengefühl', question: 'Wie fühlst du dich heute Morgen?',                                type: 'scale',  enabled: true, showInSummary: true, locked: true }
 ];
 
 var trackersConfig = [];
@@ -1126,14 +1266,23 @@ function renderMap() {
     dow = (dow + 1) % 7;
   }
 
-  var summaryParts = trackersConfig.filter(function(t) { return t.showInSummary !== false; }).map(function(t) {
+  var summaryHtml = trackersConfig.filter(function(t) { return t.showInSummary !== false; }).map(function(t) {
     var avg = counts[t.id] > 0
       ? (t.type === 'number' ? Math.round(sums[t.id] / counts[t.id]).toLocaleString('de-DE') : (sums[t.id] / counts[t.id]).toFixed(1))
       : '\u2013';
-    return '\u00d8 ' + t.label + ': ' + avg + ' ' + trendForMetric(t.id);
-  });
-  document.getElementById('summary').innerHTML = summaryParts.join(' \u00b7 ');
+    return '<div class="stat-tile"><div style="display:flex;align-items:baseline;gap:5px"><div class="stat-value">' + avg + '</div><div class="stat-trend">' + trendForMetric(t.id) + '</div></div><div class="stat-label">' + t.label + '</div></div>';
+  }).join('');
+  document.getElementById('summary').innerHTML = summaryHtml;
   document.getElementById('heatmapInfo').textContent = tracked > 0 ? tracked + ' Eintr\u00e4ge in ' + viewYear : 'Noch keine Eintr\u00e4ge';
+
+  // Align section width to grid width
+  requestAnimationFrame(function() {
+    var gridEl = document.getElementById('grid');
+    var section = document.querySelector('.heatmap-section');
+    if (gridEl && section) {
+      section.style.maxWidth = gridEl.offsetWidth + 'px';
+    }
+  });
 }
 
 document.getElementById('prevYear').onclick = function() { viewYear--; renderMap(); };
@@ -1162,6 +1311,16 @@ function showTip(e, key, entry) {
   } else {
     h += '<div class="tip-empty">Kein Eintrag \u2014 klicken</div>';
   }
+  h += '<div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:3px;font-size:10px;color:var(--text-dim)">' +
+    '<span style="margin-right:2px">schlecht</span>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-empty);border:1px solid rgba(128,128,128,0.2)"></div>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-1)"></div>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-2)"></div>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-3)"></div>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-4)"></div>' +
+    '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-5)"></div>' +
+    '<span style="margin-left:2px">gut</span>' +
+  '</div>';
   $tip.innerHTML = h;
   $tip.classList.add('show');
   var r = e.target.getBoundingClientRect();
@@ -1306,6 +1465,7 @@ $overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
 
 // ═══════════════════ EXPORT ═══════════════════
 document.getElementById('csvBtn').onclick = function() {
+  closeSettingsMenu();
   var keys = Object.keys(DATA).sort();
   if (!keys.length) return;
   var csv = 'Datum,Schlaf,Schritte,Aktivitaet,Morgengefuehl,Meditation,Notiz,Sessions\n';
@@ -1317,11 +1477,11 @@ document.getElementById('csvBtn').onclick = function() {
   dl(csv, 'dailyflow_' + today() + '.csv', 'text/csv');
 };
 
-document.getElementById('jsonBtn').onclick = function() { dl(JSON.stringify(DATA, null, 2), 'dailyflow_backup_' + today() + '.json', 'application/json'); };
+document.getElementById('jsonBtn').onclick = function() { closeSettingsMenu(); dl(JSON.stringify(DATA, null, 2), 'dailyflow_backup_' + today() + '.json', 'application/json'); };
 
 function dl(c, n, t) { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], {type:t})); a.download = n; a.click(); }
 
-document.getElementById('importBtn').onclick = function() { document.getElementById('importFile').click(); };
+document.getElementById('importBtn').onclick = function() { closeSettingsMenu(); document.getElementById('importFile').click(); };
 document.getElementById('importFile').onchange = async function(e) {
   var file = e.target.files[0]; if (!file) return;
   try { var imp = JSON.parse(await file.text()); Object.assign(DATA, imp); await saveAllData(); renderMap(); }
@@ -1524,6 +1684,7 @@ $remindersOverlay.onclick = function(e) {
 var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
 
 (async function() {
+  loadBreakConfig();
   loadTrackers();
   await loadData();
   renderMap();
