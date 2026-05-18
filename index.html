@@ -1,119 +1,51 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZENITH Work & Wellbeing</title>
+<title>AURORA Work & Wellbeing</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@200;300;400;500;600&display=swap');
 
   :root {
     /* ── Backgrounds ── */
-    --bg: #0a0e14;
-    --surface: #141a22;
-    --surface-hover: #1a2230;
-    --border: #1f2730;
+    --bg: #0e0c0a;
+    --surface: #1a1310;
+    --surface-hover: #231810;
+    --border: #2a1c0e;
     /* ── Text ── */
-    --text: #e8ecf1;
-    --text-muted: #647c86;
-    --text-dim: #3a4550;
+    --text: #c8a878;
+    --text-muted: #7a5538;
+    --text-dim: #4a3020;
     /* ── Heatmap ── */
-    --mood-empty: #1f2730;
-    --mood-1: #8b3a3a;
-    --mood-2: #b8743a;
-    --mood-3: #c9a94a;
-    --mood-4: #7ba05b;
-    --mood-5: #a8df8e;
+    --mood-empty: rgba(46,46,46,0.45);
+    --mood-1: #4a3728;
+    --mood-2: #8b3a2a;
+    --mood-3: #d4522a;
+    --mood-4: #f0972a;
+    --mood-5: #fad836;
     /* ── Accent ── */
-    --accent: #4a7cff;
-    --accent-light: #7aa0ff;
+    --accent: #f0972a;
+    --accent-light: #fad836;
     /* ── Semantic ── */
-    --warn: #c9a94a;
-    --healthy: #4a7cff;
-    --deepwork: #a371f7;
-    --stop-color: #c0544e;
+    --warn: #fad836;
+    --healthy: #f0972a;
+    --deepwork: #d4522a;
+    --stop-color: #8b3a2a;
+    /* ── Break accent (cool teal — deliberate contrast to warm work palette) ── */
+    --break-accent: #6b7035;
+    --break-accent-dim: rgba(107, 112, 53, 0.20);
+    --break-backdrop: rgba(8, 10, 4, 0.90);
     /* ── Trend ── */
-    --trend-up: #7ba05b;
-    --trend-down: #b8743a;
+    --trend-up: #f0972a;
+    --trend-down: #8b3a2a;
   }
 
-  /* ═══════════ LIGHT MODE ═══════════ */
-  body.light {
-    --bg: #eef0f6;
-    --surface: #ffffff;
-    --surface-hover: #e2e6ee;
-    --border: #cdd3df;
-    --text: #0e1420;
-    --text-muted: #647c86;
-    --text-dim: #9aaab4;
-    --mood-empty: #dce0e8;
-    --accent: #4a7cff;
-    --accent-light: #7aa0ff;
-    --warn: #9a7a00;
-    --healthy: #4a7cff;
-    --deepwork: #8250df;
-    --stop-color: #c0544e;
-    --trend-up: #5a8a45;
-    --trend-down: #a0642a;
-  }
-
-  body.light .cell { border-color: rgba(0,0,0,0.06); }
-  body.light .cell.future:hover { border-color: rgba(0,0,0,0.06); }
-
-  /* ═══════════ THEME TOGGLE SWITCH ═══════════ */
-  .theme-toggle-item {
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    padding: 9px 10px;
-    text-align: left;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .theme-toggle-item:hover { background: var(--surface-hover); color: var(--text); }
-
-  .toggle-switch {
-    position: relative;
-    width: 32px;
-    height: 18px;
-    flex-shrink: 0;
-    pointer-events: none;
-  }
-  .toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
-  .toggle-slider {
-    position: absolute;
-    inset: 0;
-    background: var(--border);
-    border-radius: 9px;
-    transition: background 0.2s;
-  }
-  .toggle-slider::before {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    left: 3px;
-    top: 3px;
-    background: var(--text-muted);
-    border-radius: 50%;
-    transition: transform 0.2s, background 0.2s;
-  }
-  .toggle-switch input:checked + .toggle-slider { background: var(--accent); }
-  .toggle-switch input:checked + .toggle-slider::before {
-    transform: translateX(14px);
-    background: #ffffff;
-  }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
+    background: #0e0c0a;
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
@@ -125,7 +57,7 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  .app { max-width: 1120px; margin: 0 auto; padding: 28px 24px; display: flex; flex-direction: column; gap: 28px; }
+  .app { max-width: 1120px; margin: 0 auto; padding: 16px 24px 28px; display: flex; flex-direction: column; gap: 28px; }
 
   .support-wrap {
     position: fixed;
@@ -217,33 +149,52 @@
   }
 
   /* ═══════════ MODE TOGGLE ═══════════ */
-  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: 38px; }
   .timer-status { display: none; }
   .top-brand {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    position: relative;
   }
-  .top-brand img { width: 52px; height: 52px; object-fit: contain; }
+  /* Glow-Kegel aus der Logo-Spitze */
+  .top-brand::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 100px;
+    background: radial-gradient(ellipse at 50% 20%, rgba(250,216,54,0.14) 0%, rgba(240,151,42,0.06) 40%, transparent 72%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(4px);
+  }
+  .top-brand img { width: 56px; height: 56px; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 0 8px rgba(250,216,54,0.2)); }
   .top-brand-wordmark {
-    font-family: 'Space Mono', 'JetBrains Mono', monospace;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.30em;
-    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    color: #fad836;
     text-transform: uppercase;
     line-height: 1;
-    margin-top: 2px;
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
   }
   .top-brand-sub {
-    font-family: 'Space Mono', 'JetBrains Mono', monospace;
+    font-family: 'DM Sans', sans-serif;
     font-size: 8px;
-    font-weight: 400;
-    letter-spacing: 0.22em;
+    font-weight: 200;
+    letter-spacing: 0.28em;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin-top: -2px;
+    margin-top: 1px;
+    position: relative;
+    z-index: 1;
   }
 
   .mode-toggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
@@ -254,38 +205,304 @@
     letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
   }
   .mode-btn:hover { color: var(--text-muted); }
-  .mode-btn.active-healthy { background: rgba(74,124,255,0.12); color: var(--accent); }
-  .mode-btn.active-deep { background: rgba(163,113,247,0.12); color: var(--deepwork); }
+  .mode-btn.active-healthy { background: rgba(240,151,42,0.12); color: var(--accent); }
+  .mode-btn.active-deep { background: rgba(212,82,42,0.12); color: var(--deepwork); }
   .mode-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  /* Mode-button tooltip */
+  .mode-btn { position: relative; }
+  .mode-btn[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 10px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    white-space: pre-line;
+    padding: 6px 10px;
+    border-radius: 7px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.12s ease 0s, transform 0.12s ease 0s;
+    transform: translateX(-50%) translateY(-4px);
+    z-index: 100;
+    line-height: 1.5;
+    text-align: center;
+  }
+  .mode-btn[data-tooltip]:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.18s ease 0.75s, transform 0.18s ease 0.75s;
+  }
 
   /* ═══════════ TIMER ═══════════ */
   .timer-status { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; letter-spacing: 1.5px; text-transform: uppercase; }
 
   .timer-display {
     font-family: 'JetBrains Mono', monospace; font-size: 88px; font-weight: 300;
-    letter-spacing: -2px; color: var(--text); transition: color 0.8s; line-height: 1;
+    letter-spacing: -2px; color: var(--text); line-height: 1;
     min-width: 400px; text-align: center;
+    transform-origin: center center;
+    transition: color 0.8s ease, transform 0.65s cubic-bezier(0.34, 1.2, 0.64, 1);
   }
   .timer-display.warning { color: var(--warn); animation: pulse 2s ease-in-out infinite; }
-  .timer-display.break-mode { color: var(--healthy); }
+  .timer-display.break-mode { color: var(--break-accent); animation: breathe 4s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+  @keyframes breathe { 0%,100% { opacity:1; } 50% { opacity:0.65; } }
 
-  .timer-controls { display: flex; gap: 14px; align-items: center; justify-content: center; }
+  .timer-controls { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .timer-side-slot { width: 52px; display: flex; justify-content: center; align-items: center; }
+  .timer-side-slot #resetBtn { transform: translateX(-10px); }
+  .timer-center-slot { display: flex; align-items: center; justify-content: center; }
+
+  /* ═══════════ FOCUS MODE ═══════════ */
+  .focus-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 12, 10, 0.86);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  body.timer-focus .focus-backdrop { opacity: 1; }
+
+  .timer-section {
+    position: relative;
+    z-index: 1;
+  }
+  body.timer-focus .timer-section {
+    z-index: 35;
+  }
+  body.timer-focus .timer-display {
+    transform: scale(1.22);
+  }
+  body.timer-focus .timer-display.warning {
+    transform: scale(1.22);
+  }
+
+  /* Brand fades back subtly */
+  .top-brand {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  body.timer-focus .top-brand {
+    opacity: 0.28;
+    transform: scale(0.92) translateY(-4px);
+  }
+
+  /* Mode toggle fades out */
+  .mode-toggle {
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  body.timer-focus .mode-toggle {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
+
+  /* Timer controls stay but subtle glow ring on play btn in focus */
+  body.timer-focus .timer-btn.primary {
+    box-shadow: 0 0 0 3px rgba(240,151,42,0.25), 0 0 24px rgba(240,151,42,0.18);
+  }
+
+  /* Queue badge & meta stay visible */
+  .timer-meta { transition: opacity 0.4s ease; }
+  body.timer-focus .timer-meta { opacity: 0.65; }
+
+  /* ═══════════ BREAK MODE ═══════════ */
+  body.on-break .focus-backdrop {
+    opacity: 1;
+    background: var(--break-backdrop);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  body.on-break .timer-section {
+    z-index: 35;
+  }
+  body.on-break .timer-display {
+    transform: scale(1.18);
+    text-shadow: 0 0 40px rgba(107, 112, 53, 0.45), 0 0 80px rgba(107, 112, 53, 0.20);
+  }
+  body.on-break .top-brand {
+    opacity: 0.18;
+    transform: scale(0.9) translateY(-4px);
+  }
+  body.on-break .mode-toggle {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
+  /* Break / Focus / Next labels */
+  .break-label, .focus-label, .next-label {
+    display: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .break-label { color: var(--break-accent); }
+  .focus-label { color: var(--accent); }
+  .next-label  { color: var(--text-muted); }
+
+  body.on-break .break-label  { display: block; opacity: 0.7; }
+  body.post-break .next-label { display: block; opacity: 0.7; }
+
+  @keyframes labelSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 0.7; transform: translateY(0); }
+  }
+  body.timer-focus .focus-label {
+    display: block;
+    opacity: 0.7;
+    animation: labelSlideDown 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Post-break: reuse blur backdrop, accent back to focus color */
+  body.post-break .focus-backdrop {
+    opacity: 1;
+    background: rgba(14, 12, 10, 0.72);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  body.post-break .timer-section  { z-index: 35; }
+  body.post-break .top-brand      { opacity: 0.18; transform: scale(0.9) translateY(-4px); }
+  body.post-break .mode-toggle    { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+  body.post-break .timer-display  { transform: scale(1.18); }
+  body.post-break .timer-btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(240,151,42,0.25), 0 0 24px rgba(240,151,42,0.18);
+    transition: background 0.5s ease, border-color 0.5s ease;
+  }
+
+  /* Break play button — teal */
+  body.on-break .timer-btn.primary {
+    background: var(--break-accent);
+    border-color: var(--break-accent);
+    color: #0e0c0a;
+    box-shadow: 0 0 0 3px rgba(107,112,53,0.32), 0 0 28px rgba(107,112,53,0.24);
+    transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+  }
+  body.on-break .timer-btn.primary:hover { opacity: 0.88; }
+  /* Status label in break teal */
+  body.on-break .timer-status {
+    color: var(--break-accent) !important;
+    opacity: 0.85;
+  }
+  /* Skip hint under timer */
+  body.on-break .timer-meta { opacity: 0.5; }
+
+  /* Break reminder icons */
+  .break-reminders {
+    display: flex;
+    gap: 52px;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+  }
+  body.on-break .break-reminders {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .break-reminder-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    color: var(--break-accent);
+    opacity: 0.55;
+    position: relative;
+    cursor: default;
+    transition: opacity 0.2s ease;
+    width: 62px;
+  }
+  .break-reminder-item:hover { opacity: 0.9; }
+  .break-reminder-item svg { flex-shrink: 0; }
+  .break-reminder-item span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+
+  /* Tooltip card */
+  .break-tip {
+    position: absolute;
+    bottom: calc(100% + 16px);
+    width: 268px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px 16px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    text-align: left;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.08s ease 0s, transform 0.08s ease 0s;
+    z-index: 300;
+  }
+  .break-tip--left   { left: 0; }
+  .break-tip--center { left: 50%; transform: translateX(-50%) translateY(8px); }
+  .break-tip--right  { right: 0; }
+
+  .break-reminder-item:hover .break-tip {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.22s ease 0.3s, transform 0.22s cubic-bezier(0.22,1,0.36,1) 0.3s;
+  }
+  .break-reminder-item:hover .break-tip--center {
+    transform: translateX(-50%) translateY(0);
+    transition: opacity 0.22s ease 0.3s, transform 0.22s cubic-bezier(0.22,1,0.36,1) 0.3s;
+  }
+
+  .break-tip-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--break-accent);
+    margin-bottom: 8px;
+  }
+  .break-tip-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
 
   .timer-btn {
     background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
-    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    width: 44px; height: 44px; border-radius: 10px; cursor: pointer;
     display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 16px;
   }
   .timer-btn:hover { background: var(--surface-hover); color: var(--text); border-color: var(--text-dim); }
 
-  .timer-btn.primary { width: 56px; height: 56px; background: var(--accent); border-color: var(--accent); color: var(--bg); font-size: 20px; }
+  .timer-btn.primary { width: 56px; height: 56px; border-radius: 14px; background: var(--accent); border-color: var(--accent); color: var(--bg); font-size: 20px; }
   .timer-btn.primary:hover { opacity: 0.85; color: var(--bg); }
   .timer-btn.primary.break-btn { background: var(--healthy); border-color: var(--healthy); }
   .timer-btn.primary.break-btn:hover { opacity: 0.85; color: var(--bg); }
 
-  .timer-btn.stop-btn { background: rgba(192,84,78,0.1); border-color: var(--stop-color); color: var(--stop-color); font-size: 14px; }
-  .timer-btn.stop-btn:hover { background: rgba(192,84,78,0.2); color: var(--stop-color); border-color: var(--stop-color); }
+  .timer-btn.stop-btn { background: rgba(139,58,42,0.15); border-color: var(--stop-color); color: var(--stop-color); font-size: 14px; }
+  .timer-btn.stop-btn:hover { background: rgba(139,58,42,0.28); color: var(--stop-color); border-color: var(--stop-color); }
 
   .timer-meta { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
   .queue-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--deepwork); opacity: 0; transition: opacity 0.3s; height: 16px; }
@@ -294,8 +511,8 @@
   /* ═══════════ BANNERS ═══════════ */
   .banner-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
   .banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); pointer-events: auto; animation: bannerIn 0.4s ease; max-width: 420px; }
-  .banner.healthy-style { border-color: var(--accent); box-shadow: 0 0 20px rgba(74,124,255,0.15), 0 12px 40px rgba(0,0,0,0.5); }
-  .banner.queued-style { border-color: var(--deepwork); box-shadow: 0 0 20px rgba(163,113,247,0.15), 0 12px 40px rgba(0,0,0,0.5); }
+  .banner.healthy-style { border-color: var(--accent); box-shadow: 0 0 20px rgba(240,151,42,0.2), 0 12px 40px rgba(0,0,0,0.6); }
+  .banner.queued-style { border-color: var(--deepwork); box-shadow: 0 0 20px rgba(212,82,42,0.2), 0 12px 40px rgba(0,0,0,0.6); }
   .banner-icon { font-size: 20px; flex-shrink: 0; }
   .banner-text { display: flex; flex-direction: column; gap: 2px; }
   .banner-title { font-size: 13px; font-weight: 500; color: var(--text); }
@@ -323,19 +540,18 @@
     grid-auto-columns: 14px;
     gap: 3px;
   }
-  .heatmap-month { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; grid-row: 1; padding-bottom: 4px; min-width: 14px; }
-  .heatmap-day { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; min-width: 28px; }
+  .heatmap-month { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; grid-row: 1; padding-bottom: 4px; min-width: 14px; }
+  .heatmap-day { font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; min-width: 28px; }
   .cell { width: 14px; height: 14px; border-radius: 2px; background: var(--mood-empty); border: 1px solid rgba(255,255,255,0.03); cursor: pointer; transition: all 0.12s; position: relative; }
   .cell:hover { border-color: var(--text-dim); transform: scale(1.4); z-index: 2; }
   .cell.future { opacity: 0.25; cursor: default; }
   .cell.future:hover { transform: none; border-color: rgba(255,255,255,0.03); }
   .cell.today { border-color: #ffffff; box-shadow: 0 0 0 1px #ffffff; }
-  body.light .cell.today { border-color: #000000; box-shadow: 0 0 0 1px #000000; }
   .cell.m1 { background: var(--mood-1); }
   .cell.m2 { background: var(--mood-2); }
   .cell.m3 { background: var(--mood-3); }
   .cell.m4 { background: var(--mood-4); }
-  .cell.m5 { background: var(--mood-5); }
+  .cell.m5 { background: var(--mood-5); box-shadow: 0 0 5px #fad83699; }
   .legend { display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--text-dim); }
   .legend-box { width: 11px; height: 11px; border-radius: 2px; }
   .legend span { margin: 0 4px; }
@@ -344,17 +560,13 @@
 
   .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 8px; margin-top: 14px; width: 100%; padding-left: 35px; box-sizing: border-box; }
   .stat-tile {
-    background: linear-gradient(135deg, rgba(74,124,255,0.10) 0%, rgba(20,26,34,0.95) 60%, rgba(10,14,20,0.98) 100%);
+    background: linear-gradient(135deg, rgba(240,151,42,0.10) 0%, rgba(26,19,16,0.95) 60%, rgba(14,12,10,0.98) 100%);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 12px 14px;
     display: flex;
     flex-direction: column;
     gap: 3px;
-  }
-  body.light .stat-tile {
-    background: linear-gradient(135deg, rgba(74,124,255,0.07) 0%, rgba(255,255,255,0.95) 60%, rgba(238,240,246,0.98) 100%);
-    border: 1px solid var(--border);
   }
   .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: var(--text); line-height: 1.1; }
   .stat-label { font-size: 9px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
@@ -460,42 +672,29 @@
   }
   .reminder-del:hover { color: var(--stop-color); background: rgba(244,112,103,0.08); }
 
-  /* ═══════════ VERSION BADGE ═══════════ */
-  .version-badge {
-    position: fixed;
-    bottom: 14px;
-    right: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dim);
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-    padding: 4px 9px;
-    cursor: pointer;
-    transition: all 0.2s;
-    z-index: 0;
-    text-decoration: none;
-    opacity: 0.35;
-  }
-  .version-badge:hover { opacity: 1; color: var(--accent); }
 
   @media (max-width: 640px) {
     .timer-display { font-size: 56px; min-width: 280px; }
     .app { padding: 32px 16px; gap: 36px; }
     .mode-btn { padding: 6px 10px; font-size: 10px; }
   }
+
+  .stat-chart-wrap { margin: 10px 0 18px; }
+  .stat-chart-label { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .stat-chart-avg { color: var(--accent); }
+  .stat-chart-svg { width: 100%; height: 48px; display: block; overflow: visible; }
+  .stat-section-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 8px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
 </style>
 </head>
 <body>
 
+<div class="focus-backdrop" id="focusBackdrop"></div>
 <div class="banner-container" id="bannerContainer"></div>
-<button class="version-badge" id="versionBadge">v1.0.0</button>
 <div class="support-wrap">
   <button
     class="support-btn"
     id="supportToggle"
-    aria-label="Support öffnen"
+    aria-label="Open support"
     title="Support"
   >&#9825;</button>
 </div>
@@ -503,65 +702,99 @@
   <button
     class="settings-btn"
     id="settingsToggle"
-    aria-label="Einstellungen öffnen"
+    aria-label="Open settings"
     aria-haspopup="true"
     aria-expanded="false"
-    title="Einstellungen"
+    title="Settings"
   >⚙</button>
-  <div class="settings-menu" id="settingsMenu" role="menu" aria-label="Einstellungsmenü">
-    <button class="settings-item" role="menuitem" type="button" id="remindersBtn">Erinnerungen</button>
-    <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Tracker</button>
-    <button class="settings-item" role="menuitem" type="button" id="pauseSettingsBtn">Pausenregel</button>
-    <label class="theme-toggle-item" role="menuitem" id="themeToggleItem">
-      <span>Lightmode</span>
-      <div class="toggle-switch">
-        <input type="checkbox" id="themeToggle" aria-label="Light Mode aktivieren">
-        <span class="toggle-slider"></span>
-      </div>
-    </label>
+  <div class="settings-menu" id="settingsMenu" role="menu" aria-label="Settings menu">
+    <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Trackers</button>
+    <button class="settings-item" role="menuitem" type="button" id="statistikBtn">Statistics</button>
+    <button class="settings-item" role="menuitem" type="button" id="pauseSettingsBtn">Timer Settings</button>
     <div class="settings-sep"></div>
-    <button class="settings-item" role="menuitem" type="button" id="csvBtn">&#8595; CSV exportieren</button>
-    <button class="settings-item" role="menuitem" type="button" id="jsonBtn">&#8595; Backup erstellen</button>
-    <button class="settings-item" role="menuitem" type="button" id="importBtn">&#8593; Backup importieren</button>
+    <button class="settings-item" role="menuitem" type="button" id="csvBtn">&#8595; Export CSV</button>
+    <button class="settings-item" role="menuitem" type="button" id="jsonBtn">&#8595; Create Backup</button>
+    <button class="settings-item" role="menuitem" type="button" id="importBtn">&#8593; Import Backup</button>
     <div class="settings-sep"></div>
-    <button class="settings-item" role="menuitem" type="button">Hilfe</button>
-    <button class="settings-item" role="menuitem" type="button">Über ZENITH</button>
-    <button class="settings-item" role="menuitem" type="button">Impressum</button>
+    <button class="settings-item" role="menuitem" type="button" id="aboutBtn">About Aurora</button>
   </div>
 </div>
 
 <div class="app">
   <section class="timer-section">
-    <div class="top-brand" aria-label="ZENITH Logo">
-      <img src="assets/zenith-logo-mark.svg" alt="ZENITH Logo">
-      <div class="top-brand-wordmark">ZENITH</div>
-      <div class="top-brand-sub">Work &amp; Wellbeing</div>
-    </div>
     <div class="mode-toggle">
-      <button class="mode-btn active-healthy" id="modeHealthy"><span class="mode-dot"></span> Healthy</button>
-      <button class="mode-btn" id="modeDeep"><span class="mode-dot"></span> Deep Work</button>
+      <button class="mode-btn active-healthy" id="modeHealthy"><span class="mode-dot"></span> Rhythm</button>
+      <button class="mode-btn" id="modeDeep"><span class="mode-dot"></span> Flow</button>
     </div>
     <div class="timer-status" id="timerStatus">ready</div>
-    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    <div class="break-label" id="breakLabel">BREAK</div>
+    <div class="focus-label" id="focusLabel">PRODUCTIVITY</div>
+    <div class="next-label" id="nextLabel">NEXT SESSION</div>
+    <div class="timer-display" id="timerDisplay">25:00</div>
     <div class="timer-controls">
-      <button class="timer-btn" id="resetBtn" title="Reset" style="display:none">&#8634;</button>
-      <button class="timer-btn primary" id="playBtn" title="Start / Pause">&#9654;</button>
-      <button class="timer-btn stop-btn" id="stopBtn" title="Session beenden" style="display:none">&#9632;</button>
+      <div class="timer-side-slot">
+        <button class="timer-btn" id="resetBtn" title="Reset" style="display:none">&#8634;</button>
+      </div>
+      <div class="timer-center-slot">
+        <button class="timer-btn primary" id="playBtn" title="Play"><svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="display:block"><polygon points="6,3 18,10 6,17"/></svg></button>
+        <button class="timer-btn primary" id="pauseBtn" title="Pause" style="display:none">
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="1" width="5" height="20" rx="1.5"/>
+            <rect x="11" y="1" width="5" height="20" rx="1.5"/>
+          </svg>
+        </button>
+      </div>
+      <div class="timer-side-slot"></div>
     </div>
     <div class="queue-badge" id="queueBadge"></div>
     <div class="timer-meta" id="timerMeta"></div>
+    <div class="break-reminders">
+      <div class="break-reminder-item">
+        <div class="break-tip break-tip--left">
+          <div class="break-tip-title">MOVE</div>
+          <div class="break-tip-body">Research suggests taking a brief active break from sitting every 30 to 60 minutes. Moving regularly is essential for maintaining an active metabolism, boosting blood flow, and easing pressure on the spine.</div>
+        </div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="4.5" r="1.5"/>
+          <path d="M9 9 L15 9 L14 14 L17 19"/>
+          <path d="M10 14 L7 19"/>
+          <path d="M10 14 L13 14"/>
+        </svg>
+        <span>MOVE</span>
+      </div>
+      <div class="break-reminder-item">
+        <div class="break-tip break-tip--center">
+          <div class="break-tip-title">DRINK</div>
+          <div class="break-tip-body">Scientific guidelines recommend drinking about one glass of water every hour during your workday, aiming for a total of 2 to 3 liters daily. Consistent hydration is essential for maintaining focus, preventing fatigue, and supporting your metabolism while sitting at a desk. Keeping a water bottle in plain sight serves as an excellent visual reminder to take regular sips.</div>
+        </div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 3 L17 3 L15.5 19 C15.5 20 14.5 21 13.5 21 L10.5 21 C9.5 21 8.5 20 8.5 19Z"/>
+          <path d="M7 8 L17 8"/>
+          <path d="M17 5 C17 5 20 5.5 20 8 C20 10.5 17 11 17 11"/>
+        </svg>
+        <span>DRINK</span>
+      </div>
+      <div class="break-reminder-item">
+        <div class="break-tip break-tip--right">
+          <div class="break-tip-title">BREATHE</div>
+          <div class="break-tip-body">Practice the "perfect breath" by inhaling and exhaling for 5.5 seconds each through your nose, with your tongue resting gently on the roof of your mouth. Cultivating this mindful awareness of your breath, especially at the end of a break, is highly recommended to center your focus. It acts as a powerful mental reset, ensuring you return to your next productive work phase fully energized and ready.</div>
+        </div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 C8 3 5 6 5 10 C5 15 9 18 12 21 C15 18 19 15 19 10 C19 6 16 3 12 3Z"/>
+          <path d="M12 8 L12 14 M9.5 11 C9.5 11 10.5 13 12 13 C13.5 13 14.5 11 14.5 11"/>
+        </svg>
+        <span>BREATHE</span>
+      </div>
+    </div>
   </section>
 
   <section class="heatmap-section">
-    <div class="heatmap-header">
-      <span class="heatmap-info" id="heatmapInfo"></span>
-      <div class="year-nav">
-        <button id="prevYear">&#9666;</button>
-        <span class="year-label" id="yearLabel"></span>
-        <button id="nextYear">&#9656;</button>
-      </div>
-    </div>
     <div class="heatmap-scroll"><div class="heatmap-grid" id="grid"></div></div>
+    <div class="year-nav" style="justify-content:center;margin-top:10px">
+      <button id="prevYear">&#9666;</button>
+      <span class="year-label" id="yearLabel"></span>
+      <button id="nextYear">&#9656;</button>
+    </div>
     <div class="summary-grid" id="summary"></div>
     <input type="file" id="importFile" accept=".json" style="display:none">
     <div class="data-path" id="dataPath"></div>
@@ -579,12 +812,9 @@
 <div class="overlay" id="supportOverlay">
   <div class="modal" style="position:relative">
     <button id="supportCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.15s,background 0.15s;line-height:1" onmouseover="this.style.color='var(--text)';this.style.background='var(--surface-hover)'" onmouseout="this.style.color='var(--text-dim)';this.style.background='none'">✕</button>
-    <h2>Danke fürs Nutzen ☕</h2>
-    <div class="modal-sub">ZENITH Work & Wellbeing</div>
-    <div style="font-size:13px;color:var(--text-muted);line-height:1.7">
-      ZENITH ist kostenlos und bleibt es auch — keine Werbung, kein Abo, keine Cloud.<br><br>
-      Wenn dir die App etwas wert ist und du mich unterstützen möchtest, freue ich mich sehr über einen kleinen Kaffee.
-    </div>
+    <h2 id="i18n-support-title">Thanks for using it ☕</h2>
+    <div class="modal-sub">AURORA Work & Wellbeing</div>
+    <div id="i18n-support-text" style="font-size:13px;color:var(--text-muted);line-height:1.7">AURORA is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you'd like to support me, I'd love a small coffee.</div>
     <div style="margin-top:20px">
       <a
         href="#"
@@ -592,7 +822,7 @@
         style="display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--bg);padding:10px 20px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;transition:opacity 0.2s"
         onmouseover="this.style.opacity='0.85'"
         onmouseout="this.style.opacity='1'"
-      >☕ Einen Kaffee spendieren</a>
+      ><span id="i18n-support-btn">☕ Buy me a coffee</span></a>
     </div>
   </div>
 </div>
@@ -601,47 +831,30 @@
 <div class="overlay" id="breakOverlay">
   <div class="modal" style="max-width:400px;position:relative">
     <button id="breakCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:color 0.15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">✕</button>
-    <h2>Pausenregel</h2>
-    <div class="modal-sub">Wie lange soll die Pause dauern?</div>
+    <h2>Timer &amp; Break Rules</h2>
+    <div class="modal-sub">Pomodoro durations &amp; settings</div>
+    <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">● Rhythm</div>
     <div class="field">
-      <label>Modus</label>
-      <div class="mode-toggle" style="margin-top:8px">
-        <button class="mode-btn" id="breakModeAuto">Automatisch</button>
-        <button class="mode-btn" id="breakModeFixed">Fixe Dauer</button>
-      </div>
+      <label>Focus Time <span style="color:var(--text-dim)">(minutes)</span></label>
+      <input type="number" class="input" id="focusMinsInput" min="1" max="120" value="25" style="width:80px">
     </div>
-    <div class="field" id="breakAutoField">
-      <label>Prozentsatz der Arbeitszeit</label>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
-        <input type="number" class="input" id="breakPercent" min="5" max="100" style="width:72px;text-align:center">
-        <span style="color:var(--text-muted);font-size:13px">%</span>
-        <span id="breakAutoHint" style="color:var(--text-dim);font-size:11px;font-family:'JetBrains Mono',monospace"></span>
-      </div>
+    <div class="field">
+      <label>Break Time <span style="color:var(--text-dim)">(minutes)</span></label>
+      <input type="number" class="input" id="breakMinsInput" min="1" max="60" value="5" style="width:80px">
     </div>
-    <div class="field" id="breakFixedField">
-      <label>Pausendauer</label>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
-        <input type="number" class="input" id="breakMins" min="1" max="120" style="width:72px;text-align:center">
-        <span style="color:var(--text-muted);font-size:13px">Minuten</span>
-      </div>
+    <div class="settings-sep" style="margin:16px 0 12px"></div>
+    <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">● Flow</div>
+    <div class="field">
+      <label>Focus Time <span style="color:var(--text-dim)">(minutes)</span></label>
+      <input type="number" class="input" id="flowFocusMinsInput" min="1" max="240" value="60" style="width:80px">
+    </div>
+    <div class="field">
+      <label>Break Time <span style="color:var(--text-dim)">(minutes)</span></label>
+      <input type="number" class="input" id="flowBreakMinsInput" min="1" max="60" value="10" style="width:80px">
     </div>
     <div class="modal-btns">
-      <button class="btn btn-ghost" id="breakCancelBtn">Abbrechen</button>
-      <button class="btn btn-fill" id="breakSaveBtn">Speichern</button>
-    </div>
-  </div>
-</div>
-
-<!-- REMINDERS MODAL -->
-<div class="overlay" id="remindersOverlay">
-  <div class="modal" style="max-width:500px">
-    <h2>Erinnerungen</h2>
-    <div class="modal-sub">Wiederkehrende Benachrichtigungen</div>
-    <div id="remindersList"></div>
-    <button class="action-btn" id="addReminderBtn" style="margin-top:4px;margin-bottom:8px">+ Neue Erinnerung</button>
-    <div class="modal-btns">
-      <button class="btn btn-ghost" id="remindersCancelBtn">Abbrechen</button>
-      <button class="btn btn-fill" id="remindersSaveBtn">Speichern</button>
+      <button class="btn btn-ghost" id="breakCancelBtn"><span id="i18n-break-cancel">Cancel</span></button>
+      <button class="btn btn-fill" id="breakSaveBtn"><span id="i18n-break-save">Save</span></button>
     </div>
   </div>
 </div>
@@ -649,30 +862,25 @@
 <!-- TRACKER MODAL -->
 <div class="overlay" id="trackerOverlay">
   <div class="modal" style="max-width:500px">
-    <h2>Tracker</h2>
-    <div class="modal-sub">Kategorien im Check-in & Zusammenfassung</div>
+    <h2>Trackers</h2>
+    <div class="modal-sub">Categories in Check-in &amp; Statistics</div>
     <div id="trackerList"></div>
-    <button class="action-btn" id="addTrackerBtn" style="margin-top:4px;margin-bottom:8px">+ Neue Kategorie</button>
+    <button class="action-btn" id="addTrackerBtn" style="margin-top:4px;margin-bottom:8px">+ New Category</button>
     <div class="modal-btns">
-      <button class="btn btn-ghost" id="trackerCancelBtn">Abbrechen</button>
-      <button class="btn btn-fill" id="trackerSaveBtn">Speichern</button>
+      <button class="btn btn-ghost" id="trackerCancelBtn">Cancel</button>
+      <button class="btn btn-fill" id="trackerSaveBtn">Save</button>
     </div>
   </div>
 </div>
 
-<!-- TAG MODAL -->
-<div class="overlay" id="tagOverlay">
-  <div class="modal">
-    <h2>Session beenden</h2>
-    <div class="tag-duration" id="tagDuration"></div>
-    <div class="modal-sub">Woran hast du gearbeitet?</div>
-    <div class="tag-choices" id="tagChoices"></div>
-    <div style="margin-top:8px">
-      <input class="input" id="customTagInput" placeholder="Oder eigenes Tag eingeben..." style="font-size:12px">
-    </div>
-    <div class="modal-btns">
-      <button class="btn btn-ghost" id="tagSkip">Ohne Tag</button>
-      <button class="btn btn-fill" id="tagSave">Speichern</button>
+<!-- STATISTIK MODAL -->
+<div class="overlay" id="statistikOverlay">
+  <div class="modal" style="max-width:620px">
+    <h2>Statistics</h2>
+    <div class="modal-sub">History &amp; Averages</div>
+    <div id="statistikContent"></div>
+    <div class="modal-btns" style="margin-top:16px">
+      <button class="btn btn-ghost" id="statistikCloseBtn">Close</button>
     </div>
   </div>
 </div>
@@ -680,7 +888,7 @@
 <script>
 // ═══════════════════ DATA ═══════════════════
 var DATA = {};
-var TAGS = ['Coden', 'Recherche', 'Orga', 'Meeting', 'Schreiben', 'Lernen', 'Design', 'E-Mails'];
+var TAGS; // set from S('defaultTags') at use
 
 async function loadData() {
   if (window.api) { DATA = await window.api.loadData(); }
@@ -695,6 +903,7 @@ async function saveAllData() {
 
 function dk(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today() { return dk(new Date()); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ═══════════════════ MODE ═══════════════════
 var mode = 'healthy';
@@ -707,21 +916,182 @@ var $settingsMenu = document.getElementById('settingsMenu');
 var $supportToggle = document.getElementById('supportToggle');
 var $supportOverlay = document.getElementById('supportOverlay');
 
-// ═══════════════════ THEME ═══════════════════
-var $themeToggle = document.getElementById('themeToggle');
-
-function applyTheme(isLight) {
-  document.body.classList.toggle('light', isLight);
-  $themeToggle.checked = isLight;
-}
-
-$themeToggle.onchange = function() {
-  var isLight = $themeToggle.checked;
-  applyTheme(isLight);
-  localStorage.setItem('zenith-theme', isLight ? 'light' : 'dark');
+// ═══════════════════ LANGUAGE / i18n ═══════════════════
+var STRINGS = {
+  de: {
+    // Settings
+    reminders: 'Erinnerungen', trackers: 'Tracker', breakRule: 'Pausenregel',
+    exportCsv: '↓ CSV exportieren', exportBackup: '↓ Backup erstellen', importBackup: '↑ Backup importieren',
+    help: 'Hilfe', about: 'Über AURORA', imprint: 'Impressum', langSwitch: 'English',
+    // Timer states
+    ready: 'ready', focus: 'focus', deepFocus: 'deep focus', paused: 'paused',
+    min52Status: '52 min — Pause?',
+    // Reminders / banners
+    min30Title: '30 Minuten', min30Body: '30 Minuten sind vergangen.',
+    stretchTitle: 'Stretch und aufstehen', stretchBody: '52 Minuten Focus — Zeit für Bewegung!',
+    stillActiveTitle: 'Noch aktiv?',
+    breakDoneTitle: 'Pause vorbei', breakDoneBody: 'Bereit für die nächste Session!',
+    // Queue
+    queuedSingle: '1 Erinnerung während Flow', queuedPlural: '{n} Erinnerungen während Flow',
+    missedSingle: '1 verpasste Erinnerung', missedPlural: '{n} verpasste Erinnerungen',
+    reminderQueued: '{n} reminder queued', remindersQueued: '{n} reminders queued',
+    // Break
+    pauseLabel: 'pause',
+    // Session meta
+    sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
+    // Heatmap
+    entries: '{n} Einträge in {y}', noEntries: 'Noch keine Einträge',
+    months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+    days: ['Mo','Di','Mi','Do','Fr','Sa','So'],
+    weekLabel: 'KW {n}',
+    // Context stats
+    statStreak: 'Aktuelle Streak', statStreakDays: '{n} Tage',
+    statBestWeek: 'Beste Woche {y}', statYearAvg: 'Durchschnitt {y}', statTrend: 'Trend vs. Vormonat',
+    // Tooltip
+    trendCalcTitle: 'Trend-Berechnung',
+    trendCalcBody: 'Vergleich: Ø der letzten 7 Tage<br>vs. Ø der 7 Tage davor.<br><br><span class="trend-up">▲</span>&nbsp;Durchschnitt gestiegen<br><span class="trend-down">▼</span>&nbsp;Durchschnitt gesunken<br><span class="trend-flat">▶</span>&nbsp;Keine Änderung / zu wenig Daten',
+    noEntry: 'Kein Eintrag — klicken', bad: 'schlecht', good: 'gut',
+    // Check-in
+    checkinTitle: 'Daily Check-in', moodQuestion: 'Wie fühlst du dich heute insgesamt?',
+    comment: 'Kommentar', commentOptional: '(optional)',
+    commentPlaceholder: 'Optionaler Kommentar...', skip: 'Überspringen', save: 'Speichern', cancel: 'Abbrechen',
+    sessions: 'Sessions',
+    // Tag modal
+    endSession: 'Session beenden', whatWorkedOn: 'Woran hast du gearbeitet?',
+    customTagPlaceholder: 'Oder eigenes Tag eingeben...', withoutTag: 'Ohne Tag',
+    // Tracker defaults
+    trackerDefaults: [
+      { label: 'Aktivität',    question: 'Wie aktiv warst du gestern körperlich?' },
+      { label: 'Meditation',   question: 'Wie sehr hast du gestern auf deine mentale Erholung geachtet?' },
+      { label: 'Schlaf',       question: 'Wie erholsam war dein Schlaf letzte Nacht?' },
+      { label: 'Schritte',     question: 'Wie viele Schritte hast du gestern gemacht?', placeholder: 'z.B. 8500' },
+      { label: 'Morgengefühl', question: 'Wie fühlst du dich heute Morgen?' }
+    ],
+    // Tracker modal
+    trackerModalTitle: 'Tracker', trackerModalSub: 'Kategorien im Check-in & Zusammenfassung',
+    addTracker: '+ Neue Kategorie', typeLabel: 'Typ:', typeScale: 'Skala 1–5', typeNumber: 'Zahl',
+    avgSummary: 'Ø Zusammenfassung', defaultCategoryName: 'Kategorie',
+    // Reminder modal
+    remindersModalTitle: 'Erinnerungen', remindersModalSub: 'Wiederkehrende Benachrichtigungen',
+    addReminder: '+ Neue Erinnerung', reminderTitlePh: 'Titel', reminderBodyPh: 'Nachrichtentext',
+    everyLabel: 'Alle', minutesLabel: 'Minuten', defaultReminderTitle: 'Erinnerung',
+    defaultRemindersList: [
+      { title: 'Bewegungspause', body: 'Gönn deinem Körper zwei Minuten Freiheit. Kurz aufstehen, strecken und die Beine lockern.' },
+      { title: 'Die Perfekte Atmung', body: 'Mund zu, Zunge an den Gaumen. 5,5 Sekunden ein, 5,5 Sekunden aus.' }
+    ],
+    // Break modal
+    breakModalTitle: 'Pausenregel', breakModalSub: 'Wie lange soll die Pause dauern?',
+    breakModeLabel: 'Modus', breakAuto: 'Automatisch', breakFixed: 'Fixe Dauer',
+    breakPercentLabel: 'Prozentsatz der Arbeitszeit', breakFixedLabel: 'Pausendauer',
+    breakMinutesLabel: 'Minuten', breakHint: '(z.B. 52 Min → {n} Min Pause)',
+    // Support modal
+    supportTitle: 'Danke fürs Nutzen ☕', supportSub: 'AURORA Work & Wellbeing',
+    supportText: 'AURORA ist kostenlos und bleibt es auch — keine Werbung, kein Abo, keine Cloud.<br><br>Wenn dir die App etwas wert ist und du mich unterstützen möchtest, freue ich mich sehr über einen kleinen Kaffee.',
+    supportBtn: '☕ Einen Kaffee spendieren',
+    // Misc
+    todayLabel: 'Heute', yesterdayLabel: 'Gestern', daysAgo: 'Vor {n} Tagen',
+    dataPath: 'Daten: {p}', invalidJson: 'Ungültige JSON-Datei.',
+    untagged: 'Untagged',
+    defaultTags: ['Coden','Recherche','Orga','Meeting','Schreiben','Lernen','Design','E-Mails'],
+  },
+  en: {
+    reminders: 'Reminders', trackers: 'Trackers', breakRule: 'Timer Settings',
+    exportCsv: '↓ Export CSV', exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
+    help: 'Help', about: 'About AURORA', imprint: 'Imprint', langSwitch: 'Deutsch',
+    ready: 'ready', focus: 'focus', deepFocus: 'deep focus', paused: 'paused',
+    min52Status: '52 min — break?',
+    min30Title: '30 Minutes', min30Body: '30 minutes have passed.',
+    stretchTitle: 'Stretch & Stand Up', stretchBody: '52 minutes of focus — time to move!',
+    stillActiveTitle: 'Still active?',
+    breakDoneTitle: 'Break over', breakDoneBody: 'Ready for the next session!',
+    queuedSingle: '1 reminder during Flow', queuedPlural: '{n} reminders during Flow',
+    missedSingle: '1 missed reminder', missedPlural: '{n} missed reminders',
+    reminderQueued: '{n} reminder queued', remindersQueued: '{n} reminders queued',
+    pauseLabel: 'break',
+    sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
+    entries: '{n} entries in {y}', noEntries: 'No entries yet',
+    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    days: ['Mo','Tu','We','Th','Fr','Sa','Su'],
+    weekLabel: 'W{n}',
+    statStreak: 'Current Streak', statStreakDays: '{n} days',
+    statBestWeek: 'Best Week {y}', statYearAvg: 'Average {y}', statTrend: 'Trend vs. Last Month',
+    trendCalcTitle: 'Trend Calculation',
+    trendCalcBody: 'Comparison: avg of last 7 days<br>vs. avg of 7 days before.<br><br><span class="trend-up">▲</span>&nbsp;Average increased<br><span class="trend-down">▼</span>&nbsp;Average decreased<br><span class="trend-flat">▶</span>&nbsp;No change / insufficient data',
+    noEntry: 'No entry — click to add', bad: 'bad', good: 'good',
+    checkinTitle: 'Daily Check-in', moodQuestion: 'How do you feel overall today?',
+    comment: 'Comment', commentOptional: '(optional)',
+    commentPlaceholder: 'Optional comment...', skip: 'Skip', save: 'Save', cancel: 'Cancel',
+    sessions: 'Sessions',
+    endSession: 'End Session', whatWorkedOn: 'What did you work on?',
+    customTagPlaceholder: 'Or enter a custom tag...', withoutTag: 'Without Tag',
+    trackerDefaults: [
+      { label: 'Activity',      question: 'How physically active were you yesterday?' },
+      { label: 'Meditation',    question: 'How well did you take care of your mental recovery yesterday?' },
+      { label: 'Sleep',         question: 'How restful was your sleep last night?' },
+      { label: 'Steps',         question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8500' },
+      { label: 'Morning Mood',  question: 'How do you feel this morning?' }
+    ],
+    trackerModalTitle: 'Trackers', trackerModalSub: 'Categories in Check-in & Summary',
+    addTracker: '+ New Category', typeLabel: 'Type:', typeScale: 'Scale 1–5', typeNumber: 'Number',
+    avgSummary: 'Avg Summary', defaultCategoryName: 'Category',
+    remindersModalTitle: 'Reminders', remindersModalSub: 'Recurring Notifications',
+    addReminder: '+ New Reminder', reminderTitlePh: 'Title', reminderBodyPh: 'Message text',
+    everyLabel: 'Every', minutesLabel: 'minutes', defaultReminderTitle: 'Reminder',
+    defaultRemindersList: [
+      { title: 'Movement Break', body: 'Give your body two minutes of freedom. Stand up, stretch, and loosen your legs.' },
+      { title: 'Perfect Breathing', body: 'Mouth closed, tongue to the palate. 5.5 seconds in, 5.5 seconds out.' }
+    ],
+    breakModalTitle: 'Break Rule', breakModalSub: 'How long should the break last?',
+    breakModeLabel: 'Mode', breakAuto: 'Automatic', breakFixed: 'Fixed Duration',
+    breakPercentLabel: 'Percentage of work time', breakFixedLabel: 'Break duration',
+    breakMinutesLabel: 'minutes', breakHint: '(e.g. 52 min → {n} min break)',
+    supportTitle: 'Thanks for using it ☕', supportSub: 'AURORA Work & Wellbeing',
+    supportText: 'AURORA is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you\'d like to support me, I\'d love a small coffee.',
+    supportBtn: '☕ Buy me a coffee',
+    todayLabel: 'Today', yesterdayLabel: 'Yesterday', daysAgo: '{n} days ago',
+    dataPath: 'Data: {p}', invalidJson: 'Invalid JSON file.',
+    untagged: 'Untagged',
+    defaultTags: ['Coding','Research','Orga','Meeting','Writing','Learning','Design','Emails'],
+  }
 };
 
-applyTheme(localStorage.getItem('zenith-theme') === 'light');
+var lang = localStorage.getItem('aurora-lang') || 'en';
+function S(key) { return STRINGS[lang][key]; }
+function Sf(key, vals) {
+  var s = S(key);
+  Object.keys(vals).forEach(function(k) { s = s.replace('{' + k + '}', vals[k]); });
+  return s;
+}
+
+function applyLang() {
+  // Settings menu
+  var ids = {
+    pauseSettingsBtn: 'breakRule',
+    csvBtn: 'exportCsv', jsonBtn: 'exportBackup', importBtn: 'importBackup'
+  };
+  Object.keys(ids).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = S(ids[id]);
+  });
+  // Heatmap months/days re-rendered via renderMap()
+  // Static HTML modals
+  var staticMap = {
+    'i18n-break-mode': 'breakModeLabel', 'i18n-break-auto': 'breakAuto', 'i18n-break-fixed': 'breakFixed',
+    'i18n-break-percent-label': 'breakPercentLabel', 'i18n-break-fixed-label': 'breakFixedLabel',
+    'i18n-break-minutes': 'breakMinutesLabel', 'i18n-break-cancel': 'cancel', 'i18n-break-save': 'save',
+    'i18n-support-title': 'supportTitle', 'i18n-support-sub': 'supportSub',
+    'i18n-support-btn': 'supportBtn'
+  };
+  Object.keys(staticMap).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = S(staticMap[id]);
+  });
+  var supportTextEl = document.getElementById('i18n-support-text');
+  if (supportTextEl) supportTextEl.innerHTML = S('supportText');
+  var customTagInput = document.getElementById('customTagInput');
+  if (customTagInput) customTagInput.placeholder = S('customTagPlaceholder');
+}
+
 
 function closeSettingsMenu() {
   $settingsMenu.classList.remove('open');
@@ -786,8 +1156,18 @@ function setMode(m) {
   mode = m;
   $modeHealthy.className = m === 'healthy' ? 'mode-btn active-healthy' : 'mode-btn';
   $modeDeep.className = m === 'deep' ? 'mode-btn active-deep' : 'mode-btn';
+  // Switch durations to match mode
+  if (m === 'deep') {
+    focusMins = flowFocusMins;
+    breakMins = flowBreakMins;
+  } else {
+    focusMins = rhythmFocusMins;
+    breakMins = rhythmBreakMins;
+  }
+  // Reset timer to new durations if idle
+  if (timerState === 'idle') { resetTimer(); }
   if (timerRunning) {
-    $status.textContent = m === 'deep' ? 'deep focus' : 'focus';
+    $status.textContent = m === 'deep' ? S('deepFocus') : S('focus');
     $status.style.color = m === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
   }
   updateQueueBadge();
@@ -798,7 +1178,8 @@ $modeDeep.onclick = function() { setMode('deep'); };
 
 function updateQueueBadge() {
   if (notificationQueue.length > 0 && mode === 'deep') {
-    $queueBadge.textContent = notificationQueue.length + ' reminder' + (notificationQueue.length > 1 ? 's' : '') + ' queued';
+    var n = notificationQueue.length;
+    $queueBadge.textContent = n === 1 ? Sf('reminderQueued', {n: 1}) : Sf('remindersQueued', {n: n});
     $queueBadge.classList.add('visible');
   } else { $queueBadge.classList.remove('visible'); }
 }
@@ -828,295 +1209,312 @@ function sendReminder(icon, title, body, isHealth) {
 function flushQueue() {
   if (notificationQueue.length === 0) return;
   var c = notificationQueue.length;
-  showBanner('\ud83d\udccb', c + ' Erinnerung' + (c > 1 ? 'en' : '') + ' w\u00e4hrend Deep Work', notificationQueue.map(function(n) { return n.title; }).join(' \u00b7 '), 'queued-style');
-  if (window.api) window.api.showNotification(c + ' verpasste Erinnerung' + (c > 1 ? 'en' : ''), notificationQueue.map(function(n) { return n.body; }).join(' | '));
+  var qTitle = c === 1 ? S('queuedSingle') : Sf('queuedPlural', {n: c});
+  var mTitle = c === 1 ? S('missedSingle') : Sf('missedPlural', {n: c});
+  showBanner('\ud83d\udccb', qTitle, notificationQueue.map(function(n) { return n.title; }).join(' \u00b7 '), 'queued-style');
+  if (window.api) window.api.showNotification(mTitle, notificationQueue.map(function(n) { return n.body; }).join(' | '));
   notificationQueue = [];
   updateQueueBadge();
 }
 
-// ═══════════════════ TIMER ═══════════════════
+// ═══════════════════ POMODORO TIMER ═══════════════════
+// States: idle → focus → break → focus → ...
+// Rhythm (Pomodoro) durations
+var rhythmFocusMins = parseInt(localStorage.getItem('aurora-focus-mins')) || 25;
+var rhythmBreakMins = parseInt(localStorage.getItem('aurora-break-mins')) || 5;
+// Flow durations
+var flowFocusMins = parseInt(localStorage.getItem('aurora-flow-focus-mins')) || 60;
+var flowBreakMins = parseInt(localStorage.getItem('aurora-flow-break-mins')) || 10;
+// Active durations (set by mode)
+var focusMins = rhythmFocusMins;
+var breakMins = rhythmBreakMins;
+
+function updateModeTooltips() {
+  document.getElementById('modeHealthy').setAttribute('data-tooltip',
+    rhythmFocusMins + ' min focus · ' + rhythmBreakMins + ' min break\nClassic Pomodoro rhythm');
+  document.getElementById('modeDeep').setAttribute('data-tooltip',
+    flowFocusMins + ' min focus · ' + flowBreakMins + ' min break\nFor deep, uninterrupted work sessions');
+}
+
+// timerState: 'idle' | 'focus' | 'focus-paused' | 'break'
+var timerState = 'idle';
 var timerRunning = false;
-var timerSecs = 0;
+var timerRemaining = focusMins * 60; // seconds remaining in current phase
 var timerInterval = null;
-var timerStartMs = null;
-var timerAccumulatedMs = 0;
-var sessionCount = 0;
-var totalSessionMins = 0;
-var warned52 = false;
-var warned30 = false;
+var timerEndMs = null; // wall-clock timestamp when current phase ends (if running)
 
 var $time = document.getElementById('timerDisplay');
 var $status = document.getElementById('timerStatus');
 var $play = document.getElementById('playBtn');
-var $stop = document.getElementById('stopBtn');
+var $pauseBtn = document.getElementById('pauseBtn');
+var $resetBtn = document.getElementById('resetBtn');
 var $meta = document.getElementById('timerMeta');
 
-// Always show HH:MM:SS to avoid layout jumps
+// MM:SS format (Pomodoro timers are <=60min)
 function fmt(totalSec) {
-  var hrs = Math.floor(totalSec / 3600);
-  var mins = Math.floor((totalSec % 3600) / 60);
+  var mins = Math.floor(totalSec / 60);
   var sec = totalSec % 60;
-  return String(hrs).padStart(2, '0') + ':' + String(mins).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+  return String(mins).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
 }
 
-function tick() {
-  // Reale verstrichene Zeit anhand von Timestamps berechnen,
-  // damit der Timer auch im Hintergrund korrekt läuft.
-  var baseMs = timerAccumulatedMs;
-  if (timerRunning && timerStartMs !== null) {
-    baseMs += Date.now() - timerStartMs;
-  }
-  var newSecs = Math.floor(baseMs / 1000);
-  if (newSecs === timerSecs) return;
-  timerSecs = newSecs;
-  $time.textContent = fmt(timerSecs);
+function setFocusMode(on) {
+  document.body.classList.toggle('timer-focus', on);
+}
 
-  if (timerSecs >= 30 * 60 && !warned30) {
-    warned30 = true;
-    sendReminder('\u23f1', '30 Minuten', '30 Minuten sind vergangen.', true);
+function updateTimerDisplay() {
+  $time.textContent = fmt(Math.max(0, timerRemaining));
+}
+
+function updateControlVisibility() {
+  var notIdle = timerState !== 'idle' && timerState !== 'post-break';
+  $resetBtn.style.display = notIdle ? '' : 'none';
+
+  if (timerState === 'idle' || timerState === 'focus-paused' || timerState === 'post-break') {
+    $play.style.display = '';
+    $play.title = 'Play';
+    $play.innerHTML = '<svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="display:block"><polygon points="6,3 18,10 6,17"/></svg>';
+    $play.classList.remove('break-btn');
+    $pauseBtn.style.display = 'none';
+  } else if (timerState === 'focus') {
+    $play.style.display = 'none';
+    $pauseBtn.title = 'Pause';
+
+    $pauseBtn.style.display = '';
+  } else if (timerState === 'break-ready' || timerState === 'break-paused') {
+    $play.style.display = '';
+    $play.title = 'Play';
+    $play.innerHTML = '<svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="display:block"><polygon points="6,3 18,10 6,17"/></svg>';
+    $play.classList.add('break-btn');
+    $pauseBtn.style.display = 'none';
+  } else if (timerState === 'break') {
+    $play.style.display = 'none';
+    $play.classList.add('break-btn');
+    $pauseBtn.title = 'Pause';
+    $pauseBtn.style.display = '';
   }
-  if (timerSecs >= 52 * 60 && !warned52) {
-    warned52 = true;
+}
+
+function focusTick() {
+  if (timerState !== 'focus' || timerEndMs === null) return;
+  var newRemaining = Math.max(0, Math.round((timerEndMs - Date.now()) / 1000));
+  if (newRemaining === timerRemaining) return;
+  timerRemaining = newRemaining;
+  updateTimerDisplay();
+
+  if (timerRemaining <= 0) {
+    // Focus phase done -- wait for user to manually start break
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerRunning = false;
+    timerState = 'break-ready';
+    onBreak = true;
+    if (mode === 'deep') flushQueue();
+    setFocusMode(false);
+    $time.classList.remove('warning');
+    $time.classList.add('break-mode');
+    breakRemaining = breakMins * 60;
+    $time.textContent = fmt(breakRemaining);
+    $status.textContent = S('breakReady') || 'Break ready';
+    $status.style.color = 'var(--break-accent)';
+    setTimeout(function() { document.body.classList.add('on-break'); }, 120);
+    updateControlVisibility();
+    var focusDoneMsg = breakMins + ' min break. Start when you\'re ready.';
+    if (window.api) window.api.showNotification('☕ Focus complete!', focusDoneMsg);
+    else if ('Notification' in window && Notification.permission === 'granted') new Notification('☕ Focus complete!', { body: focusDoneMsg });
+    return;
+  }
+
+  // Warning when <=5 minutes left
+  if (timerRemaining <= 5 * 60) {
     $time.classList.add('warning');
-    $status.textContent = '52 min \u2014 pause?';
-    $status.style.color = 'var(--warn)';
-    sendReminder('\ud83d\ude4c', 'Stretch und aufstehen', '52 Minuten Focus \u2014 Zeit f\u00fcr Bewegung!', true);
-  }
-  if (timerSecs > 52 * 60 && timerSecs % (30 * 60) === 0) {
-    sendReminder('\u26a0\ufe0f', 'Noch aktiv?', Math.floor(timerSecs / 60) + ' Min ohne Pause.', true);
-  }
-}
-
-function updateStopBtn() {
-  $stop.style.display = (timerSecs > 0 || timerRunning) ? '' : 'none';
-}
-
-var hasStartedOnce = false;
-
-function timerStart() {
-  if (!hasStartedOnce) {
-    hasStartedOnce = true;
-    document.getElementById('resetBtn').style.display = '';
-  }
-  timerRunning = true;
-  $play.innerHTML = '\u275a\u275a';
-  $status.textContent = mode === 'deep' ? 'deep focus' : 'focus';
-  $status.style.color = mode === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
-  timerStartMs = Date.now();
-  timerInterval = setInterval(tick, 1000);
-  updateStopBtn();
-}
-
-function timerPause() {
-  timerRunning = false;
-  if (timerStartMs !== null) {
-    timerAccumulatedMs += Date.now() - timerStartMs;
-    timerStartMs = null;
-  }
-  $play.innerHTML = '\u25b6';
-  $status.textContent = 'paused';
-  $status.style.color = 'var(--text-dim)';
-  clearInterval(timerInterval);
-  if (mode === 'deep') flushQueue();
-  updateStopBtn();
-}
-
-function timerStop() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  timerStartMs = null;
-  timerAccumulatedMs = 0;
-  if (mode === 'deep') flushQueue();
-  if (timerSecs > 60) {
-    showTagPopup(timerSecs);
   } else {
-    timerReset();
+    $time.classList.remove('warning');
   }
 }
 
-function timerReset() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  timerStartMs = null;
-  timerAccumulatedMs = 0;
-  timerSecs = 0;
-  warned52 = false;
-  warned30 = false;
+function startFocus() {
+  // Called when play is pressed in idle or focus-paused state
+  timerState = 'focus';
+  timerRunning = true;
+  timerEndMs = Date.now() + timerRemaining * 1000;
+  timerInterval = setInterval(focusTick, 500);
+  $status.textContent = mode === 'deep' ? S('deepFocus') : S('focus');
+  $status.style.color = mode === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
   $time.classList.remove('warning');
-  $time.textContent = '00:00:00';
-  $play.innerHTML = '\u25b6';
-  $status.textContent = 'ready';
+  setFocusMode(true);
+  updateControlVisibility();
+}
+
+function pauseFocus() {
+  if (timerState !== 'focus') return;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerRunning = false;
+  if (timerEndMs !== null) {
+    timerRemaining = Math.max(0, Math.round((timerEndMs - Date.now()) / 1000));
+    timerEndMs = null;
+  }
+  timerState = 'focus-paused';
+  $status.textContent = S('paused');
   $status.style.color = 'var(--text-dim)';
-  hasStartedOnce = false;
-  document.getElementById('resetBtn').style.display = 'none';
-  updateStopBtn();
+  if (mode === 'deep') flushQueue();
+  setFocusMode(false);
+  updateControlVisibility();
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerRunning = false;
+  timerEndMs = null;
+  if (onBreak || timerState === 'break-ready' || timerState === 'break-paused') { endBreak(false); return; }
+  if (timerState === 'post-break') { clearPostBreak(); updateTimerDisplay(); updateControlVisibility(); return; }
+  timerState = 'idle';
+  timerRemaining = focusMins * 60;
+  $time.classList.remove('warning', 'break-mode');
+  $status.textContent = S('ready');
+  $status.style.color = 'var(--text-dim)';
+  setFocusMode(false);
+  document.body.classList.remove('on-break');
+  updateTimerDisplay();
+  updateControlVisibility();
 }
 
 $play.onclick = function() {
-  if (onBreak) {
-    // Skip break, go straight to ready
+  if (timerState === 'break') {
     endBreak(false);
     return;
   }
-  timerRunning ? timerPause() : timerStart();
+  if (timerState === 'break-ready') {
+    startBreak();
+    return;
+  }
+  if (timerState === 'break-paused') {
+    resumeBreak();
+    return;
+  }
+  if (timerState === 'post-break') {
+    clearPostBreak();
+    startFocus();
+    return;
+  }
+  if (timerState === 'idle' || timerState === 'focus-paused') {
+    startFocus();
+  }
 };
-$stop.onclick = function() { if (!onBreak) timerStop(); };
+
+$pauseBtn.onclick = function() {
+  if (timerState === 'focus') pauseFocus();
+  if (timerState === 'break') pauseBreak();
+};
+
 document.getElementById('resetBtn').onclick = function() {
-  if (onBreak) { endBreak(false); return; }
-  timerReset();
+  resetTimer();
 };
-
-// ═══════════════════ TAG POPUP ═══════════════════
-var pendingSessionSecs = 0;
-var selectedTag = null;
-
-function showTagPopup(sessSecs) {
-  pendingSessionSecs = sessSecs;
-  selectedTag = null;
-  document.getElementById('tagDuration').textContent = fmt(sessSecs);
-  var choices = document.getElementById('tagChoices');
-  choices.innerHTML = '';
-
-  var allTags = TAGS.slice();
-  // Also add custom tags from today's sessions
-  var todayEntry = DATA[today()];
-  if (todayEntry && todayEntry.sessions) {
-    todayEntry.sessions.forEach(function(s) {
-      if (s.tag && allTags.indexOf(s.tag) === -1) allTags.push(s.tag);
-    });
-  }
-
-  allTags.forEach(function(tag) {
-    var chip = document.createElement('div');
-    chip.className = 'tag-chip';
-    chip.textContent = tag;
-    chip.onclick = function() {
-      choices.querySelectorAll('.tag-chip').forEach(function(c) { c.classList.remove('selected'); });
-      chip.classList.add('selected');
-      selectedTag = tag;
-      document.getElementById('customTagInput').value = '';
-    };
-    choices.appendChild(chip);
-  });
-
-  document.getElementById('customTagInput').value = '';
-  document.getElementById('tagOverlay').classList.add('open');
-}
-
-document.getElementById('customTagInput').oninput = function() {
-  if (this.value.trim()) {
-    selectedTag = null;
-    document.querySelectorAll('#tagChoices .tag-chip').forEach(function(c) { c.classList.remove('selected'); });
-  }
-};
-
-document.getElementById('tagSave').onclick = async function() {
-  var tag = selectedTag || document.getElementById('customTagInput').value.trim() || null;
-  await saveSession(pendingSessionSecs, tag);
-  document.getElementById('tagOverlay').classList.remove('open');
-  finishSession();
-};
-
-document.getElementById('tagSkip').onclick = async function() {
-  await saveSession(pendingSessionSecs, null);
-  document.getElementById('tagOverlay').classList.remove('open');
-  finishSession();
-};
-
-document.getElementById('tagOverlay').onclick = function(e) {
-  if (e.target === document.getElementById('tagOverlay')) {
-    saveSession(pendingSessionSecs, null);
-    document.getElementById('tagOverlay').classList.remove('open');
-    finishSession();
-  }
-};
-
-async function saveSession(sessSecs, tag) {
-  var key = today();
-  if (!DATA[key]) DATA[key] = {};
-  if (!DATA[key].sessions) DATA[key].sessions = [];
-  DATA[key].sessions.push({
-    minutes: Math.floor(sessSecs / 60),
-    tag: tag,
-    time: new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
-  });
-  await saveAllData();
-}
-
-function finishSession() {
-  sessionCount++;
-  totalSessionMins += Math.floor(pendingSessionSecs / 60);
-  $meta.textContent = totalSessionMins + 'm total \u00b7 ' + sessionCount + ' session' + (sessionCount !== 1 ? 's' : '');
-  renderMap();
-  // Start break countdown
-  startBreak(pendingSessionSecs);
-}
 
 // ═══════════════════ BREAK TIMER ═══════════════════
+var onBreak = false;
 var breakRemaining = 0;
 var breakInterval = null;
-var onBreak = false;
 var breakEndMs = null;
 
-function startBreak(workSecs) {
-  var workMins = Math.floor(workSecs / 60);
-  var breakDurationSecs;
-  if (breakConfig.mode === 'fixed') {
-    breakDurationSecs = Math.max(60, (breakConfig.fixedMins || 5) * 60);
-  } else {
-    var pct = (breakConfig.percent || 20) / 100;
-    breakDurationSecs = Math.max(60, Math.round(workMins * pct * 60));
-  }
+function startBreak() {
+  var breakDurationSecs = breakMins * 60;
   breakRemaining = breakDurationSecs;
   onBreak = true;
+  timerState = 'break';
 
-  // Reset timer visual state
-  timerSecs = 0;
-  warned52 = false;
-  warned30 = false;
   $time.classList.remove('warning');
-
-  // Set break appearance
   $time.classList.add('break-mode');
-  $time.textContent = fmt(breakRemaining);
-  $status.textContent = 'pause \u00b7 ' + Math.round(breakRemaining / 60) + ' min';
-  $status.style.color = 'var(--healthy)';
-  $play.innerHTML = '\u25b6'; // skip icon acts as "end break early"
-  $play.classList.add('break-btn');
-  $stop.style.display = 'none';
+  updateTimerDisplay();
+  $status.textContent = 'Break · ' + breakMins + ' min';
+  $status.style.color = 'var(--break-accent)';
 
   breakEndMs = Date.now() + breakDurationSecs * 1000;
-  breakInterval = setInterval(breakTick, 1000);
+  breakInterval = setInterval(breakTick, 500);
+
+  setTimeout(function() { document.body.classList.add('on-break'); }, 120);
+  updateControlVisibility();
+
+  // System notification (works in background)
+  var breakMsg = breakMins + ' min break. Relax and recharge.';
+  if (window.api) window.api.showNotification('☕ Break time!', breakMsg);
+  else if ('Notification' in window && Notification.permission === 'granted') new Notification('☕ Break time!', { body: breakMsg });
+}
+
+function pauseBreak() {
+  if (timerState !== 'break') return;
+  clearInterval(breakInterval);
+  breakInterval = null;
+  if (breakEndMs !== null) {
+    breakRemaining = Math.max(0, Math.round((breakEndMs - Date.now()) / 1000));
+    breakEndMs = null;
+  }
+  timerState = 'break-paused';
+  $status.textContent = S('paused') || 'Pausiert';
+  $status.style.color = 'var(--text-dim)';
+  updateControlVisibility();
+}
+
+function resumeBreak() {
+  if (timerState !== 'break-paused') return;
+  timerState = 'break';
+  breakEndMs = Date.now() + breakRemaining * 1000;
+  breakInterval = setInterval(breakTick, 500);
+  $status.textContent = 'Break · ' + breakMins + ' min';
+  $status.style.color = 'var(--break-accent)';
+  updateControlVisibility();
 }
 
 function breakTick() {
   if (!onBreak || breakEndMs === null) return;
-  var remainingMs = breakEndMs - Date.now();
-  var newRemaining = Math.max(0, Math.round(remainingMs / 1000));
+  var newRemaining = Math.max(0, Math.round((breakEndMs - Date.now()) / 1000));
   if (newRemaining === breakRemaining) return;
   breakRemaining = newRemaining;
+  $time.textContent = fmt(breakRemaining);
   if (breakRemaining <= 0) {
     endBreak(true);
-    return;
   }
-  $time.textContent = fmt(breakRemaining);
 }
 
 function endBreak(natural) {
   clearInterval(breakInterval);
+  breakInterval = null;
   onBreak = false;
   breakRemaining = 0;
   breakEndMs = null;
+  timerRemaining = focusMins * 60;
+
   $time.classList.remove('break-mode');
   $play.classList.remove('break-btn');
+  document.body.classList.remove('on-break');
 
   if (natural) {
-    // Pause is over — notify
-    showBanner('\u2705', 'Pause vorbei', 'Bereit f\u00fcr die n\u00e4chste Session!', 'healthy-style');
-    if (window.api) window.api.showNotification('Pause vorbei', 'Bereit f\u00fcr die n\u00e4chste Session!');
+    // Show "Next Session" screen instead of going straight to idle
+    timerState = 'post-break';
+    updateTimerDisplay();
+    $status.textContent = S('ready');
+    $status.style.color = 'var(--text-dim)';
+    setTimeout(function() { document.body.classList.add('post-break'); }, 80);
+    updateControlVisibility();
+    // OS notification
+    var doneTitle = '✅ ' + S('breakDoneTitle');
+    var doneBody  = S('breakDoneBody');
+    if (window.api) window.api.showNotification(doneTitle, doneBody);
+    else if ('Notification' in window && Notification.permission === 'granted') new Notification(doneTitle, { body: doneBody });
+  } else {
+    timerState = 'idle';
+    $status.textContent = S('ready');
+    $status.style.color = 'var(--text-dim)';
+    setFocusMode(false);
+    updateTimerDisplay();
+    updateControlVisibility();
   }
+}
 
-  timerReset();
+function clearPostBreak() {
+  document.body.classList.remove('post-break');
+  timerState = 'idle';
 }
 
 // ═══════════════════ BREAK CONFIG ═══════════════════
@@ -1137,29 +1535,11 @@ function saveBreakConfig(cfg) {
 
 var $breakOverlay = document.getElementById('breakOverlay');
 
-function setBreakModeUI(mode) {
-  var isAuto = mode === 'auto';
-  document.getElementById('breakModeAuto').className = 'mode-btn' + (isAuto ? ' active-healthy' : '');
-  document.getElementById('breakModeFixed').className = 'mode-btn' + (!isAuto ? ' active-healthy' : '');
-  document.getElementById('breakAutoField').style.display = isAuto ? '' : 'none';
-  document.getElementById('breakFixedField').style.display = isAuto ? 'none' : '';
-}
-
-function updateBreakHint() {
-  var pct = parseInt(document.getElementById('breakPercent').value) || 20;
-  var example = Math.round(52 * pct / 100);
-  document.getElementById('breakAutoHint').textContent = '(z.B. 52 Min → ' + example + ' Min Pause)';
-}
-
-document.getElementById('breakModeAuto').onclick = function() { setBreakModeUI('auto'); };
-document.getElementById('breakModeFixed').onclick = function() { setBreakModeUI('fixed'); };
-document.getElementById('breakPercent').oninput = updateBreakHint;
-
 function openBreakModal() {
-  document.getElementById('breakPercent').value = breakConfig.percent || 20;
-  document.getElementById('breakMins').value = breakConfig.fixedMins || 5;
-  setBreakModeUI(breakConfig.mode || 'auto');
-  updateBreakHint();
+  document.getElementById('focusMinsInput').value = rhythmFocusMins;
+  document.getElementById('breakMinsInput').value = rhythmBreakMins;
+  document.getElementById('flowFocusMinsInput').value = flowFocusMins;
+  document.getElementById('flowBreakMinsInput').value = flowBreakMins;
   $breakOverlay.classList.add('open');
   closeSettingsMenu();
 }
@@ -1167,12 +1547,19 @@ function openBreakModal() {
 document.getElementById('pauseSettingsBtn').onclick = function() { openBreakModal(); };
 
 document.getElementById('breakSaveBtn').onclick = function() {
-  var isFixed = document.getElementById('breakModeFixed').classList.contains('active-healthy');
-  saveBreakConfig({
-    mode: isFixed ? 'fixed' : 'auto',
-    percent: Math.max(5, Math.min(100, parseInt(document.getElementById('breakPercent').value) || 20)),
-    fixedMins: Math.max(1, Math.min(120, parseInt(document.getElementById('breakMins').value) || 5))
-  });
+  rhythmFocusMins = Math.max(1, parseInt(document.getElementById('focusMinsInput').value) || 25);
+  rhythmBreakMins = Math.max(1, parseInt(document.getElementById('breakMinsInput').value) || 5);
+  flowFocusMins   = Math.max(1, parseInt(document.getElementById('flowFocusMinsInput').value) || 60);
+  flowBreakMins   = Math.max(1, parseInt(document.getElementById('flowBreakMinsInput').value) || 10);
+  localStorage.setItem('aurora-focus-mins', rhythmFocusMins);
+  localStorage.setItem('aurora-break-mins', rhythmBreakMins);
+  localStorage.setItem('aurora-flow-focus-mins', flowFocusMins);
+  localStorage.setItem('aurora-flow-break-mins', flowBreakMins);
+  // Update active durations based on current mode
+  focusMins = mode === 'deep' ? flowFocusMins : rhythmFocusMins;
+  breakMins = mode === 'deep' ? flowBreakMins : rhythmBreakMins;
+  if (timerState === 'idle') { resetTimer(); }
+  updateModeTooltips();
   $breakOverlay.classList.remove('open');
 };
 
@@ -1182,19 +1569,39 @@ $breakOverlay.onclick = function(e) { if (e.target === $breakOverlay) $breakOver
 
 // ═══════════════════ TRACKER CONFIG ═══════════════════
 var TRACKER_DEFAULTS = [
-  { id: 'sport',      label: 'Aktivität',   question: 'Wie aktiv warst du gestern körperlich?',                            type: 'scale',  enabled: true, showInSummary: true },
-  { id: 'meditation', label: 'Meditation',  question: 'Wie sehr hast du gestern auf deine mentale Erholung geachtet?',     type: 'scale',  enabled: true, showInSummary: true },
-  { id: 'sleep',      label: 'Schlaf',      question: 'Wie erholsam war dein Schlaf letzte Nacht?',                       type: 'scale',  enabled: true, showInSummary: true },
-  { id: 'steps',      label: 'Schritte',    question: 'Wie viele Schritte hast du gestern gemacht?', placeholder: 'z.B. 8500', type: 'number', enabled: true, showInSummary: true },
-  { id: 'mood',       label: 'Morgengefühl', question: 'Wie fühlst du dich heute Morgen?',                                type: 'scale',  enabled: true, showInSummary: true, locked: true }
+  { id: 'sport',      type: 'scale',  label: 'Activity',   question: 'How physically active were you yesterday?',          enabled: true, showInSummary: true },
+  { id: 'meditation', type: 'scale',  label: 'Meditation', question: 'Did you take time for mental recovery today?',        enabled: true, showInSummary: true },
+  { id: 'sleep',      type: 'scale',  label: 'Sleep',      question: 'How restful was your sleep last night?',              enabled: true, showInSummary: true },
+  { id: 'steps',      type: 'number', label: 'Steps',      question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000', enabled: true, showInSummary: true },
+  { id: 'mood',       type: 'scale',  label: 'Mood',       question: 'How do you feel overall today?',                      enabled: true, showInSummary: true, locked: true }
 ];
+
+// Migrate saved trackers from German to English labels/questions
+var TRACKER_MIGRATIONS = {
+  'sport':      { label: 'Activity',   question: 'How physically active were you yesterday?' },
+  'meditation': { label: 'Meditation', question: 'Did you take time for mental recovery today?' },
+  'sleep':      { label: 'Sleep',      question: 'How restful was your sleep last night?' },
+  'steps':      { label: 'Steps',      question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000' },
+  'mood':       { label: 'Mood',       question: 'How do you feel overall today?' }
+};
 
 var trackersConfig = [];
 
 function loadTrackers() {
   try {
-    var saved = localStorage.getItem('zenith-trackers');
+    var saved = localStorage.getItem('aurora-trackers');
     trackersConfig = saved ? JSON.parse(saved) : TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
+    // Migrate default tracker labels/questions to English
+    var migrated = false;
+    trackersConfig.forEach(function(t) {
+      var m = TRACKER_MIGRATIONS[t.id];
+      if (m) {
+        if (t.label !== m.label) { t.label = m.label; migrated = true; }
+        if (t.question !== m.question) { t.question = m.question; migrated = true; }
+        if (m.placeholder && t.placeholder !== m.placeholder) { t.placeholder = m.placeholder; migrated = true; }
+      }
+    });
+    if (migrated) localStorage.setItem('aurora-trackers', JSON.stringify(trackersConfig));
   } catch(e) {
     trackersConfig = TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
   }
@@ -1202,79 +1609,12 @@ function loadTrackers() {
 
 function saveTrackers(list) {
   trackersConfig = list;
-  localStorage.setItem('zenith-trackers', JSON.stringify(list));
+  localStorage.setItem('aurora-trackers', JSON.stringify(list));
 }
 
 // ═══════════════════ HEATMAP ═══════════════════
 var viewYear = new Date().getFullYear();
-var MO = ['Jan','Feb','M\u00e4r','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
-var DA = ['Mo','Di','Mi','Do','Fr','Sa','So'];
-
-function avgMetric(entries, key) {
-  var nums = entries.map(function(e) { return Number(e[key]); }).filter(function(v) { return Number.isFinite(v); });
-  if (!nums.length) return null;
-  return nums.reduce(function(sum, v) { return sum + v; }, 0) / nums.length;
-}
-
-function trendArrow(current, previous) {
-  if (current === null || previous === null) return '<span class="trend-flat trend-arrow">\u25b6</span>';
-  if (current > previous) return '<span class="trend-up trend-arrow">\u25b2</span>';
-  if (current < previous) return '<span class="trend-down trend-arrow">\u25bc</span>';
-  return '<span class="trend-flat trend-arrow">\u25b6</span>';
-}
-
-function trendForMetric(metric) {
-  var keys = Object.keys(DATA).sort();
-  var entries = keys.map(function(k) { return DATA[k]; }).filter(function(e) { return e && typeof e === 'object'; });
-  if (entries.length < 2) return '<span class="trend-flat trend-arrow">\u25b6</span>';
-  var currentWeek = entries.slice(-7);
-  var prevWeek = entries.slice(-14, -7);
-  return trendArrow(avgMetric(currentWeek, metric), avgMetric(prevWeek, metric));
-}
-
-// ─── Sparkline ───────────────────────────────────────────────────────────────
-function buildSparkline(trackerId) {
-  var keys = Object.keys(DATA).sort();
-  var vals = [];
-  for (var i = keys.length - 1; i >= 0 && vals.length < 7; i--) {
-    var e = DATA[keys[i]];
-    if (e && e[trackerId] != null && e[trackerId] !== '') {
-      vals.unshift(Number(e[trackerId]));
-    }
-  }
-  if (vals.length < 2) return '';
-  var min = Math.min.apply(null, vals);
-  var max = Math.max.apply(null, vals);
-  var range = max - min || 1;
-  var W = 100, H = 24, pad = 3;
-  var step = (W - pad * 2) / (vals.length - 1);
-  var pts = vals.map(function(v, i) {
-    return [(pad + i * step).toFixed(1), (H - pad - ((v - min) / range) * (H - pad * 2)).toFixed(1)];
-  });
-  var d = pts.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p[0] + ',' + p[1]; }).join(' ');
-  var last = pts[pts.length - 1];
-  return '<svg class="sparkline-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
-    '<circle cx="' + last[0] + '" cy="' + last[1] + '" r="2" fill="var(--accent)"/>' +
-    '</svg>';
-}
-
-// ─── Last Updated ─────────────────────────────────────────────────────────────
-function lastUpdatedLabel(trackerId) {
-  var keys = Object.keys(DATA).sort().reverse();
-  for (var i = 0; i < keys.length; i++) {
-    var e = DATA[keys[i]];
-    if (e && e[trackerId] != null && e[trackerId] !== '') {
-      var parts = keys[i].split('-');
-      var d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-      var t = new Date(); t.setHours(0, 0, 0, 0);
-      var diff = Math.round((t - d) / 86400000);
-      var when = diff === 0 ? 'Heute' : diff === 1 ? 'Gestern' : 'Vor ' + diff + ' Tagen';
-      return 'Letzte Aktualisierung: ' + when;
-    }
-  }
-  return 'Letzte Aktualisierung: –';
-}
+var MO, DA; // set in renderMap from S('months') / S('days')
 
 // ─── Context Stats ────────────────────────────────────────────────────────────
 function computeContextStats() {
@@ -1340,13 +1680,14 @@ function renderContextStats() {
   if (!el) return;
   var s = computeContextStats();
   el.innerHTML =
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Aktuelle Streak</div><div class="heatmap-stat-value">' + s.streak + ' Tage</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Beste Woche ' + viewYear + '</div><div class="heatmap-stat-value">' + s.bestKW + '</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Durchschnitt ' + viewYear + '</div><div class="heatmap-stat-value">' + s.yearAvg + (s.yearAvg !== '–' ? ' / 5' : '') + '</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">Trend vs. Vormonat</div><div class="heatmap-stat-value">' + s.trend + '</div></div>';
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + S('statStreak') + '</div><div class="heatmap-stat-value">' + Sf('statStreakDays', {n: s.streak}) + '</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + Sf('statBestWeek', {y: viewYear}) + '</div><div class="heatmap-stat-value">' + s.bestKW + '</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + Sf('statYearAvg', {y: viewYear}) + '</div><div class="heatmap-stat-value">' + s.yearAvg + (s.yearAvg !== '–' ? ' / 5' : '') + '</div></div>' +
+    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + S('statTrend') + '</div><div class="heatmap-stat-value">' + s.trend + '</div></div>';
 }
 
 function renderMap() {
+  MO = S('months'); DA = S('days');
   var grid = document.getElementById('grid');
   grid.innerHTML = '';
   document.getElementById('yearLabel').textContent = viewYear;
@@ -1356,29 +1697,52 @@ function renderMap() {
   corner.className = 'heatmap-month';
   grid.appendChild(corner);
   DA.forEach(function(d) { var el = document.createElement('div'); el.className = 'heatmap-day'; el.textContent = d; grid.appendChild(el); });
-
   var jan1 = new Date(viewYear, 0, 1);
   var startDow = (jan1.getDay() + 6) % 7;
   var dec31 = new Date(viewYear, 11, 31);
   var totalDays = Math.floor((dec31 - jan1) / 86400000) + 1;
-  var curMonth = 0, tracked = 0, sums = {}, counts = {};
+
+  // Map: week-index (0-based) → month label
+  // Place label in the column that contains the 1st of each month
+  var weekToLabel = {};
+  for (var mi = 0; mi < 12; mi++) {
+    var mFirst = new Date(viewYear, mi, 1);
+    var mDayIdx = Math.round((mFirst - jan1) / 86400000);
+    var mWeek = Math.floor((mDayIdx + startDow) / 7);
+    weekToLabel[mWeek] = MO[mi];
+  }
+
+  // First week column header (week 0)
+  var w0 = document.createElement('div');
+  w0.className = 'heatmap-month';
+  w0.textContent = weekToLabel[0] || '';
+  grid.appendChild(w0);
+
+  var tracked = 0;
+  var sums = {}, counts = {};
   trackersConfig.forEach(function(t) { sums[t.id] = 0; counts[t.id] = 0; });
 
-  var ml0 = document.createElement('div'); ml0.className = 'heatmap-month'; ml0.textContent = 'Jan'; grid.appendChild(ml0);
   for (var i = 0; i < startDow; i++) { var b = document.createElement('div'); b.style.cssText = 'width:14px;height:14px'; grid.appendChild(b); }
 
   var dow = startDow;
+  var weekNum = 0;
   for (var d = 0; d < totalDays; d++) {
     var date = new Date(viewYear, 0, 1 + d);
     var key = dk(date);
     var mo = date.getMonth();
-    if (dow === 0 && d > 0) { var ml = document.createElement('div'); ml.className = 'heatmap-month'; if (mo !== curMonth) { ml.textContent = MO[mo]; curMonth = mo; } grid.appendChild(ml); }
+    if (dow === 0 && d > 0) {
+      weekNum++;
+      var ml = document.createElement('div');
+      ml.className = 'heatmap-month';
+      ml.textContent = weekToLabel[weekNum] || '';
+      grid.appendChild(ml);
+    }
 
     var c = document.createElement('div');
     c.className = 'cell';
     var entry = DATA[key];
     if (entry && entry.mood) { c.classList.add('m' + entry.mood); tracked++; }
-    if (entry) { trackersConfig.forEach(function(t) { if (entry[t.id]) { sums[t.id] += Number(entry[t.id]); counts[t.id]++; } }); }
+    if (entry) { trackersConfig.forEach(function(t) { if (entry[t.id] != null) { sums[t.id] += Number(entry[t.id]); counts[t.id]++; } }); }
     if (date > now && key !== todayStr) c.classList.add('future');
     if (key === todayStr) c.classList.add('today');
 
@@ -1392,19 +1756,7 @@ function renderMap() {
     dow = (dow + 1) % 7;
   }
 
-  var summaryHtml = trackersConfig.filter(function(t) { return t.showInSummary !== false; }).map(function(t) {
-    var avg = counts[t.id] > 0
-      ? (t.type === 'number' ? Math.round(sums[t.id] / counts[t.id]).toLocaleString('de-DE') : (sums[t.id] / counts[t.id]).toFixed(1))
-      : '\u2013';
-    var sparkline = buildSparkline(t.id);
-    return '<div class="stat-tile">' +
-      '<div style="display:flex;align-items:baseline;gap:5px"><div class="stat-value">' + avg + '</div><div class="stat-trend">' + trendForMetric(t.id) + '</div></div>' +
-      '<div class="stat-label">' + t.label + '</div>' +
-      (sparkline ? '<div class="sparkline-wrap">' + sparkline + '</div>' : '') +
-    '</div>';
-  }).join('');
-  document.getElementById('summary').innerHTML = summaryHtml;
-  document.getElementById('heatmapInfo').textContent = tracked > 0 ? tracked + ' Eintr\u00e4ge in ' + viewYear : 'Noch keine Eintr\u00e4ge';
+  document.getElementById('summary').innerHTML = '';
 
   // Align section width to grid width
   requestAnimationFrame(function() {
@@ -1434,25 +1786,18 @@ function showTip(e, key, entry) {
       h += '<div class="tip-row"><span class="tip-label">' + t.label + '</span><span class="tip-val">' + display + '</span></div>';
     });
     if (entry.note) h += '<div class="tip-note">' + entry.note + '</div>';
-    if (entry.sessions && entry.sessions.length > 0) {
-      h += '<div class="tip-sessions">';
-      entry.sessions.forEach(function(s) {
-        h += '<div class="tip-session-row"><span class="tip-session-tag">' + (s.tag || 'Untagged') + '</span><span class="tip-session-dur">' + s.minutes + 'm' + (s.time ? ' \u00b7 ' + s.time : '') + '</span></div>';
-      });
-      h += '</div>';
-    }
   } else {
     h += '<div class="tip-empty">Kein Eintrag \u2014 klicken</div>';
   }
   h += '<div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:3px;font-size:10px;color:var(--text-dim)">' +
-    '<span style="margin-right:2px">schlecht</span>' +
+    '<span style="margin-right:2px">' + S('bad') + '</span>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-empty);border:1px solid rgba(128,128,128,0.2)"></div>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-1)"></div>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-2)"></div>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-3)"></div>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-4)"></div>' +
     '<div style="width:9px;height:9px;border-radius:2px;background:var(--mood-5)"></div>' +
-    '<span style="margin-left:2px">gut</span>' +
+    '<span style="margin-left:2px">' + S('good') + '</span>' +
   '</div>';
   $tip.innerHTML = h;
   $tip.classList.add('show');
@@ -1468,34 +1813,11 @@ function showTip(e, key, entry) {
 
 function hideTip() { $tip.classList.remove('show'); }
 
-document.getElementById('summary').addEventListener('mouseover', function(e) {
-  var arrow = e.target.closest('.trend-arrow');
-  if (!arrow) return;
-  $tip.innerHTML =
-    '<div class="tip-date">Trend-Berechnung</div>' +
-    '<div style="font-size:11px;color:var(--text-muted);line-height:1.7">' +
-      'Vergleich: \u00d8 der letzten 7 Tage<br>vs. \u00d8 der 7 Tage davor.<br><br>' +
-      '<span class="trend-up">\u25b2</span>&nbsp;Durchschnitt gestiegen<br>' +
-      '<span class="trend-down">\u25bc</span>&nbsp;Durchschnitt gesunken<br>' +
-      '<span class="trend-flat">\u25b6</span>&nbsp;Keine \u00c4nderung / zu wenig Daten' +
-    '</div>';
-  $tip.classList.add('show');
-  var r = arrow.getBoundingClientRect();
-  var left = r.left + r.width / 2 - 100;
-  var top = r.top - $tip.offsetHeight - 8;
-  if (top < 4) top = r.bottom + 8;
-  if (left < 4) left = 4;
-  if (left + 200 > window.innerWidth) left = window.innerWidth - 208;
-  $tip.style.left = left + 'px';
-  $tip.style.top = top + 'px';
-});
-document.getElementById('summary').addEventListener('mouseleave', hideTip);
-
 // ═══════════════════ CHECK-IN MODAL ═══════════════════
 var editKey = null;
 var $overlay = document.getElementById('overlay');
 var $modal = document.getElementById('mainModal');
-var vals = { sleep: null, sport: null, mood: null, meditation: null };
+var vals = { mood: null };
 
 function openCheckin(key) {
   editKey = key;
@@ -1506,7 +1828,7 @@ function openCheckin(key) {
   vals = {};
   trackersConfig.forEach(function(t) { if (t.type === 'scale') vals[t.id] = entry[t.id] || null; });
 
-  var html = '<h2>Daily Check-in</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
+  var html = '<h2>' + S('checkinTitle') + '</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
 
   trackersConfig.filter(function(t) { return t.enabled && t.type === 'scale' && !t.locked; }).forEach(function(t) {
     html += '<div class="field"><label>' + t.question + '</label><div class="scale" data-field="' + t.id + '">';
@@ -1520,33 +1842,15 @@ function openCheckin(key) {
     html += '<div class="field"><label>' + t.question + '</label><input type="number" class="input" id="f_' + t.id + '" placeholder="' + (t.placeholder || '') + '" min="0" value="' + (entry[t.id] || '') + '"></div>';
   });
 
-  html += '<div class="field"><label>Kommentar <span style="color:var(--text-dim)">(optional)</span></label><textarea class="input" id="fNote" placeholder="Optionaler Kommentar...">' + (entry.note || '') + '</textarea></div>';
+  html += '<div class="field"><label>' + S('comment') + ' <span style="color:var(--text-dim)">' + S('commentOptional') + '</span></label><textarea class="input" id="fNote" placeholder="' + S('commentPlaceholder') + '">' + (entry.note || '') + '</textarea></div>';
 
   var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
   if (moodTracker && moodTracker.enabled) {
     html += '<div class="field final-field"><label>' + moodTracker.question + '</label><div class="scale" data-field="' + moodTracker.id + '">';
-    for (var moodValue = 1; moodValue <= 5; moodValue++) {
-      html += '<button data-v="' + moodValue + '" class="' + (entry[moodTracker.id] === moodValue ? 'on' : '') + '">' + moodValue + '</button>';
+    for (var mv = 1; mv <= 5; mv++) {
+      html += '<button data-v="' + mv + '" class="' + (entry[moodTracker.id] === mv ? 'on' : '') + '">' + mv + '</button>';
     }
     html += '</div></div>';
-  }
-
-  // Session stats
-  if (entry.sessions && entry.sessions.length > 0) {
-    html += '<div class="day-sessions"><div class="day-sessions-title">Sessions</div>';
-    var tagMap = {}, totalSessMins = 0;
-    entry.sessions.forEach(function(s) {
-      var t = s.tag || 'Untagged';
-      if (!tagMap[t]) tagMap[t] = 0;
-      tagMap[t] += s.minutes;
-      totalSessMins += s.minutes;
-    });
-    Object.keys(tagMap).sort(function(a, b) { return tagMap[b] - tagMap[a]; }).forEach(function(tag) {
-      var mins = tagMap[tag];
-      var pct = totalSessMins > 0 ? Math.round((mins / totalSessMins) * 100) : 0;
-      html += '<div class="session-bar-group"><div class="session-bar-label"><span class="session-bar-name">' + tag + '</span><span class="session-bar-time">' + mins + 'm (' + pct + '%)</span></div><div class="session-bar-track"><div class="session-bar-fill" style="width:' + pct + '%"></div></div></div>';
-    });
-    html += '</div>';
   }
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">\u00dcberspringen</button><button class="btn btn-fill" id="saveBtn">Speichern</button></div>';
@@ -1571,7 +1875,7 @@ function openCheckin(key) {
       saveEl.addEventListener('click', async function() {
         if (!editKey) return;
         var existing = DATA[editKey] || {};
-        var newEntry = { sessions: existing.sessions || [], ts: new Date().toISOString() };
+        var newEntry = { ts: new Date().toISOString() };
         trackersConfig.forEach(function(t) {
           if (t.type === 'scale') { newEntry[t.id] = vals[t.id] || null; }
           else if (t.type === 'number') { var el = document.getElementById('f_' + t.id); newEntry[t.id] = el && el.value ? parseInt(el.value) : null; }
@@ -1601,11 +1905,10 @@ document.getElementById('csvBtn').onclick = function() {
   closeSettingsMenu();
   var keys = Object.keys(DATA).sort();
   if (!keys.length) return;
-  var csv = 'Datum,Schlaf,Schritte,Aktivitaet,Morgengefuehl,Meditation,Notiz,Sessions\n';
+  var csv = 'Date,Sleep,Steps,Activity,MorningMood,Meditation,Note\n';
   keys.forEach(function(k) {
     var e = DATA[k];
-    var sessStr = (e.sessions || []).map(function(s) { return (s.tag || '?') + ':' + s.minutes + 'm'; }).join('; ');
-    csv += k + ',' + (e.sleep||'') + ',' + (e.steps||'') + ',' + (e.sport||'') + ',' + (e.mood||'') + ',' + (e.meditation||'') + ',"' + (e.note||'').replace(/"/g,'""') + '","' + sessStr + '"\n';
+    csv += k + ',' + (e.sleep||'') + ',' + (e.steps||'') + ',' + (e.sport||'') + ',' + (e.mood||'') + ',' + (e.meditation||'') + ',"' + (e.note||'').replace(/"/g,'""') + '"\n';
   });
   dl(csv, 'dailyflow_' + today() + '.csv', 'text/csv');
 };
@@ -1618,7 +1921,7 @@ document.getElementById('importBtn').onclick = function() { closeSettingsMenu();
 document.getElementById('importFile').onchange = async function(e) {
   var file = e.target.files[0]; if (!file) return;
   try { var imp = JSON.parse(await file.text()); Object.assign(DATA, imp); await saveAllData(); renderMap(); }
-  catch(err) { alert('Ung\u00fcltige JSON-Datei.'); }
+  catch(err) { alert('Invalid JSON file.'); }
   e.target.value = '';
 };
 
@@ -1632,7 +1935,6 @@ function renderTrackerList() {
   trackerEditData.forEach(function(t, i) {
     var item = document.createElement('div');
     item.className = 'reminder-item';
-    var typeBadge = t.type === 'number' ? 'Zahl' : 'Skala 1–5';
     item.innerHTML =
       '<div class="reminder-header">' +
         '<input class="input trk-label" placeholder="Name" value="' + escHtml(t.label) + '">' +
@@ -1644,23 +1946,7 @@ function renderTrackerList() {
           ? '<span style="font-size:11px;color:var(--text-dim);padding:4px 6px;flex-shrink:0" title="Steuert Heatmap-Farbe">&#127752;</span>'
           : '<button class="reminder-del" title="Löschen">✕</button>') +
       '</div>' +
-      '<input class="input trk-question" placeholder="Frage im Check-in" value="' + escHtml(t.question) + '" style="margin-bottom:8px">' +
-      '<div class="reminder-interval-row" style="justify-content:space-between;flex-wrap:wrap;gap:8px">' +
-        '<span style="display:flex;align-items:center;gap:6px">Typ:\u00a0' +
-          (t.locked
-            ? '<span style="color:var(--accent);font-family:\'JetBrains Mono\',monospace;font-size:11px">' + typeBadge + '</span>'
-            : '<select class="input trk-type" style="padding:3px 8px;height:auto;font-size:11px;font-family:\'JetBrains Mono\',monospace;width:auto">' +
-                '<option value="scale"' + (t.type !== 'number' ? ' selected' : '') + '>Skala 1\u20135</option>' +
-                '<option value="number"' + (t.type === 'number' ? ' selected' : '') + '>Zahl</option>' +
-              '</select>') +
-        '</span>' +
-        '<label style="display:flex;align-items:center;gap:6px;cursor:pointer">\u00d8\u00a0Zusammenfassung\u00a0' +
-          '<label class="toggle-switch" style="pointer-events:auto">' +
-            '<input type="checkbox" class="trk-summary"' + (t.showInSummary !== false ? ' checked' : '') + '>' +
-            '<span class="toggle-slider"></span>' +
-          '</label>' +
-        '</label>' +
-      '</div>';
+      '<input class="input trk-question" placeholder="Frage im Check-in" value="' + escHtml(t.question || '') + '" style="margin-bottom:8px">';
     if (!t.locked) {
       item.querySelector('.reminder-del').onclick = function() {
         trackerEditData = collectTrackers();
@@ -1680,10 +1966,10 @@ function collectTrackers() {
       id: existing.id,
       label: item.querySelector('.trk-label').value.trim() || 'Kategorie',
       question: item.querySelector('.trk-question').value.trim(),
-      type: item.querySelector('.trk-type') ? item.querySelector('.trk-type').value : (existing.type || 'scale'),
+      type: existing.type || 'scale',
       placeholder: existing.placeholder,
       enabled: item.querySelector('.trk-enabled').checked,
-      showInSummary: item.querySelector('.trk-summary') ? item.querySelector('.trk-summary').checked : (existing.showInSummary !== false),
+      showInSummary: existing.showInSummary !== false,
       locked: existing.locked || false
     });
   });
@@ -1715,102 +2001,70 @@ document.getElementById('trackerSaveBtn').onclick = function() {
 document.getElementById('trackerCancelBtn').onclick = function() { $trackerOverlay.classList.remove('open'); };
 $trackerOverlay.onclick = function(e) { if (e.target === $trackerOverlay) $trackerOverlay.classList.remove('open'); };
 
-// ═══════════════════ REMINDERS ═══════════════════
-var remindersData = [];
-var $remindersOverlay = document.getElementById('remindersOverlay');
+// ═══════════════════ STATISTIK MODAL ═══════════════════
+var $statistikOverlay = document.getElementById('statistikOverlay');
 
-var DEFAULT_REMINDERS = [
-  { id: 1, title: 'Bewegungspause', body: 'Gönn deinem Körper zwei Minuten Freiheit. Kurz aufstehen, strecken und die Beine lockern.', intervalMinutes: 50, enabled: true },
-  { id: 2, title: 'Die Perfekte Atmung', body: 'Mund zu, Zunge an den Gaumen. 5,5 Sekunden ein, 5,5 Sekunden aus.', intervalMinutes: 60, enabled: true }
-];
-
-function escHtml(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function renderRemindersList() {
-  var list = document.getElementById('remindersList');
-  list.innerHTML = '';
-  remindersData.forEach(function(r, i) {
-    var item = document.createElement('div');
-    item.className = 'reminder-item';
-    item.innerHTML =
-      '<div class="reminder-header">' +
-        '<input class="input rem-title" placeholder="Titel" value="' + escHtml(r.title) + '">' +
-        '<label class="toggle-switch" style="pointer-events:auto" title="Aktiv">' +
-          '<input type="checkbox" class="rem-enabled"' + (r.enabled ? ' checked' : '') + '>' +
-          '<span class="toggle-slider"></span>' +
-        '</label>' +
-        '<button class="reminder-del" title="Löschen">✕</button>' +
-      '</div>' +
-      '<textarea class="input rem-body" placeholder="Nachrichtentext" style="min-height:52px">' + escHtml(r.body) + '</textarea>' +
-      '<div class="reminder-interval-row">' +
-        'Alle&nbsp;<input type="number" class="input input-interval rem-interval" min="1" max="1440" value="' + (r.intervalMinutes || 60) + '">&nbsp;Minuten' +
-      '</div>';
-    item.querySelector('.reminder-del').onclick = function() {
-      remindersData = collectReminders();
-      remindersData.splice(i, 1);
-      renderRemindersList();
-    };
-    list.appendChild(item);
+function buildFullSparkline(trackerId, type) {
+  var keys = Object.keys(DATA).sort();
+  var pts = [];
+  keys.forEach(function(k) {
+    var e = DATA[k];
+    if (e && e[trackerId] != null && e[trackerId] !== '') {
+      pts.push({ date: k, val: Number(e[trackerId]) });
+    }
   });
-}
+  if (pts.length < 2) return '<div style="color:var(--text-dim);font-size:11px;padding:8px 0">Not enough data</div>';
 
-function collectReminders() {
-  var result = [];
-  var maxId = remindersData.reduce(function(m, r) { return Math.max(m, r.id || 0); }, 0);
-  document.querySelectorAll('#remindersList .reminder-item').forEach(function(item, i) {
-    var existing = remindersData[i] || {};
-    result.push({
-      id: existing.id || (++maxId),
-      title: item.querySelector('.rem-title').value.trim() || 'Erinnerung',
-      body: item.querySelector('.rem-body').value.trim(),
-      intervalMinutes: Math.max(1, parseInt(item.querySelector('.rem-interval').value) || 60),
-      enabled: item.querySelector('.rem-enabled').checked
-    });
+  var vals = pts.map(function(p) { return p.val; });
+  var min = Math.min.apply(null, vals);
+  var max = Math.max.apply(null, vals);
+  var range = max - min || 1;
+  var avg = (vals.reduce(function(a, b) { return a + b; }, 0) / vals.length);
+  var avgDisplay = type === 'number' ? Math.round(avg).toLocaleString('de-DE') : avg.toFixed(1);
+  var maxDisplay = type === 'number' ? max.toLocaleString('de-DE') : max.toFixed(1);
+  var minDisplay = type === 'number' ? min.toLocaleString('de-DE') : min.toFixed(1);
+
+  var W = 560, H = 48, padX = 4, padY = 6;
+  var step = pts.length > 1 ? (W - padX * 2) / (pts.length - 1) : W;
+  var svgPts = pts.map(function(p, i) {
+    var x = (padX + i * step).toFixed(1);
+    var y = (H - padY - ((p.val - min) / range) * (H - padY * 2)).toFixed(1);
+    return { x: x, y: y, val: p.val, date: p.date };
   });
-  return result;
+  var d = svgPts.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p.x + ',' + p.y; }).join(' ');
+  var avgY = (H - padY - ((avg - min) / range) * (H - padY * 2)).toFixed(1);
+  var lastPt = svgPts[svgPts.length - 1];
+
+  return '<div class="stat-chart-label">' +
+      '<span>' + (pts[0].date.split('-').reverse().join('.')) + ' – ' + (pts[pts.length-1].date.split('-').reverse().join('.')) + ' · ' + pts.length + ' entries</span>' +
+      '<span class="stat-chart-avg">Ø ' + avgDisplay + (type === 'scale' ? ' / 5' : '') + '</span>' +
+    '</div>' +
+    '<svg class="stat-chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<line x1="' + padX + '" y1="' + avgY + '" x2="' + (W - padX) + '" y2="' + avgY + '" stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>' +
+      '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<circle cx="' + lastPt.x + '" cy="' + lastPt.y + '" r="3" fill="var(--accent)"/>' +
+    '</svg>' +
+    '<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);font-family:\'JetBrains Mono\',monospace;margin-top:2px">' +
+      '<span>Min: ' + minDisplay + '</span><span>Max: ' + maxDisplay + '</span>' +
+    '</div>';
 }
 
-async function openRemindersModal() {
-  if (window.api) {
-    remindersData = await window.api.getReminders();
-  } else {
-    try { remindersData = JSON.parse(localStorage.getItem('zenith-reminders') || 'null') || DEFAULT_REMINDERS.slice(); }
-    catch { remindersData = DEFAULT_REMINDERS.slice(); }
-  }
-  renderRemindersList();
-  $remindersOverlay.classList.add('open');
+function openStatistikModal() {
+  var content = document.getElementById('statistikContent');
+  var html = '';
+  trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
+    html += '<div class="stat-section-title">' + escHtml(t.label) + '</div>';
+    html += '<div class="stat-chart-wrap">' + buildFullSparkline(t.id, t.type) + '</div>';
+  });
+  if (!html) html = '<div style="color:var(--text-dim);padding:20px 0;text-align:center">No active trackers</div>';
+  content.innerHTML = html;
+  $statistikOverlay.classList.add('open');
   closeSettingsMenu();
 }
 
-document.getElementById('remindersBtn').onclick = function() { openRemindersModal(); };
-
-document.getElementById('addReminderBtn').onclick = function() {
-  remindersData = collectReminders();
-  remindersData.push({ id: Date.now(), title: '', body: '', intervalMinutes: 60, enabled: true });
-  renderRemindersList();
-  document.querySelector('#remindersOverlay .modal').scrollTop = 9999;
-};
-
-document.getElementById('remindersSaveBtn').onclick = async function() {
-  var updated = collectReminders();
-  if (window.api) {
-    await window.api.saveReminders(updated);
-  } else {
-    localStorage.setItem('zenith-reminders', JSON.stringify(updated));
-  }
-  remindersData = updated;
-  $remindersOverlay.classList.remove('open');
-};
-
-document.getElementById('remindersCancelBtn').onclick = function() {
-  $remindersOverlay.classList.remove('open');
-};
-
-$remindersOverlay.onclick = function(e) {
-  if (e.target === $remindersOverlay) $remindersOverlay.classList.remove('open');
-};
+document.getElementById('statistikBtn').onclick = function() { openStatistikModal(); };
+document.getElementById('statistikCloseBtn').onclick = function() { $statistikOverlay.classList.remove('open'); };
+$statistikOverlay.onclick = function(e) { if (e.target === $statistikOverlay) $statistikOverlay.classList.remove('open'); };
 
 // ═══════════════════ INIT ═══════════════════
 // GitHub URL hier eintragen sobald das Repo erstellt ist:
@@ -1818,23 +2072,35 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
 
 (async function() {
   loadBreakConfig();
+  updateModeTooltips();
   loadTrackers();
   await loadData();
+  applyLang();
   renderMap();
 
-  var $versionBadge = document.getElementById('versionBadge');
+  var appVersion = 'v0.3.0';
   if (window.api) {
     var version = await window.api.getVersion();
-    $versionBadge.textContent = 'v' + version;
+    appVersion = 'v' + version;
   }
-  $versionBadge.onclick = function() {
+  var aboutVersionEl = document.getElementById('aboutVersion');
+  if (aboutVersionEl) aboutVersionEl.textContent = appVersion;
+
+  var aboutOverlay = document.getElementById('aboutOverlay');
+  document.getElementById('aboutBtn').onclick = function() {
+    aboutOverlay.classList.add('open');
+    closeSettingsMenu();
+  };
+  document.getElementById('aboutCloseBtn').onclick = function() { aboutOverlay.classList.remove('open'); };
+  document.getElementById('aboutGithubBtn').onclick = function() {
     if (window.api) window.api.openExternal(GITHUB_URL);
     else window.open(GITHUB_URL, '_blank');
   };
+  aboutOverlay.onclick = function(e) { if (e.target === aboutOverlay) aboutOverlay.classList.remove('open'); };
 
   if (window.api) {
     var p = await window.api.getDataPath();
-    document.getElementById('dataPath').textContent = 'Daten: ' + p;
+    document.getElementById('dataPath').textContent = Sf('dataPath', {p: p});
   }
 
   if (!DATA[today()]) {
@@ -1842,5 +2108,19 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
   }
 })();
 </script>
+
+<!-- ABOUT MODAL -->
+<div class="overlay" id="aboutOverlay">
+  <div class="modal" style="max-width:360px;text-align:center;padding:40px 36px">
+    <button id="aboutCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:color 0.15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">✕</button>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:300;letter-spacing:0.22em;color:#fad836;text-transform:uppercase;margin-bottom:4px">AURORA</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:8px;font-weight:200;letter-spacing:0.28em;color:var(--text-muted);text-transform:uppercase;margin-bottom:28px">Work &amp; Wellbeing</div>
+    <div id="aboutVersion" style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:300;color:var(--text);letter-spacing:2px;margin-bottom:8px">v0.3.0</div>
+    <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;margin-bottom:28px">stable</div>
+    <div style="width:40px;height:1px;background:var(--border);margin:0 auto 24px"></div>
+    <div style="font-size:12px;color:var(--text-muted);line-height:1.7">Designed &amp; built by<br><span style="color:var(--text)">TheDevAlan</span></div>
+    <button id="aboutGithubBtn" style="margin-top:20px;display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--border);color:var(--text-muted);padding:8px 18px;border-radius:8px;font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all 0.2s" onmouseover="this.style.borderColor='var(--text-dim)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">GitHub ↗</button>
+  </div>
+</div>
 </body>
 </html>

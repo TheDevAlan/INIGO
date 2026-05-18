@@ -29,11 +29,10 @@ ipcMain.handle('get-data-path', () => DATA_DIR);
 let reminderIntervals = [];
 let notificationsEnabled = true;
 const APP_ICON_PATH = path.join(__dirname, 'assets', 'zenith-logo-mark.png');
-const APP_DISPLAY_NAME = 'ZENITH Work & Wellbeing';
-const APP_USER_MODEL_ID = 'zenith.workwellbeing';
+const APP_DISPLAY_NAME = 'AURORA Work & Wellbeing';
 
 app.setName(APP_DISPLAY_NAME);
-app.setAppUserModelId(APP_USER_MODEL_ID);
+app.setAppUserModelId('aurora');
 
 const REMINDERS_FILE = path.join(app.getPath('userData'), 'daily-flow-data', 'reminders.json');
 
@@ -112,7 +111,7 @@ function createWindow() {
     height: 780,
     minWidth: 640,
     minHeight: 500,
-    backgroundColor: '#0a0e14',
+    backgroundColor: '#0e0c0a',
     icon: APP_ICON_PATH,
     titleBarStyle: 'default',
     title: APP_DISPLAY_NAME,
@@ -148,12 +147,8 @@ function createTray() {
 
   const contextMenu = Menu.buildFromTemplate([
     { label: '\u00d6ffnen', click: () => { mainWindow.show(); mainWindow.focus(); } },
-    { label: 'Erinnerungen', type: 'checkbox', checked: true, click: (item) => {
-      notificationsEnabled = item.checked;
-      if (notificationsEnabled) startReminders(); else stopReminders();
-    }},
     { type: 'separator' },
-    { label: 'Beenden', click: () => { app.isQuitting = true; stopReminders(); app.quit(); } }
+    { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
   ]);
 
   tray.setToolTip(APP_DISPLAY_NAME);
@@ -164,9 +159,8 @@ function createTray() {
 app.whenReady().then(() => {
   createWindow();
   createTray();
-  startReminders();
 });
 
 app.on('window-all-closed', () => {});
 app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
-app.on('before-quit', () => { app.isQuitting = true; stopReminders(); });
+app.on('before-quit', () => { app.isQuitting = true; });

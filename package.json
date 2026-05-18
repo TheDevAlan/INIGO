@@ -1,7 +1,7 @@
 {
   "name": "daily-flow",
-  "version": "0.3.0",
-  "description": "Personal daily tracker with Flowtime timer and mood heatmap",
+  "version": "0.4.0",
+  "description": "Personal productivity timer and daily wellbeing tracker",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
