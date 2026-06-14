@@ -2,6 +2,8 @@
 
 A personal desktop app for focused work and daily wellbeing tracking. Built with Electron — runs fully local, no cloud, no tracking, no ads.
 
+![INI:GO Screenshot](assets/screenshot.png)
+
 ---
 
 ## Requirements
