@@ -1,5 +1,5 @@
 {
-  "name": "daily-flow",
+  "name": "INIGO",
   "version": "1.0.0",
   "description": "Personal productivity timer and daily wellbeing tracker",
   "main": "main.js",
@@ -12,7 +12,7 @@
     "electron-builder": "^24.9.0"
   },
   "build": {
-    "appId": "com.dailyflow.app",
+    "appId": "com.inigo.app",
     "productName": "INI:GO",
     "win": {
       "signAndEditExecutable": false,

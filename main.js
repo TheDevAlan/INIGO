@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // ═══════════════════ DATA ═══════════════════
-const DATA_DIR  = path.join(app.getPath('userData'), 'daily-flow-data');
+const DATA_DIR  = path.join(app.getPath('userData'), 'INIGO-data');
 const DATA_FILE = path.join(DATA_DIR, 'data.json');
 const DATA_TMP  = DATA_FILE + '.tmp';
 

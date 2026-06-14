@@ -28,7 +28,7 @@ Creates a portable `.exe` in the `dist/` folder — no installer needed.
 All data is stored locally:
 
 ```
-%APPDATA%/daily-flow/daily-flow-data/data.json
+%APPDATA%/INIGO/INIGO-data/data.json
 ```
 
 ---
