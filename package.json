@@ -1,6 +1,6 @@
 {
   "name": "daily-flow",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Personal productivity timer and daily wellbeing tracker",
   "main": "main.js",
   "scripts": {
@@ -9,16 +9,15 @@
   },
   "devDependencies": {
     "electron": "^28.0.0",
-    "electron-builder": "^24.9.0",
-    "sharp": "^0.34.5"
+    "electron-builder": "^24.9.0"
   },
   "build": {
     "appId": "com.dailyflow.app",
-    "productName": "ZENITH Work & Wellbeing",
+    "productName": "INI:GO",
     "win": {
       "signAndEditExecutable": false,
       "target": "portable",
-      "icon": "assets/zenith-logo-mark.png"
+      "icon": "assets/INIGO-logo-mark.png"
     },
     "files": [
       "main.js",

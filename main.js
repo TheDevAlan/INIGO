@@ -3,8 +3,9 @@ const path = require('path');
 const fs = require('fs');
 
 // ═══════════════════ DATA ═══════════════════
-const DATA_DIR = path.join(app.getPath('userData'), 'daily-flow-data');
+const DATA_DIR  = path.join(app.getPath('userData'), 'daily-flow-data');
 const DATA_FILE = path.join(DATA_DIR, 'data.json');
+const DATA_TMP  = DATA_FILE + '.tmp';
 
 function ensureDataDir() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -19,85 +20,36 @@ ipcMain.handle('load-data', () => {
 
 ipcMain.handle('save-data', (_event, data) => {
   ensureDataDir();
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  // Atomic write: write to .tmp then rename to prevent corruption on crash
+  fs.writeFileSync(DATA_TMP, JSON.stringify(data, null, 2), 'utf-8');
+  fs.renameSync(DATA_TMP, DATA_FILE);
   return true;
 });
 
 ipcMain.handle('get-data-path', () => DATA_DIR);
+ipcMain.handle('is-dev', () => !app.isPackaged);
 
 // ═══════════════════ NOTIFICATIONS ═══════════════════
-let reminderIntervals = [];
-let notificationsEnabled = true;
-const APP_ICON_PATH = path.join(__dirname, 'assets', 'zenith-logo-mark.png');
-const APP_DISPLAY_NAME = 'AURORA Work & Wellbeing';
+const APP_ICON_PATH   = path.join(__dirname, 'assets', 'INIGO-logo-mark.png');
+const APP_DISPLAY_NAME = 'INI:GO';
 
 app.setName(APP_DISPLAY_NAME);
-app.setAppUserModelId('aurora');
-
-const REMINDERS_FILE = path.join(app.getPath('userData'), 'daily-flow-data', 'reminders.json');
-
-const DEFAULT_REMINDERS = [
-  { id: 1, title: 'Bewegungspause', body: 'Gönn deinem Körper zwei Minuten Freiheit. Kurz aufstehen, strecken und die Beine lockern.', intervalMinutes: 50, enabled: true },
-  { id: 2, title: 'Die Perfekte Atmung', body: 'Mund zu, Zunge an den Gaumen. 5,5 Sekunden ein, 5,5 Sekunden aus.', intervalMinutes: 60, enabled: true }
-];
-
-function loadRemindersConfig() {
-  ensureDataDir();
-  try {
-    if (fs.existsSync(REMINDERS_FILE)) return JSON.parse(fs.readFileSync(REMINDERS_FILE, 'utf-8'));
-  } catch {}
-  return DEFAULT_REMINDERS;
-}
-
-function saveRemindersConfig(reminders) {
-  ensureDataDir();
-  fs.writeFileSync(REMINDERS_FILE, JSON.stringify(reminders, null, 2), 'utf-8');
-}
-
-function startReminders() {
-  stopReminders();
-  loadRemindersConfig().forEach(r => {
-    if (!r.enabled || !r.intervalMinutes) return;
-    reminderIntervals.push(setInterval(() => {
-      if (!notificationsEnabled) return;
-      new Notification({ title: r.title, body: r.body, icon: APP_ICON_PATH, silent: false }).show();
-    }, r.intervalMinutes * 60 * 1000));
-  });
-}
-
-function stopReminders() {
-  reminderIntervals.forEach(iv => clearInterval(iv));
-  reminderIntervals = [];
-}
+app.setAppUserModelId('inigo');
 
 ipcMain.handle('show-notification', (_event, title, body) => {
-  new Notification({
-    title,
-    body,
-    icon: APP_ICON_PATH,
-    silent: false
-  }).show();
+  new Notification({ title, body, icon: APP_ICON_PATH, silent: false }).show();
   return true;
-});
-
-ipcMain.handle('toggle-notifications', (_event, enabled) => {
-  notificationsEnabled = enabled;
-  return notificationsEnabled;
 });
 
 ipcMain.handle('get-version', () => app.getVersion());
 
+ipcMain.handle('window-minimize', () => { if (mainWindow) mainWindow.minimize(); });
+ipcMain.handle('window-maximize', () => { if (mainWindow) { mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize(); } });
+ipcMain.handle('window-close',    () => { app.quit(); });
+
 ipcMain.handle('open-external', (_event, url) => {
   const { shell } = require('electron');
   shell.openExternal(url);
-  return true;
-});
-
-ipcMain.handle('get-reminders', () => loadRemindersConfig());
-
-ipcMain.handle('save-reminders', (_event, reminders) => {
-  saveRemindersConfig(reminders);
-  startReminders();
   return true;
 });
 
@@ -107,13 +59,13 @@ let tray = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1060,
-    height: 780,
+    width: 980,
+    height: 580,
     minWidth: 640,
     minHeight: 500,
     backgroundColor: '#0e0c0a',
     icon: APP_ICON_PATH,
-    titleBarStyle: 'default',
+    frame: false,
     title: APP_DISPLAY_NAME,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -122,33 +74,30 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadFile('index.html');
+  // In dev mode pass ?dev=1 so the renderer can enable test helpers
+  mainWindow.loadFile('index.html', app.isPackaged ? {} : { query: { dev: '1' } });
   mainWindow.setMenuBarVisibility(false);
 
-  mainWindow.on('close', () => {
-    app.isQuitting = true;
-    stopReminders();
-    app.quit();
-  });
+  mainWindow.on('close', () => { app.quit(); });
 }
 
 function createTray() {
-  if (fs.existsSync(APP_ICON_PATH)) {
-    const trayIcon = nativeImage.createFromPath(APP_ICON_PATH);
-    tray = trayIcon.isEmpty()
-      ? new Tray(nativeImage.createFromBuffer(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4y2Ng+M9QzwAFjFAMBf8ZGBj+M0DB/0EEBnQBqjUQHxdYDCYX0NcLgwAAr0kIEVfyoWcAAAAASUVORK5CYII=', 'base64')))
-      : new Tray(trayIcon.resize({ width: 18, height: 18 }));
-  } else {
-    const img = nativeImage.createFromBuffer(
-      Buffer.from('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4y2Ng+M9QzwAFjFAMBf8ZGBj+M0DB/0EEBnQBqjUQHxdYDCYX0NcLgwAAr0kIEVfyoWcAAAAASUVORK5CYII=', 'base64')
-    );
-    tray = new Tray(img);
-  }
+  const trayIcon = fs.existsSync(APP_ICON_PATH)
+    ? nativeImage.createFromPath(APP_ICON_PATH)
+    : nativeImage.createEmpty();
+
+  const img = trayIcon.isEmpty()
+    ? nativeImage.createFromBuffer(Buffer.from(
+        'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMElEQVQ4y2Ng+M9QzwAFjFAMBf8ZGBj+M0DB/0EEBnQBqjUQHxdYDCYX0NcLgwAAr0kIEVfyoWcAAAAASUVORK5CYII=',
+        'base64'))
+    : trayIcon.resize({ width: 18, height: 18 });
+
+  tray = new Tray(img);
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: '\u00d6ffnen', click: () => { mainWindow.show(); mainWindow.focus(); } },
+    { label: 'Open', click: () => { mainWindow.show(); mainWindow.focus(); } },
     { type: 'separator' },
-    { label: 'Beenden', click: () => { app.isQuitting = true; app.quit(); } }
+    { label: 'Quit', click: () => { app.isQuitting = true; app.quit(); } }
   ]);
 
   tray.setToolTip(APP_DISPLAY_NAME);
@@ -161,6 +110,6 @@ app.whenReady().then(() => {
   createTray();
 });
 
-app.on('window-all-closed', () => {});
+app.on('window-all-closed', () => { app.quit(); });
 app.on('activate', () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 app.on('before-quit', () => { app.isQuitting = true; });

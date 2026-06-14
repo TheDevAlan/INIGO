@@ -1,4 +1,4 @@
-# AURORA Work & Wellbeing
+# INI:GO
 
 A personal desktop app for focused work and daily wellbeing tracking. Built with Electron — runs fully local, no cloud, no tracking, no ads.
 
@@ -34,6 +34,19 @@ All data is stored locally:
 ---
 
 ## Changelog
+
+### v1.0.0 — INI:GO Rebrand & UX Refinements
+
+- Rebranded to **INI:GO** — new logo, wordmark, and app icon throughout
+- Mode toggle renamed: **Flow → Focus** (deep work mode)
+- Daily check-in updated with new default trackers: **Workout, Steps, Sleep, Recovery, Gratitude, Mood**
+- Check-in trackers now include Yes/No and Text input types in addition to Scale and Number
+- "What are you working on?" session input field removed from timer screen
+- Window X button now **quits the app** (previously hid to tray)
+- Settings menu reordered: Timer Settings → Trackers → Statistics
+- All branding references (UI, localStorage keys, app metadata) migrated to INI:GO
+
+---
 
 ### v0.4.0 — Pomodoro Redesign & Full English UI
 
@@ -96,7 +109,7 @@ All data is stored locally:
 
 ### v0.2.0 — Branding & Layout
 
-- AURORA / ZENITH branding
+- INI:GO branding
 - System tray integration
 - Yearly heatmap navigation
 
@@ -116,7 +129,7 @@ All data is stored locally:
 
 ### Pomodoro Timer
 
-- **Two modes**: Rhythm (classic Pomodoro) and Flow (deep work), each with independent focus and break durations configurable in **Timer Settings**
+- **Two modes**: Rhythm (classic Pomodoro) and Focus (deep work), each with independent focus and break durations configurable in **Timer Settings**
 - **Manual break start**: after focus ends, the break screen appears but the break countdown only starts when you press Play — giving you control over pacing
 - **Break reminders**: MOVE, DRINK, BREATHE icons with evidence-based hover tooltips during break
 - **Post-break prompt**: after the break countdown finishes, a "NEXT SESSION" screen appears before returning to idle
@@ -140,7 +153,7 @@ All data is stored locally:
 - Opens automatically on first app launch of the day
 - Manually accessible by clicking any heatmap cell
 - Configurable tracker categories (Settings → Trackers)
-- Default trackers: Activity, Meditation, Sleep, Steps, Mood
+- Default trackers: Workout (Yes/No), Steps (Number), Sleep (1–5), Recovery (Yes/No), Gratitude (Text), Mood (1–5)
 
 ---
 
@@ -155,7 +168,7 @@ All data is stored locally:
 ### Tracker Configuration
 
 - Add, remove, and configure tracking categories
-- Per category: label, question text, type (Scale 1–5 or Number), active/inactive toggle
+- Per category: label, question text, type (Scale 1–5, Number, Yes/No, Text), active/inactive toggle
 - Mood tracker is locked as it drives the heatmap color
 
 ---
@@ -172,7 +185,7 @@ All data is stored locally:
 ### Support
 
 - ♡ button (top left) opens the support modal
-- App runs in the **system tray** — closing the window keeps it running in the background
+- App runs in the **system tray** — right-click the tray icon to reopen or quit
 - `Escape` closes any open menu or modal
 
 ---

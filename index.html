@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AURORA Work & Wellbeing</title>
+<title>INI:GO</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=JetBrains+Mono:wght@300;400;500;600&family=DM+Sans:wght@200;300;400;500;600&display=swap');
 
@@ -42,6 +42,30 @@
   }
 
 
+  /* ═══════════ CUSTOM TITLE BAR ═══════════ */
+  .titlebar {
+    position: fixed; top: 0; left: 0; right: 0; height: 32px;
+    -webkit-app-region: drag;
+    z-index: 500;
+    background: #050403;
+    display: flex; align-items: center; justify-content: flex-end;
+  }
+  .tb-controls {
+    display: flex; align-items: center;
+    -webkit-app-region: no-drag;
+    height: 32px;
+  }
+  .tb-btn {
+    width: 46px; height: 32px; border: none; background: transparent;
+    color: var(--text-dim); font-size: 13px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    -webkit-app-region: no-drag;
+  }
+  .tb-max { font-size: 17px; }
+  .tb-btn:hover { background: rgba(255,255,255,0.07); color: var(--text-muted); }
+  .tb-close:hover { background: #c42b1c; color: #fff; }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -57,11 +81,11 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-  .app { max-width: 1120px; margin: 0 auto; padding: 16px 24px 28px; display: flex; flex-direction: column; gap: 28px; }
+  .app { max-width: 1120px; margin: 0 auto; padding: 48px 14px 22px; display: flex; flex-direction: column; gap: 16px; height: 100vh; overflow-y: auto; }
 
   .support-wrap {
     position: fixed;
-    top: 12px;
+    top: 44px;
     left: 14px;
     z-index: 220;
   }
@@ -88,7 +112,7 @@
 
   .settings-wrap {
     position: fixed;
-    top: 12px;
+    top: 44px;
     right: 14px;
     z-index: 220;
   }
@@ -110,6 +134,22 @@
   .settings-btn:focus-visible {
     color: var(--text);
     border-color: var(--text-dim);
+    outline: none;
+  }
+  body.on-break .support-btn,
+  body.on-break .settings-btn {
+    color: var(--break-accent);
+    border-color: rgba(107, 112, 53, 0.35);
+    background: rgba(107, 112, 53, 0.08);
+    transition: color 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+  }
+  body.on-break .support-btn:hover,
+  body.on-break .support-btn:focus-visible,
+  body.on-break .settings-btn:hover,
+  body.on-break .settings-btn:focus-visible {
+    color: var(--break-accent);
+    border-color: var(--break-accent);
+    background: rgba(107, 112, 53, 0.18);
     outline: none;
   }
   .settings-menu {
@@ -149,60 +189,21 @@
   }
 
   /* ═══════════ MODE TOGGLE ═══════════ */
-  .timer-section { display: flex; flex-direction: column; align-items: center; gap: 14px; padding-top: 38px; }
+  .timer-section { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding-top: 168px; padding-bottom: 28px; flex: 1; min-height: 0; }
   .timer-status { display: none; }
-  .top-brand {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    position: relative;
+  .mode-toggle {
+    position: fixed; top: 44px; left: 50%; transform: translateX(-50%);
+    height: 38px; z-index: 220; width: 272px;
+    display: flex; align-items: center;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 3px; gap: 2px;
   }
-  /* Glow-Kegel aus der Logo-Spitze */
-  .top-brand::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
-    height: 100px;
-    background: radial-gradient(ellipse at 50% 20%, rgba(250,216,54,0.14) 0%, rgba(240,151,42,0.06) 40%, transparent 72%);
-    pointer-events: none;
-    z-index: 0;
-    filter: blur(4px);
-  }
-  .top-brand img { width: 56px; height: 56px; object-fit: contain; position: relative; z-index: 1; filter: drop-shadow(0 0 8px rgba(250,216,54,0.2)); }
-  .top-brand-wordmark {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: 0.22em;
-    color: #fad836;
-    text-transform: uppercase;
-    line-height: 1;
-    margin-top: 4px;
-    position: relative;
-    z-index: 1;
-  }
-  .top-brand-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 8px;
-    font-weight: 200;
-    letter-spacing: 0.28em;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-top: 1px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .mode-toggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 2px; }
 
   .mode-btn {
-    padding: 7px 16px; border: none; border-radius: 8px; background: transparent;
+    padding: 0 16px; border: none; border-radius: 8px; background: transparent;
+    align-self: stretch; display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1;
     color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s;
   }
   .mode-btn:hover { color: var(--text-muted); }
   .mode-btn.active-healthy { background: rgba(240,151,42,0.12); color: var(--accent); }
@@ -265,7 +266,7 @@
   .focus-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(14, 12, 10, 0.86);
+    background: rgba(14, 12, 10, 0.82);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: 30;
@@ -304,7 +305,7 @@
   }
   body.timer-focus .mode-toggle {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(-50%) translateY(-6px);
     pointer-events: none;
   }
 
@@ -337,7 +338,7 @@
   }
   body.on-break .mode-toggle {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateX(-50%) translateY(-6px);
     pointer-events: none;
   }
   /* Break / Focus / Next labels */
@@ -377,7 +378,7 @@
   }
   body.post-break .timer-section  { z-index: 35; }
   body.post-break .top-brand      { opacity: 0.18; transform: scale(0.9) translateY(-4px); }
-  body.post-break .mode-toggle    { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+  body.post-break .mode-toggle    { opacity: 0; transform: translateX(-50%) translateY(-6px); pointer-events: none; }
   body.post-break .timer-display  { transform: scale(1.18); }
   body.post-break .timer-btn.primary {
     background: var(--accent);
@@ -410,13 +411,11 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transform: translateY(6px);
     pointer-events: none;
-    transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+    transition: opacity 0.5s ease 0.3s;
   }
   body.on-break .break-reminders {
     opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
   }
   .break-reminder-item {
@@ -426,7 +425,6 @@
     gap: 7px;
     color: var(--break-accent);
     opacity: 0.55;
-    position: relative;
     cursor: default;
     transition: opacity 0.2s ease;
     width: 62px;
@@ -441,11 +439,11 @@
     text-transform: uppercase;
   }
 
-  /* Tooltip card */
+  /* Tooltip card — position:fixed so it never triggers scrollbars on .app */
   .break-tip {
-    position: absolute;
-    bottom: calc(100% + 16px);
-    width: 268px;
+    position: fixed;
+    left: 50%;
+    width: 352px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -454,22 +452,16 @@
     text-align: left;
     pointer-events: none;
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateX(-50%) translateY(-8px);
     transition: opacity 0.08s ease 0s, transform 0.08s ease 0s;
+    will-change: opacity, transform;
     z-index: 300;
   }
-  .break-tip--left   { left: 0; }
-  .break-tip--center { left: 50%; transform: translateX(-50%) translateY(8px); }
-  .break-tip--right  { right: 0; }
 
   .break-reminder-item:hover .break-tip {
     opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.22s ease 0.3s, transform 0.22s cubic-bezier(0.22,1,0.36,1) 0.3s;
-  }
-  .break-reminder-item:hover .break-tip--center {
     transform: translateX(-50%) translateY(0);
-    transition: opacity 0.22s ease 0.3s, transform 0.22s cubic-bezier(0.22,1,0.36,1) 0.3s;
+    transition: opacity 0.2s ease 0.3s, transform 0.32s cubic-bezier(0.22,1,0.36,1) 0.3s;
   }
 
   .break-tip-title {
@@ -505,6 +497,7 @@
   .timer-btn.stop-btn:hover { background: rgba(139,58,42,0.28); color: var(--stop-color); border-color: var(--stop-color); }
 
   .timer-meta { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+
   .queue-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--deepwork); opacity: 0; transition: opacity 0.3s; height: 16px; }
   .queue-badge.visible { opacity: 1; }
 
@@ -523,11 +516,21 @@
   .banner.removing { animation: bannerOut 0.3s ease forwards; }
   @keyframes bannerOut { to { opacity:0; transform:translateY(-12px); } }
 
+  /* ═══════════ TREND LINE ═══════════ */
+  .trend-line-wrap {
+    height: 28px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    margin-bottom: 4px;
+  }
+  .trend-line-wrap svg { display: block; width: 100%; height: 28px; }
+
   /* ═══════════ HEATMAP ═══════════ */
-  .heatmap-section { display: flex; flex-direction: column; gap: 12px; }
+  .heatmap-section { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
   .heatmap-header { display: flex; justify-content: space-between; align-items: center; padding-left: 35px; }
   .heatmap-info { font-size: 13px; color: var(--text-muted); }
-  .year-nav { display: flex; align-items: center; gap: 12px; }
+  .year-nav { display: flex; align-items: center; gap: 12px; position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); }
   .year-nav button { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 4px; transition: color 0.2s; }
   .year-nav button:hover { color: var(--text); background: var(--surface); }
   .year-label { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); min-width: 40px; text-align: center; }
@@ -546,6 +549,8 @@
   .cell:hover { border-color: var(--text-dim); transform: scale(1.4); z-index: 2; }
   .cell.future { opacity: 0.25; cursor: default; }
   .cell.future:hover { transform: none; border-color: rgba(255,255,255,0.03); }
+  body.on-break .cell, body.timer-focus .cell { pointer-events: none; }
+  .cell-ghost { width: 14px; height: 14px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.05); background: transparent; cursor: default; }
   .cell.today { border-color: #ffffff; box-shadow: 0 0 0 1px #ffffff; }
   .cell.m1 { background: var(--mood-1); }
   .cell.m2 { background: var(--mood-2); }
@@ -592,10 +597,25 @@
   /* ═══════════ OVERLAY / MODAL ═══════════ */
   .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; visibility: hidden; transition: all 0.25s; }
   .overlay.open { opacity: 1; visibility: visible; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; width: 90%; max-width: 420px; transform: translateY(16px) scale(0.97); transition: transform 0.25s; max-height: 85vh; overflow-y: auto; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; width: 90%; max-width: 420px; transform: translateY(16px) scale(0.97); transition: transform 0.25s; max-height: 85vh; overflow-y: auto; position: relative; }
   .overlay.open .modal { transform: translateY(0) scale(1); }
   .modal h2 { font-size: 17px; font-weight: 500; margin-bottom: 2px; }
   .modal-sub { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-bottom: 24px; }
+  .modal-x { position: absolute; top: 22px; right: 20px; background: none; border: none; color: var(--text-dim); font-size: 15px; cursor: pointer; padding: 4px 7px; border-radius: 6px; line-height: 1; transition: color 0.15s, background 0.15s; }
+  .modal-x:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+
+  /* ═══════════ ONBOARDING MODAL ═══════════ */
+  .onb-modal { max-width: 460px; text-align: center; padding: 40px 36px 32px; }
+  .onb-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+  .onb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); transition: background 0.25s, transform 0.25s; }
+  .onb-dot.active { background: var(--accent); transform: scale(1.3); }
+  .onb-icon { font-size: 38px; margin-bottom: 16px; line-height: 1; }
+  .onb-title { font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
+  .onb-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; margin-bottom: 32px; }
+  .onb-next { width: 100%; padding: 11px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: #0e0c0a; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; margin-bottom: 14px; display: block; }
+  .onb-next:hover { opacity: 0.82; }
+  .onb-skip { background: none; border: none; color: var(--text-dim); font-size: 12px; font-family: 'JetBrains Mono', monospace; cursor: pointer; letter-spacing: 0.3px; transition: color 0.15s; }
+  .onb-skip:hover { color: var(--text-muted); }
   .field { margin-bottom: 18px; }
   .field label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; letter-spacing: 0.3px; }
   .scale { display: flex; gap: 6px; }
@@ -611,6 +631,67 @@
   .btn-ghost:hover { color: var(--text); border-color: var(--text-dim); }
   .btn-fill { background: var(--accent); color: var(--bg); border-color: var(--accent); }
   .btn-fill:hover { opacity: 0.85; }
+  .btn-fill:disabled { opacity: 0.35; cursor: default; }
+
+  /* ═══════════ ACTION BUTTON ═══════════ */
+  .action-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text-muted); border-radius: 8px; padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    cursor: pointer; transition: all 0.15s; letter-spacing: 0.3px;
+  }
+  .action-btn:hover { color: var(--text); border-color: var(--text-dim); background: var(--surface-hover); }
+  .action-btn-plus { color: var(--accent); font-size: 15px; line-height: 1; font-weight: 500; }
+
+  /* ═══════════ NEW CATEGORY FORM ═══════════ */
+  .new-cat-form {
+    display: none; flex-direction: column; gap: 12px;
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; background: var(--bg);
+    margin-top: 8px; margin-bottom: 4px;
+  }
+  .new-cat-form.visible { display: flex; }
+  .new-cat-form-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .type-cards { display: flex; gap: 8px; }
+  .type-card {
+    flex: 1; border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 6px; background: var(--surface); color: var(--text-dim);
+    cursor: pointer; text-align: center; transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace; display: flex;
+    flex-direction: column; align-items: center; gap: 4px;
+  }
+  .type-card:hover { border-color: var(--text-dim); color: var(--text-muted); background: var(--surface-hover); }
+  .type-card.selected { border-color: var(--accent); color: var(--text); background: rgba(240,151,42,0.08); }
+  .type-card-icon { font-size: 15px; line-height: 1; }
+  .type-card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.3px; }
+  .type-card-sub { font-size: 9px; color: var(--text-dim); letter-spacing: 0.2px; }
+  .type-card.selected .type-card-sub { color: var(--text-muted); }
+  .new-cat-actions { display: flex; gap: 8px; margin-top: 2px; }
+  .trk-type-badge {
+    font-size: 9px; font-family: 'JetBrains Mono', monospace;
+    color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 2px 6px; border: 1px solid var(--border); border-radius: 4px;
+    display: inline-block; margin-bottom: 4px;
+  }
+  .btn-danger {
+    background: rgba(139,58,42,0.15); color: #e06050;
+    border-color: var(--stop-color);
+  }
+  .btn-danger:hover { background: rgba(139,58,42,0.32); color: #f07060; border-color: #c04030; }
+  .trk-confirm-panel {
+    display: none; align-items: center; gap: 10px;
+    padding: 10px 0 0; border-top: 1px solid var(--border); margin-top: 6px;
+  }
+  .trk-confirm-panel.visible { display: flex; }
+  .trk-confirm-msg {
+    flex: 1; font-size: 11px; color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif; line-height: 1.45;
+  }
+  .trk-confirm-actions { display: flex; gap: 8px; flex-shrink: 0; }
 
   /* ═══════════ TAG POPUP ═══════════ */
   .tag-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
@@ -673,9 +754,46 @@
   .reminder-del:hover { color: var(--stop-color); background: rgba(244,112,103,0.08); }
 
 
+  /* ═══════════ DAILY POPUP ═══════════ */
+  .dp-stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+  .dp-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .dp-motivation {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0 0 6px;
+  }
+  .dp-motivation strong { color: var(--text); font-weight: 500; }
+  .dp-warning {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--break-accent);
+    line-height: 1.65;
+    margin: 8px 0 0;
+    padding: 12px 16px;
+    border: 1px solid var(--break-accent);
+    border-radius: 10px;
+    background: rgba(107,112,53,0.08);
+  }
+
   @media (max-width: 640px) {
     .timer-display { font-size: 56px; min-width: 280px; }
-    .app { padding: 32px 16px; gap: 36px; }
+    .app { padding: 32px 16px; gap: 28px; }
     .mode-btn { padding: 6px 10px; font-size: 10px; }
   }
 
@@ -683,11 +801,35 @@
   .stat-chart-label { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; display: flex; justify-content: space-between; }
   .stat-chart-avg { color: var(--accent); }
   .stat-chart-svg { width: 100%; height: 48px; display: block; overflow: visible; }
-  .stat-section-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 8px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+  .stat-section-title { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; color: var(--text); letter-spacing: 0; margin: 22px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .stat-yaxis-wrap { display: flex; gap: 6px; align-items: stretch; }
+  .stat-yaxis-labels { width: 28px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; padding: 4px 0 2px; flex-shrink: 0; }
+  .stat-yaxis-val { font-size: 9px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; line-height: 1; }
+  .stat-chart-col { flex: 1; min-width: 0; }
+  .stat-trend-row { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-family: 'JetBrains Mono', monospace; font-size: 10px; }
+  .stat-trend-label { color: var(--text-dim); letter-spacing: 0.5px; }
+  .stat-trend-val { font-weight: 500; position: relative; display: inline-block; cursor: default; }
+  .stat-trend-tip {
+    position: absolute; bottom: calc(100% + 7px); left: 0;
+    width: 230px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 11px;
+    font-size: 11px; color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+    font-weight: 400; letter-spacing: 0; line-height: 1.55;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5); pointer-events: none;
+    opacity: 0; transition: opacity 0.15s ease; z-index: 50; white-space: normal;
+  }
+  .stat-trend-val:hover .stat-trend-tip { opacity: 1; }
 </style>
 </head>
 <body>
 
+<div class="titlebar" id="titlebar">
+  <div class="tb-controls">
+    <button class="tb-btn tb-min" id="tbMin" title="Minimieren">&#x2014;</button>
+    <button class="tb-btn tb-max" id="tbMax" title="Maximieren">&#x25A1;</button>
+    <button class="tb-btn tb-close" id="tbClose" title="Schließen">&#x2715;</button>
+  </div>
+</div>
 <div class="focus-backdrop" id="focusBackdrop"></div>
 <div class="banner-container" id="bannerContainer"></div>
 <div class="support-wrap">
@@ -708,15 +850,16 @@
     title="Settings"
   >⚙</button>
   <div class="settings-menu" id="settingsMenu" role="menu" aria-label="Settings menu">
+    <button class="settings-item" role="menuitem" type="button" id="pauseSettingsBtn">Timer Settings</button>
     <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Trackers</button>
     <button class="settings-item" role="menuitem" type="button" id="statistikBtn">Statistics</button>
-    <button class="settings-item" role="menuitem" type="button" id="pauseSettingsBtn">Timer Settings</button>
     <div class="settings-sep"></div>
     <button class="settings-item" role="menuitem" type="button" id="csvBtn">&#8595; Export CSV</button>
     <button class="settings-item" role="menuitem" type="button" id="jsonBtn">&#8595; Create Backup</button>
     <button class="settings-item" role="menuitem" type="button" id="importBtn">&#8593; Import Backup</button>
     <div class="settings-sep"></div>
-    <button class="settings-item" role="menuitem" type="button" id="aboutBtn">About Aurora</button>
+    <button class="settings-item" role="menuitem" type="button" id="bugReportBtn">Report Bug</button>
+    <button class="settings-item" role="menuitem" type="button" id="aboutBtn">About INI:GO</button>
   </div>
 </div>
 
@@ -724,7 +867,7 @@
   <section class="timer-section">
     <div class="mode-toggle">
       <button class="mode-btn active-healthy" id="modeHealthy"><span class="mode-dot"></span> Rhythm</button>
-      <button class="mode-btn" id="modeDeep"><span class="mode-dot"></span> Flow</button>
+      <button class="mode-btn" id="modeDeep"><span class="mode-dot"></span> Focus</button>
     </div>
     <div class="timer-status" id="timerStatus">ready</div>
     <div class="break-label" id="breakLabel">BREAK</div>
@@ -789,8 +932,9 @@
   </section>
 
   <section class="heatmap-section">
+    <div class="trend-line-wrap" id="trendLine"></div>
     <div class="heatmap-scroll"><div class="heatmap-grid" id="grid"></div></div>
-    <div class="year-nav" style="justify-content:center;margin-top:10px">
+    <div class="year-nav">
       <button id="prevYear">&#9666;</button>
       <span class="year-label" id="yearLabel"></span>
       <button id="nextYear">&#9656;</button>
@@ -810,11 +954,11 @@
 
 <!-- SUPPORT MODAL -->
 <div class="overlay" id="supportOverlay">
-  <div class="modal" style="position:relative">
-    <button id="supportCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color 0.15s,background 0.15s;line-height:1" onmouseover="this.style.color='var(--text)';this.style.background='var(--surface-hover)'" onmouseout="this.style.color='var(--text-dim)';this.style.background='none'">✕</button>
+  <div class="modal">
+    <button id="supportCloseBtn" class="modal-x">✕</button>
     <h2 id="i18n-support-title">Thanks for using it ☕</h2>
-    <div class="modal-sub">AURORA Work & Wellbeing</div>
-    <div id="i18n-support-text" style="font-size:13px;color:var(--text-muted);line-height:1.7">AURORA is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you'd like to support me, I'd love a small coffee.</div>
+    <div class="modal-sub">INI:GO</div>
+    <div id="i18n-support-text" style="font-size:13px;color:var(--text-muted);line-height:1.7">INI:GO is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you'd like to support me, I'd love a small coffee.</div>
     <div style="margin-top:20px">
       <a
         href="#"
@@ -827,10 +971,48 @@
   </div>
 </div>
 
+<!-- BUG REPORT MODAL -->
+<div class="overlay" id="bugReportOverlay">
+  <div class="modal" style="max-width:420px">
+    <button id="bugReportCloseBtn" class="modal-x">✕</button>
+    <h2>Report a Bug</h2>
+    <div class="modal-sub">Opens a GitHub Issue in your browser</div>
+    <div class="field">
+      <label>What went wrong? <span style="color:var(--text-dim)">(required)</span></label>
+      <textarea class="input" id="bugDesc" rows="3" placeholder="Describe the bug..."></textarea>
+    </div>
+    <div class="field">
+      <label>What were you doing? <span style="color:var(--text-dim)">(optional)</span></label>
+      <textarea class="input" id="bugSteps" rows="2" placeholder="Steps to reproduce..."></textarea>
+    </div>
+    <div id="bugVersionInfo" style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;margin-bottom:8px"></div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" id="bugCancelBtn">Cancel</button>
+      <button class="btn btn-fill" id="bugSubmitBtn">Open GitHub Issue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING MODAL -->
+<div class="overlay" id="onboardingOverlay">
+  <div class="modal onb-modal">
+    <div class="onb-dots">
+      <div class="onb-dot active"></div>
+      <div class="onb-dot"></div>
+      <div class="onb-dot"></div>
+    </div>
+    <div id="onbIcon" class="onb-icon"></div>
+    <div id="onbTitle" class="onb-title"></div>
+    <div id="onbDesc" class="onb-desc"></div>
+    <button class="onb-next" id="onbNextBtn"></button>
+    <button class="onb-skip" id="onbSkipBtn">Skip</button>
+  </div>
+</div>
+
 <!-- BREAK CONFIG MODAL -->
 <div class="overlay" id="breakOverlay">
-  <div class="modal" style="max-width:400px;position:relative">
-    <button id="breakCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:color 0.15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">✕</button>
+  <div class="modal" style="max-width:400px">
+    <button id="breakCloseBtn" class="modal-x">✕</button>
     <h2>Timer &amp; Break Rules</h2>
     <div class="modal-sub">Pomodoro durations &amp; settings</div>
     <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">● Rhythm</div>
@@ -843,7 +1025,7 @@
       <input type="number" class="input" id="breakMinsInput" min="1" max="60" value="5" style="width:80px">
     </div>
     <div class="settings-sep" style="margin:16px 0 12px"></div>
-    <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">● Flow</div>
+    <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">● Focus</div>
     <div class="field">
       <label>Focus Time <span style="color:var(--text-dim)">(minutes)</span></label>
       <input type="number" class="input" id="flowFocusMinsInput" min="1" max="240" value="60" style="width:80px">
@@ -862,10 +1044,42 @@
 <!-- TRACKER MODAL -->
 <div class="overlay" id="trackerOverlay">
   <div class="modal" style="max-width:500px">
+    <button id="trackerXBtn" class="modal-x">✕</button>
     <h2>Trackers</h2>
     <div class="modal-sub">Categories in Check-in &amp; Statistics</div>
     <div id="trackerList"></div>
-    <button class="action-btn" id="addTrackerBtn" style="margin-top:4px;margin-bottom:8px">+ New Category</button>
+    <button class="action-btn" id="addTrackerBtn" style="margin-top:4px"><span class="action-btn-plus">+</span> New Category</button>
+    <div class="new-cat-form" id="newCategoryForm">
+      <div class="new-cat-form-title">New Category</div>
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px;letter-spacing:0.3px">Label / Question</label>
+        <input type="text" class="input" id="newCatLabel" placeholder="e.g. How was your mood?">
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px;letter-spacing:0.3px">Input Type</label>
+        <div class="type-cards">
+          <button type="button" class="type-card" data-type="scale">
+            <span class="type-card-icon">▪▪▪▪▪</span>
+            <span class="type-card-label">1–5 Scale</span>
+            <span class="type-card-sub">Rate from 1 to 5</span>
+          </button>
+          <button type="button" class="type-card" data-type="text">
+            <span class="type-card-icon">Aa</span>
+            <span class="type-card-label">Text</span>
+            <span class="type-card-sub">Free text input</span>
+          </button>
+          <button type="button" class="type-card" data-type="yesno">
+            <span class="type-card-icon">Y / N</span>
+            <span class="type-card-label">Yes / No</span>
+            <span class="type-card-sub">Binary choice</span>
+          </button>
+        </div>
+      </div>
+      <div class="new-cat-actions">
+        <button type="button" class="btn btn-ghost" id="newCatCancelBtn" style="flex:0 0 auto;padding:8px 16px">Cancel</button>
+        <button type="button" class="btn btn-fill" id="newCatAddBtn" disabled>Add Category</button>
+      </div>
+    </div>
     <div class="modal-btns">
       <button class="btn btn-ghost" id="trackerCancelBtn">Cancel</button>
       <button class="btn btn-fill" id="trackerSaveBtn">Save</button>
@@ -876,6 +1090,7 @@
 <!-- STATISTIK MODAL -->
 <div class="overlay" id="statistikOverlay">
   <div class="modal" style="max-width:620px">
+    <button id="statistikXBtn" class="modal-x">✕</button>
     <h2>Statistics</h2>
     <div class="modal-sub">History &amp; Averages</div>
     <div id="statistikContent"></div>
@@ -905,6 +1120,46 @@ function dk(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(
 function today() { return dk(new Date()); }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+// ═══════════════════ SESSION LOG ═══════════════════
+var SESSION_LOG_KEY = 'inigo-session-log';
+
+/** Load the full session log array from localStorage. */
+function loadSessionLog() {
+  try { return JSON.parse(localStorage.getItem(SESSION_LOG_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+/**
+ * Persist one completed session.
+ * Automatically prunes entries older than 365 days.
+ * @param {'focus'|'break'} type
+ * @param {number} durationSecs - intended timer duration in seconds
+ */
+function logSession(type, durationSecs) {
+  if (durationSecs < 10) return; // Ignore accidental / extremely short sessions
+  var log = loadSessionLog();
+  log.push({
+    date:         today(),
+    type:         type,
+    mode:         mode === 'deep' ? 'flow' : 'rhythm',
+    durationSecs: durationSecs,
+    task:         type === 'focus' && currentSessionTask ? currentSessionTask : undefined,
+    completedAt:  new Date().toISOString()
+  });
+  // Prune to last 365 days to prevent unbounded localStorage growth
+  var cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 365);
+  var cutoffStr = dk(cutoff);
+  log = log.filter(function(s) { return s.date >= cutoffStr; });
+  localStorage.setItem(SESSION_LOG_KEY, JSON.stringify(log));
+}
+
+/** Return all sessions logged on a given YYYY-MM-DD date string. */
+function getSessionsForDate(dateStr) {
+  return loadSessionLog().filter(function(s) { return s.date === dateStr; });
+}
+
+
 // ═══════════════════ MODE ═══════════════════
 var mode = 'healthy';
 var notificationQueue = [];
@@ -916,155 +1171,44 @@ var $settingsMenu = document.getElementById('settingsMenu');
 var $supportToggle = document.getElementById('supportToggle');
 var $supportOverlay = document.getElementById('supportOverlay');
 
-// ═══════════════════ LANGUAGE / i18n ═══════════════════
+// ═══════════════════ STRINGS ═══════════════════
 var STRINGS = {
-  de: {
-    // Settings
-    reminders: 'Erinnerungen', trackers: 'Tracker', breakRule: 'Pausenregel',
-    exportCsv: '↓ CSV exportieren', exportBackup: '↓ Backup erstellen', importBackup: '↑ Backup importieren',
-    help: 'Hilfe', about: 'Über AURORA', imprint: 'Impressum', langSwitch: 'English',
-    // Timer states
-    ready: 'ready', focus: 'focus', deepFocus: 'deep focus', paused: 'paused',
-    min52Status: '52 min — Pause?',
-    // Reminders / banners
-    min30Title: '30 Minuten', min30Body: '30 Minuten sind vergangen.',
-    stretchTitle: 'Stretch und aufstehen', stretchBody: '52 Minuten Focus — Zeit für Bewegung!',
-    stillActiveTitle: 'Noch aktiv?',
-    breakDoneTitle: 'Pause vorbei', breakDoneBody: 'Bereit für die nächste Session!',
-    // Queue
-    queuedSingle: '1 Erinnerung während Flow', queuedPlural: '{n} Erinnerungen während Flow',
-    missedSingle: '1 verpasste Erinnerung', missedPlural: '{n} verpasste Erinnerungen',
-    reminderQueued: '{n} reminder queued', remindersQueued: '{n} reminders queued',
-    // Break
-    pauseLabel: 'pause',
-    // Session meta
-    sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
-    // Heatmap
-    entries: '{n} Einträge in {y}', noEntries: 'Noch keine Einträge',
-    months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
-    days: ['Mo','Di','Mi','Do','Fr','Sa','So'],
-    weekLabel: 'KW {n}',
-    // Context stats
-    statStreak: 'Aktuelle Streak', statStreakDays: '{n} Tage',
-    statBestWeek: 'Beste Woche {y}', statYearAvg: 'Durchschnitt {y}', statTrend: 'Trend vs. Vormonat',
-    // Tooltip
-    trendCalcTitle: 'Trend-Berechnung',
-    trendCalcBody: 'Vergleich: Ø der letzten 7 Tage<br>vs. Ø der 7 Tage davor.<br><br><span class="trend-up">▲</span>&nbsp;Durchschnitt gestiegen<br><span class="trend-down">▼</span>&nbsp;Durchschnitt gesunken<br><span class="trend-flat">▶</span>&nbsp;Keine Änderung / zu wenig Daten',
-    noEntry: 'Kein Eintrag — klicken', bad: 'schlecht', good: 'gut',
-    // Check-in
-    checkinTitle: 'Daily Check-in', moodQuestion: 'Wie fühlst du dich heute insgesamt?',
-    comment: 'Kommentar', commentOptional: '(optional)',
-    commentPlaceholder: 'Optionaler Kommentar...', skip: 'Überspringen', save: 'Speichern', cancel: 'Abbrechen',
-    sessions: 'Sessions',
-    // Tag modal
-    endSession: 'Session beenden', whatWorkedOn: 'Woran hast du gearbeitet?',
-    customTagPlaceholder: 'Oder eigenes Tag eingeben...', withoutTag: 'Ohne Tag',
-    // Tracker defaults
-    trackerDefaults: [
-      { label: 'Aktivität',    question: 'Wie aktiv warst du gestern körperlich?' },
-      { label: 'Meditation',   question: 'Wie sehr hast du gestern auf deine mentale Erholung geachtet?' },
-      { label: 'Schlaf',       question: 'Wie erholsam war dein Schlaf letzte Nacht?' },
-      { label: 'Schritte',     question: 'Wie viele Schritte hast du gestern gemacht?', placeholder: 'z.B. 8500' },
-      { label: 'Morgengefühl', question: 'Wie fühlst du dich heute Morgen?' }
-    ],
-    // Tracker modal
-    trackerModalTitle: 'Tracker', trackerModalSub: 'Kategorien im Check-in & Zusammenfassung',
-    addTracker: '+ Neue Kategorie', typeLabel: 'Typ:', typeScale: 'Skala 1–5', typeNumber: 'Zahl',
-    avgSummary: 'Ø Zusammenfassung', defaultCategoryName: 'Kategorie',
-    // Reminder modal
-    remindersModalTitle: 'Erinnerungen', remindersModalSub: 'Wiederkehrende Benachrichtigungen',
-    addReminder: '+ Neue Erinnerung', reminderTitlePh: 'Titel', reminderBodyPh: 'Nachrichtentext',
-    everyLabel: 'Alle', minutesLabel: 'Minuten', defaultReminderTitle: 'Erinnerung',
-    defaultRemindersList: [
-      { title: 'Bewegungspause', body: 'Gönn deinem Körper zwei Minuten Freiheit. Kurz aufstehen, strecken und die Beine lockern.' },
-      { title: 'Die Perfekte Atmung', body: 'Mund zu, Zunge an den Gaumen. 5,5 Sekunden ein, 5,5 Sekunden aus.' }
-    ],
-    // Break modal
-    breakModalTitle: 'Pausenregel', breakModalSub: 'Wie lange soll die Pause dauern?',
-    breakModeLabel: 'Modus', breakAuto: 'Automatisch', breakFixed: 'Fixe Dauer',
-    breakPercentLabel: 'Prozentsatz der Arbeitszeit', breakFixedLabel: 'Pausendauer',
-    breakMinutesLabel: 'Minuten', breakHint: '(z.B. 52 Min → {n} Min Pause)',
-    // Support modal
-    supportTitle: 'Danke fürs Nutzen ☕', supportSub: 'AURORA Work & Wellbeing',
-    supportText: 'AURORA ist kostenlos und bleibt es auch — keine Werbung, kein Abo, keine Cloud.<br><br>Wenn dir die App etwas wert ist und du mich unterstützen möchtest, freue ich mich sehr über einen kleinen Kaffee.',
-    supportBtn: '☕ Einen Kaffee spendieren',
-    // Misc
-    todayLabel: 'Heute', yesterdayLabel: 'Gestern', daysAgo: 'Vor {n} Tagen',
-    dataPath: 'Daten: {p}', invalidJson: 'Ungültige JSON-Datei.',
-    untagged: 'Untagged',
-    defaultTags: ['Coden','Recherche','Orga','Meeting','Schreiben','Lernen','Design','E-Mails'],
-  },
-  en: {
-    reminders: 'Reminders', trackers: 'Trackers', breakRule: 'Timer Settings',
-    exportCsv: '↓ Export CSV', exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
-    help: 'Help', about: 'About AURORA', imprint: 'Imprint', langSwitch: 'Deutsch',
-    ready: 'ready', focus: 'focus', deepFocus: 'deep focus', paused: 'paused',
-    min52Status: '52 min — break?',
-    min30Title: '30 Minutes', min30Body: '30 minutes have passed.',
-    stretchTitle: 'Stretch & Stand Up', stretchBody: '52 minutes of focus — time to move!',
-    stillActiveTitle: 'Still active?',
-    breakDoneTitle: 'Break over', breakDoneBody: 'Ready for the next session!',
-    queuedSingle: '1 reminder during Flow', queuedPlural: '{n} reminders during Flow',
-    missedSingle: '1 missed reminder', missedPlural: '{n} missed reminders',
-    reminderQueued: '{n} reminder queued', remindersQueued: '{n} reminders queued',
-    pauseLabel: 'break',
-    sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
-    entries: '{n} entries in {y}', noEntries: 'No entries yet',
-    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-    days: ['Mo','Tu','We','Th','Fr','Sa','Su'],
-    weekLabel: 'W{n}',
-    statStreak: 'Current Streak', statStreakDays: '{n} days',
-    statBestWeek: 'Best Week {y}', statYearAvg: 'Average {y}', statTrend: 'Trend vs. Last Month',
-    trendCalcTitle: 'Trend Calculation',
-    trendCalcBody: 'Comparison: avg of last 7 days<br>vs. avg of 7 days before.<br><br><span class="trend-up">▲</span>&nbsp;Average increased<br><span class="trend-down">▼</span>&nbsp;Average decreased<br><span class="trend-flat">▶</span>&nbsp;No change / insufficient data',
-    noEntry: 'No entry — click to add', bad: 'bad', good: 'good',
-    checkinTitle: 'Daily Check-in', moodQuestion: 'How do you feel overall today?',
-    comment: 'Comment', commentOptional: '(optional)',
-    commentPlaceholder: 'Optional comment...', skip: 'Skip', save: 'Save', cancel: 'Cancel',
-    sessions: 'Sessions',
-    endSession: 'End Session', whatWorkedOn: 'What did you work on?',
-    customTagPlaceholder: 'Or enter a custom tag...', withoutTag: 'Without Tag',
-    trackerDefaults: [
-      { label: 'Activity',      question: 'How physically active were you yesterday?' },
-      { label: 'Meditation',    question: 'How well did you take care of your mental recovery yesterday?' },
-      { label: 'Sleep',         question: 'How restful was your sleep last night?' },
-      { label: 'Steps',         question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8500' },
-      { label: 'Morning Mood',  question: 'How do you feel this morning?' }
-    ],
-    trackerModalTitle: 'Trackers', trackerModalSub: 'Categories in Check-in & Summary',
-    addTracker: '+ New Category', typeLabel: 'Type:', typeScale: 'Scale 1–5', typeNumber: 'Number',
-    avgSummary: 'Avg Summary', defaultCategoryName: 'Category',
-    remindersModalTitle: 'Reminders', remindersModalSub: 'Recurring Notifications',
-    addReminder: '+ New Reminder', reminderTitlePh: 'Title', reminderBodyPh: 'Message text',
-    everyLabel: 'Every', minutesLabel: 'minutes', defaultReminderTitle: 'Reminder',
-    defaultRemindersList: [
-      { title: 'Movement Break', body: 'Give your body two minutes of freedom. Stand up, stretch, and loosen your legs.' },
-      { title: 'Perfect Breathing', body: 'Mouth closed, tongue to the palate. 5.5 seconds in, 5.5 seconds out.' }
-    ],
-    breakModalTitle: 'Break Rule', breakModalSub: 'How long should the break last?',
-    breakModeLabel: 'Mode', breakAuto: 'Automatic', breakFixed: 'Fixed Duration',
-    breakPercentLabel: 'Percentage of work time', breakFixedLabel: 'Break duration',
-    breakMinutesLabel: 'minutes', breakHint: '(e.g. 52 min → {n} min break)',
-    supportTitle: 'Thanks for using it ☕', supportSub: 'AURORA Work & Wellbeing',
-    supportText: 'AURORA is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you\'d like to support me, I\'d love a small coffee.',
-    supportBtn: '☕ Buy me a coffee',
-    todayLabel: 'Today', yesterdayLabel: 'Yesterday', daysAgo: '{n} days ago',
-    dataPath: 'Data: {p}', invalidJson: 'Invalid JSON file.',
-    untagged: 'Untagged',
-    defaultTags: ['Coding','Research','Orga','Meeting','Writing','Learning','Design','Emails'],
-  }
+  reminders: 'Reminders', trackers: 'Trackers', breakRule: 'Timer Settings',
+  exportCsv: '↓ Export CSV', exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
+  help: 'Help', about: 'About INI:GO',
+  ready: 'ready', focus: 'focus', paused: 'paused',
+  breakDoneTitle: 'Break over', breakDoneBody: 'Ready for the next session!',
+  sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
+  entries: '{n} entries in {y}', noEntries: 'No entries yet',
+  months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  days: ['Mo','Tu','We','Th','Fr','Sa','Su'],
+  statStreak: 'Current Streak', statStreakDays: '{n} days',
+  statBestWeek: 'Best Week {y}', statYearAvg: 'Average {y}', statTrend: 'Trend vs. Last Month',
+  trendCalcTitle: 'Trend Calculation',
+  trendCalcBody: 'Comparison: avg of last 7 days<br>vs. avg of 7 days before.<br><br><span class="trend-up">▲</span>&nbsp;Average increased<br><span class="trend-down">▼</span>&nbsp;Average decreased<br><span class="trend-flat">▶</span>&nbsp;No change / insufficient data',
+  noEntry: 'No entry — click to add', bad: 'bad', good: 'good',
+  checkinTitle: 'Daily Check-in', moodQuestion: 'How do you feel overall today?',
+  skip: 'Skip', save: 'Save', cancel: 'Cancel',
+  sessions: 'Sessions',
+  trackerModalTitle: 'Trackers', trackerModalSub: 'Categories in Check-in & Summary',
+  addTracker: '+ New Category', typeLabel: 'Type:', typeScale: 'Scale 1–5', typeNumber: 'Number',
+  avgSummary: 'Avg Summary', defaultCategoryName: 'Category',
+  supportTitle: 'Thanks for using it ☕', supportSub: 'INI:GO',
+  supportText: 'INI:GO is free and will stay that way — no ads, no subscription, no cloud.<br><br>If the app means something to you and you\'d like to support me, I\'d love a small coffee.',
+  supportBtn: '☕ Buy me a coffee',
+  dataPath: 'Data: {p}', invalidJson: 'Invalid JSON file.',
+  untagged: 'Untagged',
 };
 
-var lang = localStorage.getItem('aurora-lang') || 'en';
-function S(key) { return STRINGS[lang][key]; }
+function S(key) { return STRINGS[key]; }
 function Sf(key, vals) {
   var s = S(key);
   Object.keys(vals).forEach(function(k) { s = s.replace('{' + k + '}', vals[k]); });
   return s;
 }
 
-function applyLang() {
-  // Settings menu
+function applyStrings() {
+  // Settings menu buttons
   var ids = {
     pauseSettingsBtn: 'breakRule',
     csvBtn: 'exportCsv', jsonBtn: 'exportBackup', importBtn: 'importBackup'
@@ -1073,12 +1217,8 @@ function applyLang() {
     var el = document.getElementById(id);
     if (el) el.textContent = S(ids[id]);
   });
-  // Heatmap months/days re-rendered via renderMap()
-  // Static HTML modals
+  // Support modal
   var staticMap = {
-    'i18n-break-mode': 'breakModeLabel', 'i18n-break-auto': 'breakAuto', 'i18n-break-fixed': 'breakFixed',
-    'i18n-break-percent-label': 'breakPercentLabel', 'i18n-break-fixed-label': 'breakFixedLabel',
-    'i18n-break-minutes': 'breakMinutesLabel', 'i18n-break-cancel': 'cancel', 'i18n-break-save': 'save',
     'i18n-support-title': 'supportTitle', 'i18n-support-sub': 'supportSub',
     'i18n-support-btn': 'supportBtn'
   };
@@ -1088,8 +1228,6 @@ function applyLang() {
   });
   var supportTextEl = document.getElementById('i18n-support-text');
   if (supportTextEl) supportTextEl.innerHTML = S('supportText');
-  var customTagInput = document.getElementById('customTagInput');
-  if (customTagInput) customTagInput.placeholder = S('customTagPlaceholder');
 }
 
 
@@ -1151,6 +1289,105 @@ document.getElementById('donateLink').onclick = function(e) {
 $supportOverlay.onclick = function(e) {
   if (e.target === $supportOverlay) closeSupportModal();
 };
+
+// ═══════════════════ BUG REPORT ═══════════════════
+var $bugOverlay = document.getElementById('bugReportOverlay');
+
+function openBugReport() {
+  closeSettingsMenu();
+  document.getElementById('bugDesc').value = '';
+  document.getElementById('bugSteps').value = '';
+  var versionEl = document.getElementById('bugVersionInfo');
+  versionEl.textContent = 'Platform: ' + navigator.platform;
+  if (window.api) {
+    window.api.getVersion().then(function(v) {
+      versionEl.textContent = 'INI:GO v' + v + ' · ' + navigator.platform;
+    });
+  }
+  $bugOverlay.classList.add('open');
+  setTimeout(function() { document.getElementById('bugDesc').focus(); }, 50);
+}
+
+function closeBugReport() {
+  $bugOverlay.classList.remove('open');
+}
+
+document.getElementById('bugReportBtn').onclick = openBugReport;
+document.getElementById('bugReportCloseBtn').onclick = closeBugReport;
+document.getElementById('bugCancelBtn').onclick = closeBugReport;
+$bugOverlay.onclick = function(e) { if (e.target === $bugOverlay) closeBugReport(); };
+
+document.getElementById('bugSubmitBtn').onclick = function() {
+  var desc = document.getElementById('bugDesc').value.trim();
+  if (!desc) { document.getElementById('bugDesc').focus(); return; }
+  var steps = document.getElementById('bugSteps').value.trim();
+  var versionInfo = document.getElementById('bugVersionInfo').textContent;
+  var body = '**What went wrong?**\n' + desc +
+    (steps ? '\n\n**Steps to reproduce:**\n' + steps : '') +
+    '\n\n---\n_' + versionInfo + '_';
+  var url = 'https://github.com/TheDevAlan/Zenith/issues/new' +
+    '?title=' + encodeURIComponent('[Bug] ' + desc.slice(0, 60)) +
+    '&body=' + encodeURIComponent(body) +
+    '&labels=bug';
+  if (window.api) window.api.openExternal(url);
+  else window.open(url, '_blank');
+  closeBugReport();
+};
+
+// ═══════════════════ ONBOARDING ═══════════════════
+var ONBOARDING_KEY = 'inigo-onboarding-done';
+var $onbOverlay = document.getElementById('onboardingOverlay');
+var onbStep = 0;
+var onbSteps = [
+  {
+    icon: '⏱',
+    title: 'Timer & Modes',
+    desc: 'Choose your workflow at the top: Rhythm (Pomodoro intervals) or Focus (deep work). Adjust durations in Settings, and let the auto-break timer handle your recovery.'
+  },
+  {
+    icon: '📊',
+    title: 'Track Your Metrics',
+    desc: 'Start every day by logging your mood, workouts, and the step count. Got something specific you want to track? You can easily modify current metrics or add new ones in Settings > Trackers.'
+  },
+  {
+    icon: '🔥',
+    title: 'Yearly Heatmap',
+    desc: 'The bottom heatmap visualizes your daily logs, color-coded by your mood. For deeper insights into any tracker, head to Menu > Statistics. Build your streak and watch your year light up!'
+  }
+];
+
+function onbRender(step) {
+  var s = onbSteps[step];
+  document.getElementById('onbIcon').textContent = s.icon;
+  document.getElementById('onbTitle').textContent = s.title;
+  document.getElementById('onbDesc').textContent = s.desc;
+  document.getElementById('onbNextBtn').textContent = step < onbSteps.length - 1 ? 'Next →' : 'Get Started';
+  document.querySelectorAll('.onb-dot').forEach(function(d, i) {
+    d.classList.toggle('active', i === step);
+  });
+}
+
+function onbFinish() {
+  localStorage.setItem(ONBOARDING_KEY, '1');
+  $onbOverlay.classList.remove('open');
+  setTimeout(function() { openCheckin(today()); }, 250);
+}
+
+document.getElementById('onbNextBtn').onclick = function() {
+  if (onbStep < onbSteps.length - 1) {
+    onbStep++;
+    onbRender(onbStep);
+  } else {
+    onbFinish();
+  }
+};
+document.getElementById('onbSkipBtn').onclick = onbFinish;
+
+function openOnboarding() {
+  onbStep = 0;
+  onbRender(0);
+  $onbOverlay.classList.add('open');
+}
 
 function setMode(m) {
   mode = m;
@@ -1220,11 +1457,11 @@ function flushQueue() {
 // ═══════════════════ POMODORO TIMER ═══════════════════
 // States: idle → focus → break → focus → ...
 // Rhythm (Pomodoro) durations
-var rhythmFocusMins = parseInt(localStorage.getItem('aurora-focus-mins')) || 25;
-var rhythmBreakMins = parseInt(localStorage.getItem('aurora-break-mins')) || 5;
+var rhythmFocusMins = parseInt(localStorage.getItem('inigo-focus-mins')) || 25;
+var rhythmBreakMins = parseInt(localStorage.getItem('inigo-break-mins')) || 5;
 // Flow durations
-var flowFocusMins = parseInt(localStorage.getItem('aurora-flow-focus-mins')) || 60;
-var flowBreakMins = parseInt(localStorage.getItem('aurora-flow-break-mins')) || 10;
+var flowFocusMins = parseInt(localStorage.getItem('inigo-flow-focus-mins')) || 60;
+var flowBreakMins = parseInt(localStorage.getItem('inigo-flow-break-mins')) || 10;
 // Active durations (set by mode)
 var focusMins = rhythmFocusMins;
 var breakMins = rhythmBreakMins;
@@ -1236,9 +1473,22 @@ function updateModeTooltips() {
     flowFocusMins + ' min focus · ' + flowBreakMins + ' min break\nFor deep, uninterrupted work sessions');
 }
 
+function positionBreakTips() {
+  var reminders = document.querySelector('.break-reminders');
+  if (!reminders) return;
+  var rect = reminders.getBoundingClientRect();
+  var bottomOffset = window.innerHeight - rect.top + 16;
+  document.querySelectorAll('.break-tip').forEach(function(t) {
+    t.style.top = 'auto';
+    t.style.bottom = bottomOffset + 'px';
+  });
+}
+window.addEventListener('resize', positionBreakTips);
+
 // timerState: 'idle' | 'focus' | 'focus-paused' | 'break'
 var timerState = 'idle';
 var timerRunning = false;
+var currentSessionTask = '';
 var timerRemaining = focusMins * 60; // seconds remaining in current phase
 var timerInterval = null;
 var timerEndMs = null; // wall-clock timestamp when current phase ends (if running)
@@ -1302,7 +1552,8 @@ function focusTick() {
   updateTimerDisplay();
 
   if (timerRemaining <= 0) {
-    // Focus phase done -- wait for user to manually start break
+    // Focus phase done -- log the completed session, then wait for manual break start
+    logSession('focus', focusMins * 60);
     clearInterval(timerInterval);
     timerInterval = null;
     timerRunning = false;
@@ -1316,7 +1567,7 @@ function focusTick() {
     $time.textContent = fmt(breakRemaining);
     $status.textContent = S('breakReady') || 'Break ready';
     $status.style.color = 'var(--break-accent)';
-    setTimeout(function() { document.body.classList.add('on-break'); }, 120);
+    setTimeout(function() { document.body.classList.add('on-break'); positionBreakTips(); }, 120);
     updateControlVisibility();
     var focusDoneMsg = breakMins + ' min break. Start when you\'re ready.';
     if (window.api) window.api.showNotification('☕ Focus complete!', focusDoneMsg);
@@ -1332,8 +1583,10 @@ function focusTick() {
   }
 }
 
+function setSessionInputEnabled(enabled, clear) {}
+
 function startFocus() {
-  // Called when play is pressed in idle or focus-paused state
+  currentSessionTask = '';
   timerState = 'focus';
   timerRunning = true;
   timerEndMs = Date.now() + timerRemaining * 1000;
@@ -1378,6 +1631,8 @@ function resetTimer() {
   document.body.classList.remove('on-break');
   updateTimerDisplay();
   updateControlVisibility();
+  currentSessionTask = '';
+  setSessionInputEnabled(true, true);
 }
 
 $play.onclick = function() {
@@ -1412,6 +1667,15 @@ document.getElementById('resetBtn').onclick = function() {
   resetTimer();
 };
 
+document.addEventListener('keydown', function(e) {
+  if (e.code !== 'Space') return;
+  var el = document.activeElement;
+  if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable)) return;
+  e.preventDefault();
+  if (timerState === 'focus' || timerState === 'break') { $pauseBtn.click(); }
+  else { $play.click(); }
+});
+
 // ═══════════════════ BREAK TIMER ═══════════════════
 var onBreak = false;
 var breakRemaining = 0;
@@ -1426,20 +1690,16 @@ function startBreak() {
 
   $time.classList.remove('warning');
   $time.classList.add('break-mode');
-  updateTimerDisplay();
+  $time.textContent = fmt(breakRemaining);
   $status.textContent = 'Break · ' + breakMins + ' min';
   $status.style.color = 'var(--break-accent)';
 
   breakEndMs = Date.now() + breakDurationSecs * 1000;
   breakInterval = setInterval(breakTick, 500);
 
-  setTimeout(function() { document.body.classList.add('on-break'); }, 120);
+  setTimeout(function() { document.body.classList.add('on-break'); positionBreakTips(); }, 120);
   updateControlVisibility();
 
-  // System notification (works in background)
-  var breakMsg = breakMins + ' min break. Relax and recharge.';
-  if (window.api) window.api.showNotification('☕ Break time!', breakMsg);
-  else if ('Notification' in window && Notification.permission === 'granted') new Notification('☕ Break time!', { body: breakMsg });
 }
 
 function pauseBreak() {
@@ -1473,6 +1733,7 @@ function breakTick() {
   breakRemaining = newRemaining;
   $time.textContent = fmt(breakRemaining);
   if (breakRemaining <= 0) {
+    logSession('break', breakMins * 60); // Log the completed break session
     endBreak(true);
   }
 }
@@ -1497,6 +1758,8 @@ function endBreak(natural) {
     $status.style.color = 'var(--text-dim)';
     setTimeout(function() { document.body.classList.add('post-break'); }, 80);
     updateControlVisibility();
+    currentSessionTask = '';
+    setSessionInputEnabled(true, true);
     // OS notification
     var doneTitle = '✅ ' + S('breakDoneTitle');
     var doneBody  = S('breakDoneBody');
@@ -1509,6 +1772,8 @@ function endBreak(natural) {
     setFocusMode(false);
     updateTimerDisplay();
     updateControlVisibility();
+    currentSessionTask = '';
+    setSessionInputEnabled(true, true);
   }
 }
 
@@ -1523,14 +1788,14 @@ var breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT);
 
 function loadBreakConfig() {
   try {
-    var saved = localStorage.getItem('zenith-break-config');
+    var saved = localStorage.getItem('inigo-break-config');
     if (saved) breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT, JSON.parse(saved));
   } catch(e) {}
 }
 
 function saveBreakConfig(cfg) {
   breakConfig = cfg;
-  localStorage.setItem('zenith-break-config', JSON.stringify(cfg));
+  localStorage.setItem('inigo-break-config', JSON.stringify(cfg));
 }
 
 var $breakOverlay = document.getElementById('breakOverlay');
@@ -1551,10 +1816,10 @@ document.getElementById('breakSaveBtn').onclick = function() {
   rhythmBreakMins = Math.max(1, parseInt(document.getElementById('breakMinsInput').value) || 5);
   flowFocusMins   = Math.max(1, parseInt(document.getElementById('flowFocusMinsInput').value) || 60);
   flowBreakMins   = Math.max(1, parseInt(document.getElementById('flowBreakMinsInput').value) || 10);
-  localStorage.setItem('aurora-focus-mins', rhythmFocusMins);
-  localStorage.setItem('aurora-break-mins', rhythmBreakMins);
-  localStorage.setItem('aurora-flow-focus-mins', flowFocusMins);
-  localStorage.setItem('aurora-flow-break-mins', flowBreakMins);
+  localStorage.setItem('inigo-focus-mins', rhythmFocusMins);
+  localStorage.setItem('inigo-break-mins', rhythmBreakMins);
+  localStorage.setItem('inigo-flow-focus-mins', flowFocusMins);
+  localStorage.setItem('inigo-flow-break-mins', flowBreakMins);
   // Update active durations based on current mode
   focusMins = mode === 'deep' ? flowFocusMins : rhythmFocusMins;
   breakMins = mode === 'deep' ? flowBreakMins : rhythmBreakMins;
@@ -1569,39 +1834,55 @@ $breakOverlay.onclick = function(e) { if (e.target === $breakOverlay) $breakOver
 
 // ═══════════════════ TRACKER CONFIG ═══════════════════
 var TRACKER_DEFAULTS = [
-  { id: 'sport',      type: 'scale',  label: 'Activity',   question: 'How physically active were you yesterday?',          enabled: true, showInSummary: true },
-  { id: 'meditation', type: 'scale',  label: 'Meditation', question: 'Did you take time for mental recovery today?',        enabled: true, showInSummary: true },
-  { id: 'sleep',      type: 'scale',  label: 'Sleep',      question: 'How restful was your sleep last night?',              enabled: true, showInSummary: true },
-  { id: 'steps',      type: 'number', label: 'Steps',      question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000', enabled: true, showInSummary: true },
-  { id: 'mood',       type: 'scale',  label: 'Mood',       question: 'How do you feel overall today?',                      enabled: true, showInSummary: true, locked: true }
+  { id: 'sport',      type: 'yesno',  label: 'Workout',   question: 'Did you work out yesterday?',                                              enabled: true, showInSummary: true },
+  { id: 'steps',      type: 'number', label: 'Steps',     question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000',         enabled: true, showInSummary: true },
+  { id: 'sleep',      type: 'scale',  label: 'Sleep',     question: 'How restful was your sleep last night?',                                   enabled: true, showInSummary: true },
+  { id: 'meditation', type: 'yesno',  label: 'Recovery',  question: 'Did you take time for mental recovery yesterday?',                         enabled: true, showInSummary: true },
+  { id: 'gratitude',  type: 'text',   label: 'Gratitude', question: 'What are you grateful for today?', placeholder: 'e.g. a sunny morning…',  enabled: true, showInSummary: false },
+  { id: 'mood',       type: 'scale',  label: 'Mood',      question: 'How do you feel overall today?',                                           enabled: true, showInSummary: true, locked: true }
 ];
 
 // Migrate saved trackers from German to English labels/questions
 var TRACKER_MIGRATIONS = {
-  'sport':      { label: 'Activity',   question: 'How physically active were you yesterday?' },
-  'meditation': { label: 'Meditation', question: 'Did you take time for mental recovery today?' },
-  'sleep':      { label: 'Sleep',      question: 'How restful was your sleep last night?' },
-  'steps':      { label: 'Steps',      question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000' },
-  'mood':       { label: 'Mood',       question: 'How do you feel overall today?' }
+  'sport':      { type: 'yesno',  label: 'Workout',  question: 'Did you work out yesterday?' },
+  'meditation': { type: 'yesno',  label: 'Recovery', question: 'Did you take time for mental recovery yesterday?' },
+  'sleep':      { type: 'scale',  label: 'Sleep',    question: 'How restful was your sleep last night?' },
+  'steps':      { type: 'number', label: 'Steps',    question: 'How many steps did you take yesterday?', placeholder: 'e.g. 8000' },
+  'mood':       { type: 'scale',  label: 'Mood',     question: 'How do you feel overall today?' }
 };
 
 var trackersConfig = [];
 
 function loadTrackers() {
   try {
-    var saved = localStorage.getItem('aurora-trackers');
+    var saved = localStorage.getItem('inigo-trackers');
     trackersConfig = saved ? JSON.parse(saved) : TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
     // Migrate default tracker labels/questions to English
     var migrated = false;
     trackersConfig.forEach(function(t) {
       var m = TRACKER_MIGRATIONS[t.id];
       if (m) {
+        if (m.type && t.type !== m.type) { t.type = m.type; migrated = true; }
         if (t.label !== m.label) { t.label = m.label; migrated = true; }
         if (t.question !== m.question) { t.question = m.question; migrated = true; }
         if (m.placeholder && t.placeholder !== m.placeholder) { t.placeholder = m.placeholder; migrated = true; }
       }
     });
-    if (migrated) localStorage.setItem('aurora-trackers', JSON.stringify(trackersConfig));
+    // Insert any default trackers that are missing (e.g. newly added 'gratitude')
+    TRACKER_DEFAULTS.forEach(function(def, idx) {
+      if (!trackersConfig.find(function(t) { return t.id === def.id; })) {
+        trackersConfig.splice(Math.min(idx, trackersConfig.length), 0, Object.assign({}, def));
+        migrated = true;
+      }
+    });
+    // Reorder saved config to match TRACKER_DEFAULTS order
+    var defaultOrder = TRACKER_DEFAULTS.map(function(t) { return t.id; });
+    trackersConfig.sort(function(a, b) {
+      var ai = defaultOrder.indexOf(a.id); var bi = defaultOrder.indexOf(b.id);
+      if (ai === -1) ai = 9999; if (bi === -1) bi = 9999;
+      return ai - bi;
+    });
+    if (migrated) localStorage.setItem('inigo-trackers', JSON.stringify(trackersConfig));
   } catch(e) {
     trackersConfig = TRACKER_DEFAULTS.map(function(t) { return Object.assign({}, t); });
   }
@@ -1609,7 +1890,7 @@ function loadTrackers() {
 
 function saveTrackers(list) {
   trackersConfig = list;
-  localStorage.setItem('aurora-trackers', JSON.stringify(list));
+  localStorage.setItem('inigo-trackers', JSON.stringify(list));
 }
 
 // ═══════════════════ HEATMAP ═══════════════════
@@ -1686,6 +1967,31 @@ function renderContextStats() {
     '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + S('statTrend') + '</div><div class="heatmap-stat-value">' + s.trend + '</div></div>';
 }
 
+function alignButtons() {
+  var section = document.querySelector('.heatmap-section');
+  if (!section) return;
+  var rect = section.getBoundingClientRect();
+  var sw = document.querySelector('.support-wrap');
+  var gw = document.querySelector('.settings-wrap');
+  if (sw) sw.style.left = rect.left + 'px';
+  if (gw) gw.style.right = (window.innerWidth - rect.right) + 'px';
+}
+window.addEventListener('resize', alignButtons);
+
+// ── Custom title bar controls ──
+document.getElementById('tbMin').addEventListener('click', function() { window.api.windowMinimize(); });
+document.getElementById('tbMax').addEventListener('click', function() { window.api.windowMaximize(); });
+document.getElementById('tbClose').addEventListener('click', function() { window.api.windowClose(); });
+
+function renderTrendLine() {
+  var container = document.getElementById('trendLine');
+  if (!container) return;
+  container.innerHTML =
+    '<svg viewBox="0 0 1000 28" preserveAspectRatio="none">' +
+    '<line x1="0" y1="14" x2="1000" y2="14" stroke="#f0972a" stroke-width="1" opacity="0.2"/>' +
+    '</svg>';
+}
+
 function renderMap() {
   MO = S('months'); DA = S('days');
   var grid = document.getElementById('grid');
@@ -1722,7 +2028,7 @@ function renderMap() {
   var sums = {}, counts = {};
   trackersConfig.forEach(function(t) { sums[t.id] = 0; counts[t.id] = 0; });
 
-  for (var i = 0; i < startDow; i++) { var b = document.createElement('div'); b.style.cssText = 'width:14px;height:14px'; grid.appendChild(b); }
+  for (var i = 0; i < startDow; i++) { var b = document.createElement('div'); b.className = 'cell-ghost'; grid.appendChild(b); }
 
   var dow = startDow;
   var weekNum = 0;
@@ -1756,17 +2062,30 @@ function renderMap() {
     dow = (dow + 1) % 7;
   }
 
+  // Fill trailing ghost cells to complete the last week column
+  var trailingCount = dow === 0 ? 0 : (7 - dow);
+  for (var ti = 0; ti < trailingCount; ti++) {
+    var tb = document.createElement('div');
+    tb.className = 'cell-ghost';
+    grid.appendChild(tb);
+  }
+
   document.getElementById('summary').innerHTML = '';
 
-  // Align section width to grid width
+  // Align heatmap section width to grid width, then pin buttons to section edges
   requestAnimationFrame(function() {
-    var gridEl = document.getElementById('grid');
-    var section = document.querySelector('.heatmap-section');
-    if (gridEl && section) {
-      section.style.maxWidth = gridEl.offsetWidth + 'px';
-      section.style.marginLeft = 'auto';
-      section.style.marginRight = 'auto';
-    }
+    requestAnimationFrame(function() {
+      var gridEl = document.getElementById('grid');
+      var heatmapSection = document.querySelector('.heatmap-section');
+      if (gridEl && heatmapSection) {
+        var w = gridEl.offsetWidth + 'px';
+        heatmapSection.style.width = w;
+        heatmapSection.style.marginLeft = 'auto';
+        heatmapSection.style.marginRight = 'auto';
+      }
+      alignButtons();
+      renderTrendLine();
+    });
   });
 }
 
@@ -1782,12 +2101,12 @@ function showTip(e, key, entry) {
   if (entry) {
     trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
       var val = entry[t.id];
-      var display = val ? (t.type === 'number' ? Number(val).toLocaleString('de-DE') : val) : '\u2013';
+      var display = val != null && val !== '' ? (t.type === 'number' ? Number(val).toLocaleString('en-US') : val) : '\u2013';
       h += '<div class="tip-row"><span class="tip-label">' + t.label + '</span><span class="tip-val">' + display + '</span></div>';
     });
     if (entry.note) h += '<div class="tip-note">' + entry.note + '</div>';
   } else {
-    h += '<div class="tip-empty">Kein Eintrag \u2014 klicken</div>';
+    h += '<div class="tip-empty">No entry \u2014 click to add</div>';
   }
   h += '<div style="margin-top:8px;padding-top:6px;border-top:1px solid var(--border);display:flex;align-items:center;gap:3px;font-size:10px;color:var(--text-dim)">' +
     '<span style="margin-right:2px">' + S('bad') + '</span>' +
@@ -1826,23 +2145,29 @@ function openCheckin(key) {
   var entry = DATA[key] || {};
 
   vals = {};
-  trackersConfig.forEach(function(t) { if (t.type === 'scale') vals[t.id] = entry[t.id] || null; });
+  trackersConfig.forEach(function(t) { if (t.type === 'scale' || t.type === 'yesno') vals[t.id] = entry[t.id] || null; });
 
-  var html = '<h2>' + S('checkinTitle') + '</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
+  var html = '<button class="modal-x" id="checkinXBtn">✕</button><h2>' + S('checkinTitle') + '</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
 
-  trackersConfig.filter(function(t) { return t.enabled && t.type === 'scale' && !t.locked; }).forEach(function(t) {
-    html += '<div class="field"><label>' + t.question + '</label><div class="scale" data-field="' + t.id + '">';
-    for (var i = 1; i <= 5; i++) {
-      html += '<button data-v="' + i + '" class="' + (entry[t.id] === i ? 'on' : '') + '">' + i + '</button>';
+  trackersConfig.filter(function(t) { return t.enabled && !t.locked; }).forEach(function(t) {
+    if (t.type === 'scale') {
+      html += '<div class="field"><label>' + escHtml(t.question) + '</label><div class="scale" data-field="' + t.id + '">';
+      for (var i = 1; i <= 5; i++) {
+        html += '<button data-v="' + i + '" class="' + (entry[t.id] === i ? 'on' : '') + '">' + i + '</button>';
+      }
+      html += '</div></div>';
+    } else if (t.type === 'number') {
+      html += '<div class="field"><label>' + escHtml(t.question) + '</label><input type="number" class="input" id="f_' + t.id + '" placeholder="' + escHtml(t.placeholder || '') + '" min="0" value="' + (entry[t.id] || '') + '"></div>';
+    } else if (t.type === 'text') {
+      html += '<div class="field"><label>' + escHtml(t.question) + '</label><textarea class="input" id="f_' + t.id + '" placeholder="' + escHtml(t.placeholder || '') + '" rows="2">' + escHtml(entry[t.id] || '') + '</textarea></div>';
+    } else if (t.type === 'yesno') {
+      var yv = entry[t.id];
+      html += '<div class="field"><label>' + escHtml(t.question) + '</label><div class="scale" data-field="' + t.id + '" data-type="yesno">' +
+        '<button data-v="yes" class="' + (yv === 'yes' ? 'on' : '') + '" style="flex:1">Yes</button>' +
+        '<button data-v="no" class="' + (yv === 'no' ? 'on' : '') + '" style="flex:1">No</button>' +
+        '</div></div>';
     }
-    html += '</div></div>';
   });
-
-  trackersConfig.filter(function(t) { return t.enabled && t.type === 'number'; }).forEach(function(t) {
-    html += '<div class="field"><label>' + t.question + '</label><input type="number" class="input" id="f_' + t.id + '" placeholder="' + (t.placeholder || '') + '" min="0" value="' + (entry[t.id] || '') + '"></div>';
-  });
-
-  html += '<div class="field"><label>' + S('comment') + ' <span style="color:var(--text-dim)">' + S('commentOptional') + '</span></label><textarea class="input" id="fNote" placeholder="' + S('commentPlaceholder') + '">' + (entry.note || '') + '</textarea></div>';
 
   var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
   if (moodTracker && moodTracker.enabled) {
@@ -1853,9 +2178,10 @@ function openCheckin(key) {
     html += '</div></div>';
   }
 
-  html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">\u00dcberspringen</button><button class="btn btn-fill" id="saveBtn">Speichern</button></div>';
+  html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
 
   $modal.innerHTML = html;
+  document.getElementById('checkinXBtn').onclick = closeCheckin;
 
   // Wire up scale buttons after DOM is set
   setTimeout(function() {
@@ -1865,7 +2191,7 @@ function openCheckin(key) {
         btn.addEventListener('click', function() {
           g.querySelectorAll('button').forEach(function(x) { x.classList.remove('on'); });
           btn.classList.add('on');
-          vals[field] = parseInt(btn.dataset.v);
+          vals[field] = g.dataset.type === 'yesno' ? btn.dataset.v : parseInt(btn.dataset.v);
         });
       });
     });
@@ -1879,8 +2205,9 @@ function openCheckin(key) {
         trackersConfig.forEach(function(t) {
           if (t.type === 'scale') { newEntry[t.id] = vals[t.id] || null; }
           else if (t.type === 'number') { var el = document.getElementById('f_' + t.id); newEntry[t.id] = el && el.value ? parseInt(el.value) : null; }
+          else if (t.type === 'text') { var el2 = document.getElementById('f_' + t.id); newEntry[t.id] = el2 && el2.value.trim() ? el2.value.trim() : null; }
+          else if (t.type === 'yesno') { newEntry[t.id] = vals[t.id] || null; }
         });
-        newEntry.note = document.getElementById('fNote').value.trim() || null;
         DATA[editKey] = newEntry;
         await saveAllData();
         closeCheckin();
@@ -1897,7 +2224,15 @@ function openCheckin(key) {
   $overlay.classList.add('open');
 }
 
-function closeCheckin() { $overlay.classList.remove('open'); editKey = null; }
+function closeCheckin() {
+  $overlay.classList.remove('open');
+  editKey = null;
+  localStorage.setItem(CHECKIN_DATE_KEY, today()); // mark check-in as shown today
+  if (pendingDailyPopup) {
+    pendingDailyPopup = false;
+    setTimeout(checkDailyPopup, 350);
+  }
+}
 $overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
 
 // ═══════════════════ EXPORT ═══════════════════
@@ -1929,6 +2264,8 @@ document.getElementById('importFile').onchange = async function(e) {
 var $trackerOverlay = document.getElementById('trackerOverlay');
 var trackerEditData = [];
 
+var TRK_TYPE_LABELS = { scale: '1–5 Scale', number: 'Number', text: 'Text', yesno: 'Yes / No' };
+
 function renderTrackerList() {
   var list = document.getElementById('trackerList');
   list.innerHTML = '';
@@ -1938,17 +2275,33 @@ function renderTrackerList() {
     item.innerHTML =
       '<div class="reminder-header">' +
         '<input class="input trk-label" placeholder="Name" value="' + escHtml(t.label) + '">' +
-        '<label class="toggle-switch" style="pointer-events:auto" title="Aktiv">' +
+        '<label class="toggle-switch" style="pointer-events:auto" title="Active">' +
           '<input type="checkbox" class="trk-enabled"' + (t.enabled ? ' checked' : '') + '>' +
           '<span class="toggle-slider"></span>' +
         '</label>' +
         (t.locked
-          ? '<span style="font-size:11px;color:var(--text-dim);padding:4px 6px;flex-shrink:0" title="Steuert Heatmap-Farbe">&#127752;</span>'
-          : '<button class="reminder-del" title="Löschen">✕</button>') +
+          ? '<span style="font-size:11px;color:var(--text-dim);padding:4px 6px;flex-shrink:0" title="Controls heatmap color">&#127752;</span>'
+          : '<button class="reminder-del" title="Delete">✕</button>') +
       '</div>' +
-      '<input class="input trk-question" placeholder="Frage im Check-in" value="' + escHtml(t.question || '') + '" style="margin-bottom:8px">';
+      '<input class="input trk-question" placeholder="Question in check-in" value="' + escHtml(t.question || '') + '" style="margin-bottom:6px">' +
+      '<span class="trk-type-badge">' + escHtml(TRK_TYPE_LABELS[t.type] || t.type || 'Scale') + '</span>' +
+      (!t.locked
+        ? '<div class="trk-confirm-panel">' +
+            '<span class="trk-confirm-msg">Delete this tracker? This action cannot be undone.</span>' +
+            '<div class="trk-confirm-actions">' +
+              '<button type="button" class="btn btn-ghost" style="padding:6px 12px;font-size:12px" data-confirm-cancel>Cancel</button>' +
+              '<button type="button" class="btn btn-danger" style="padding:6px 12px;font-size:12px" data-confirm-delete>Delete</button>' +
+            '</div>' +
+          '</div>'
+        : '');
     if (!t.locked) {
       item.querySelector('.reminder-del').onclick = function() {
+        item.querySelector('.trk-confirm-panel').classList.add('visible');
+      };
+      item.querySelector('[data-confirm-cancel]').onclick = function() {
+        item.querySelector('.trk-confirm-panel').classList.remove('visible');
+      };
+      item.querySelector('[data-confirm-delete]').onclick = function() {
         trackerEditData = collectTrackers();
         trackerEditData.splice(i, 1);
         renderTrackerList();
@@ -1985,12 +2338,61 @@ function openTrackerModal() {
 
 document.getElementById('trackerBtn').onclick = function() { openTrackerModal(); };
 
-document.getElementById('addTrackerBtn').onclick = function() {
-  trackerEditData = collectTrackers();
-  trackerEditData.push({ id: 'custom_' + Date.now(), label: '', question: '', type: 'scale', enabled: true, locked: false });
-  renderTrackerList();
-  document.querySelector('#trackerOverlay .modal').scrollTop = 9999;
-};
+(function() {
+  var $addBtn    = document.getElementById('addTrackerBtn');
+  var $form      = document.getElementById('newCategoryForm');
+  var $labelIn   = document.getElementById('newCatLabel');
+  var $addCatBtn = document.getElementById('newCatAddBtn');
+  var selectedType = null;
+
+  function checkReady() {
+    $addCatBtn.disabled = !($labelIn.value.trim() && selectedType);
+  }
+
+  function resetForm() {
+    selectedType = null;
+    $labelIn.value = '';
+    $addCatBtn.disabled = true;
+    $form.querySelectorAll('.type-card').forEach(function(c) { c.classList.remove('selected'); });
+  }
+
+  function showForm() {
+    resetForm();
+    $form.classList.add('visible');
+    $addBtn.style.display = 'none';
+    setTimeout(function() { $labelIn.focus(); }, 50);
+  }
+
+  function hideForm() {
+    $form.classList.remove('visible');
+    $addBtn.style.display = '';
+  }
+
+  $addBtn.onclick = showForm;
+
+  $labelIn.addEventListener('input', checkReady);
+
+  $form.querySelectorAll('.type-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      $form.querySelectorAll('.type-card').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      selectedType = card.dataset.type;
+      checkReady();
+    });
+  });
+
+  document.getElementById('newCatCancelBtn').onclick = hideForm;
+
+  $addCatBtn.onclick = function() {
+    var label = $labelIn.value.trim();
+    if (!label || !selectedType) return;
+    trackerEditData = collectTrackers();
+    trackerEditData.push({ id: 'custom_' + Date.now(), label: label, question: label, type: selectedType, enabled: true, locked: false });
+    renderTrackerList();
+    hideForm();
+    document.querySelector('#trackerOverlay .modal').scrollTop = 9999;
+  };
+})();
 
 document.getElementById('trackerSaveBtn').onclick = function() {
   saveTrackers(collectTrackers());
@@ -1999,10 +2401,40 @@ document.getElementById('trackerSaveBtn').onclick = function() {
 };
 
 document.getElementById('trackerCancelBtn').onclick = function() { $trackerOverlay.classList.remove('open'); };
+document.getElementById('trackerXBtn').onclick = function() { $trackerOverlay.classList.remove('open'); };
 $trackerOverlay.onclick = function(e) { if (e.target === $trackerOverlay) $trackerOverlay.classList.remove('open'); };
 
 // ═══════════════════ STATISTIK MODAL ═══════════════════
 var $statistikOverlay = document.getElementById('statistikOverlay');
+
+function buildTrendRow(trackerId, range) {
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var w1 = [], w2 = [];
+  for (var i = 1; i <= 14; i++) {
+    var d = new Date(today); d.setDate(d.getDate() - i);
+    var k = dk(d);
+    var v = DATA[k] && DATA[k][trackerId] != null ? Number(DATA[k][trackerId]) : null;
+    if (v !== null && !isNaN(v)) {
+      if (i <= 7) w1.push(v); else w2.push(v);
+    }
+  }
+  if (!w1.length || !w2.length) return '';
+  var avg1 = w1.reduce(function(a, b) { return a + b; }, 0) / w1.length;
+  var avg2 = w2.reduce(function(a, b) { return a + b; }, 0) / w2.length;
+  var delta = avg1 - avg2;
+  var norm = range > 0 ? Math.abs(delta) / range : 0;
+  var arrow, label, color;
+  if (norm > 0.06) {
+    if (delta > 0) { arrow = '↑'; label = 'improving'; color = 'var(--trend-up)'; }
+    else           { arrow = '↓'; label = 'declining';  color = 'var(--trend-down)'; }
+  } else {
+    arrow = '→'; label = 'stable'; color = 'var(--text-dim)';
+  }
+  return '<div class="stat-trend-row"><span class="stat-trend-label">TREND</span>' +
+    '<span class="stat-trend-val" style="color:' + color + '">' + arrow + ' ' + label +
+      '<span class="stat-trend-tip">Based on the avg of the last 7 days compared to the 7 days before that.</span>' +
+    '</span></div>';
+}
 
 function buildFullSparkline(trackerId, type) {
   var keys = Object.keys(DATA).sort();
@@ -2016,37 +2448,52 @@ function buildFullSparkline(trackerId, type) {
   if (pts.length < 2) return '<div style="color:var(--text-dim);font-size:11px;padding:8px 0">Not enough data</div>';
 
   var vals = pts.map(function(p) { return p.val; });
-  var min = Math.min.apply(null, vals);
-  var max = Math.max.apply(null, vals);
-  var range = max - min || 1;
-  var avg = (vals.reduce(function(a, b) { return a + b; }, 0) / vals.length);
-  var avgDisplay = type === 'number' ? Math.round(avg).toLocaleString('de-DE') : avg.toFixed(1);
-  var maxDisplay = type === 'number' ? max.toLocaleString('de-DE') : max.toFixed(1);
-  var minDisplay = type === 'number' ? min.toLocaleString('de-DE') : min.toFixed(1);
+  var dataMin = Math.min.apply(null, vals);
+  var dataMax = Math.max.apply(null, vals);
+
+  // For scale trackers fix the axis to 1–5 for consistent reference
+  var axisMin = type === 'scale' ? 1 : 0;
+  var axisMax = type === 'scale' ? 5 : dataMax;
+  var range   = axisMax - axisMin || 1;
+
+  var avg = vals.reduce(function(a, b) { return a + b; }, 0) / vals.length;
+  var avgDisplay = type === 'number' ? Math.round(avg).toLocaleString('en-US') : avg.toFixed(1);
+  var maxLabel   = type === 'number' ? dataMax.toLocaleString('en-US') : String(axisMax);
+  var minLabel   = type === 'number' ? '0' : String(axisMin);
 
   var W = 560, H = 48, padX = 4, padY = 6;
   var step = pts.length > 1 ? (W - padX * 2) / (pts.length - 1) : W;
   var svgPts = pts.map(function(p, i) {
     var x = (padX + i * step).toFixed(1);
-    var y = (H - padY - ((p.val - min) / range) * (H - padY * 2)).toFixed(1);
+    var y = (H - padY - ((p.val - axisMin) / range) * (H - padY * 2)).toFixed(1);
     return { x: x, y: y, val: p.val, date: p.date };
   });
   var d = svgPts.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p.x + ',' + p.y; }).join(' ');
-  var avgY = (H - padY - ((avg - min) / range) * (H - padY * 2)).toFixed(1);
+  var avgY = (H - padY - ((avg - axisMin) / range) * (H - padY * 2)).toFixed(1);
   var lastPt = svgPts[svgPts.length - 1];
 
-  return '<div class="stat-chart-label">' +
-      '<span>' + (pts[0].date.split('-').reverse().join('.')) + ' – ' + (pts[pts.length-1].date.split('-').reverse().join('.')) + ' · ' + pts.length + ' entries</span>' +
+  var metaHtml =
+    '<div class="stat-chart-label">' +
+      '<span>' + pts[0].date.split('-').reverse().join('.') + ' – ' + pts[pts.length-1].date.split('-').reverse().join('.') + ' · ' + pts.length + ' entries</span>' +
       '<span class="stat-chart-avg">Ø ' + avgDisplay + (type === 'scale' ? ' / 5' : '') + '</span>' +
-    '</div>' +
+    '</div>';
+
+  var svgHtml =
     '<svg class="stat-chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
       '<line x1="' + padX + '" y1="' + avgY + '" x2="' + (W - padX) + '" y2="' + avgY + '" stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>' +
       '<path d="' + d + '" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
       '<circle cx="' + lastPt.x + '" cy="' + lastPt.y + '" r="3" fill="var(--accent)"/>' +
-    '</svg>' +
-    '<div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-dim);font-family:\'JetBrains Mono\',monospace;margin-top:2px">' +
-      '<span>Min: ' + minDisplay + '</span><span>Max: ' + maxDisplay + '</span>' +
-    '</div>';
+    '</svg>';
+
+  return metaHtml +
+    '<div class="stat-yaxis-wrap">' +
+      '<div class="stat-yaxis-labels">' +
+        '<span class="stat-yaxis-val">' + maxLabel + '</span>' +
+        '<span class="stat-yaxis-val">' + minLabel + '</span>' +
+      '</div>' +
+      '<div class="stat-chart-col">' + svgHtml + '</div>' +
+    '</div>' +
+    buildTrendRow(trackerId, range);
 }
 
 function openStatistikModal() {
@@ -2054,7 +2501,19 @@ function openStatistikModal() {
   var html = '';
   trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
     html += '<div class="stat-section-title">' + escHtml(t.label) + '</div>';
-    html += '<div class="stat-chart-wrap">' + buildFullSparkline(t.id, t.type) + '</div>';
+    if (t.type === 'text' || t.type === 'yesno') {
+      var count = Object.keys(DATA).filter(function(k) { return DATA[k] && DATA[k][t.id] != null && DATA[k][t.id] !== ''; }).length;
+      var countLabel = t.type === 'yesno'
+        ? (function() {
+            var yes = 0, no = 0;
+            Object.keys(DATA).forEach(function(k) { if (DATA[k] && DATA[k][t.id] === 'yes') yes++; else if (DATA[k] && DATA[k][t.id] === 'no') no++; });
+            return yes + ' Yes · ' + no + ' No · ' + count + ' total entries';
+          })()
+        : count + ' entries recorded';
+      html += '<div class="stat-chart-wrap"><div style="color:var(--text-dim);font-size:11px;padding:8px 0;font-family:\'JetBrains Mono\',monospace">' + countLabel + '</div></div>';
+    } else {
+      html += '<div class="stat-chart-wrap">' + buildFullSparkline(t.id, t.type) + '</div>';
+    }
   });
   if (!html) html = '<div style="color:var(--text-dim);padding:20px 0;text-align:center">No active trackers</div>';
   content.innerHTML = html;
@@ -2064,7 +2523,96 @@ function openStatistikModal() {
 
 document.getElementById('statistikBtn').onclick = function() { openStatistikModal(); };
 document.getElementById('statistikCloseBtn').onclick = function() { $statistikOverlay.classList.remove('open'); };
+document.getElementById('statistikXBtn').onclick = function() { $statistikOverlay.classList.remove('open'); };
 $statistikOverlay.onclick = function(e) { if (e.target === $statistikOverlay) $statistikOverlay.classList.remove('open'); };
+
+// ═══════════════════ DAILY STARTUP POPUP ═══════════════════
+var POPUP_DATE_KEY = 'inigo-last-popup-date';
+var CHECKIN_DATE_KEY = 'inigo-last-checkin-date'; // tracks if check-in was shown today
+var pendingDailyPopup = false; // true when popup should fire after check-in closes
+
+/** Return the date string for yesterday (YYYY-MM-DD). */
+function yesterdayStr() {
+  var d = new Date();
+  d.setDate(d.getDate() - 1);
+  return dk(d);
+}
+
+/**
+ * Return the most recent past date that has focus sessions logged.
+ * Falls back to yesterday if no sessions exist at all.
+ */
+function lastSessionDay() {
+  var log = loadSessionLog().filter(function(s) { return s.type === 'focus' && s.date < today(); });
+  if (log.length === 0) return yesterdayStr();
+  return log.reduce(function(best, s) { return s.date > best ? s.date : best; }, log[0].date);
+}
+
+/** Format a total seconds value as a human-readable string e.g. "1h 45m" or "25m". */
+function formatDuration(totalSecs) {
+  var h = Math.floor(totalSecs / 3600);
+  var m = Math.floor((totalSecs % 3600) / 60);
+  if (h > 0) return h + 'h' + (m > 0 ? ' ' + m + 'm' : '');
+  return m + 'm';
+}
+
+/**
+ * Show the daily startup popup exactly once per calendar day.
+ * Calculates yesterday's focus session count and total focused time,
+ * then displays an appropriate motivational or wellbeing message.
+ */
+function checkDailyPopup() {
+  var lastShown = localStorage.getItem(POPUP_DATE_KEY);
+  if (lastShown === today()) return; // Already shown today — skip
+  localStorage.setItem(POPUP_DATE_KEY, today());
+
+  var yStr           = lastSessionDay();
+  var allYesterday   = getSessionsForDate(yStr);
+  var focusSessions  = allYesterday.filter(function(s) { return s.type === 'focus'; });
+  var totalFocusSecs = focusSessions.reduce(function(sum, s) { return sum + s.durationSecs; }, 0);
+  var EIGHT_HOURS    = 8 * 3600;
+  var overworked     = totalFocusSecs >= EIGHT_HOURS;
+
+  // Date label — show today's date as greeting
+  var DAY_NAMES   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var now = new Date();
+  var dateLabel = DAY_NAMES[now.getDay()] + ', ' + MONTH_NAMES[now.getMonth()] + ' ' + now.getDate();
+
+  // Build stat block — label shows actual day being reported
+  var isYesterday = yStr === yesterdayStr();
+  var dayLabel = isYesterday ? 'yesterday' : yStr;
+  var statsHtml, messageHtml;
+
+  if (focusSessions.length === 0) {
+    statsHtml   = '<div class="dp-stat-num">—</div>' +
+                  '<div class="dp-stat-label">no focus sessions logged</div>';
+    messageHtml = '<p class="dp-motivation">No sessions logged yet.</p>' +
+                  '<p class="dp-motivation">Today is a fresh start — <strong>let\'s go!</strong></p>';
+  } else {
+    var durLabel = formatDuration(totalFocusSecs);
+    var sessionWord = focusSessions.length === 1 ? 'session' : 'sessions';
+    statsHtml = '<div class="dp-stat-num">' + focusSessions.length + '</div>' +
+                '<div class="dp-stat-label">focus ' + sessionWord + ' on ' + dayLabel + ' · ' + durLabel + ' total</div>';
+
+    if (overworked) {
+      messageHtml = '<p class="dp-motivation">You logged over <strong>8 hours</strong> of focused work on ' + dayLabel + '.</p>' +
+                    '<p class="dp-warning">Remember that rest is just as important as work.<br>Please take it easy today. 🌿</p>';
+    } else {
+      messageHtml = '<p class="dp-motivation">On ' + dayLabel + ' you completed <strong>' + focusSessions.length + '</strong> focus ' + sessionWord + '.</p>' +
+                    '<p class="dp-motivation">Ready to beat your score today? <strong>Let\'s go!</strong></p>';
+    }
+  }
+
+  // Inject content and show the popup (with short delay to let the app render first)
+  var modal = document.getElementById('dailyPopupModal');
+  modal.querySelector('.dp-date').textContent = dateLabel;
+  modal.querySelector('.dp-stats').innerHTML  = statsHtml;
+  modal.querySelector('.dp-message').innerHTML = messageHtml;
+  setTimeout(function() {
+    document.getElementById('dailyPopupOverlay').classList.add('open');
+  }, 600);
+}
 
 // ═══════════════════ INIT ═══════════════════
 // GitHub URL hier eintragen sobald das Repo erstellt ist:
@@ -2075,7 +2623,7 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
   updateModeTooltips();
   loadTrackers();
   await loadData();
-  applyLang();
+  applyStrings();
   renderMap();
 
   var appVersion = 'v0.4.0';
@@ -2103,19 +2651,57 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
     document.getElementById('dataPath').textContent = Sf('dataPath', {p: p});
   }
 
-  if (!DATA[today()]) {
+  // Daily popup dismiss
+  document.getElementById('dailyPopupBtn').onclick = function() {
+    document.getElementById('dailyPopupOverlay').classList.remove('open');
+  };
+  document.getElementById('dailyPopupXBtn').onclick = function() {
+    document.getElementById('dailyPopupOverlay').classList.remove('open');
+  };
+  document.getElementById('dailyPopupOverlay').onclick = function(e) {
+    if (e.target === this) this.classList.remove('open');
+  };
+
+  // Dev mode: reset date keys on every restart so check-in + popup always appear fresh
+  if (new URLSearchParams(location.search).has('dev')) {
+    localStorage.removeItem(CHECKIN_DATE_KEY);
+    localStorage.removeItem(POPUP_DATE_KEY);
+    localStorage.removeItem(ONBOARDING_KEY);
+  }
+
+  // Startup order: onboarding (first launch only) → check-in (once per day) → popup after save/skip
+  if (!localStorage.getItem(ONBOARDING_KEY)) {
+    setTimeout(function() { openOnboarding(); }, 400);
+  } else if (localStorage.getItem(CHECKIN_DATE_KEY) !== today()) {
+    pendingDailyPopup = true;
     setTimeout(function() { openCheckin(today()); }, 400);
+  } else {
+    checkDailyPopup();
   }
 })();
 </script>
 
+<!-- DAILY STARTUP POPUP -->
+<div class="overlay" id="dailyPopupOverlay">
+  <div class="modal" id="dailyPopupModal" style="max-width:380px;text-align:center;padding:44px 36px 36px">
+    <button id="dailyPopupXBtn" class="modal-x">✕</button>
+    <!-- Header -->
+    <div class="dp-date" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:32px"></div>
+    <!-- Stats block -->
+    <div class="dp-stats" style="margin-bottom:24px"></div>
+    <!-- Motivational or health message -->
+    <div class="dp-message" style="margin-bottom:32px"></div>
+    <!-- CTA -->
+    <button id="dailyPopupBtn" class="btn btn-fill" style="width:100%;font-size:13px;padding:12px">Let's go →</button>
+  </div>
+</div>
+
 <!-- ABOUT MODAL -->
 <div class="overlay" id="aboutOverlay">
   <div class="modal" style="max-width:360px;text-align:center;padding:40px 36px">
-    <button id="aboutCloseBtn" style="position:absolute;top:12px;right:12px;background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1;transition:color 0.15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text-dim)'">✕</button>
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:300;letter-spacing:0.22em;color:#fad836;text-transform:uppercase;margin-bottom:4px">AURORA</div>
-    <div style="font-family:'DM Sans',sans-serif;font-size:8px;font-weight:200;letter-spacing:0.28em;color:var(--text-muted);text-transform:uppercase;margin-bottom:28px">Work &amp; Wellbeing</div>
-    <div id="aboutVersion" style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:300;color:var(--text);letter-spacing:2px;margin-bottom:8px">v0.4.0</div>
+    <button id="aboutCloseBtn" class="modal-x">✕</button>
+    <img src="assets/INIGO-Lockup-Horizontal.png" style="max-width:200px;height:auto;display:block;margin:0 auto 28px">
+    <div id="aboutVersion" style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:300;color:var(--text);letter-spacing:2px;margin-bottom:8px">v1.0.0</div>
     <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;margin-bottom:28px">stable</div>
     <div style="width:40px;height:1px;background:var(--border);margin:0 auto 24px"></div>
     <div style="font-size:12px;color:var(--text-muted);line-height:1.7">Designed &amp; built by<br><span style="color:var(--text)">TheDevAlan</span></div>
