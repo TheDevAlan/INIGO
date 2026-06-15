@@ -854,7 +854,6 @@
     <button class="settings-item" role="menuitem" type="button" id="trackerBtn">Trackers</button>
     <button class="settings-item" role="menuitem" type="button" id="statistikBtn">Statistics</button>
     <div class="settings-sep"></div>
-    <button class="settings-item" role="menuitem" type="button" id="csvBtn">&#8595; Export CSV</button>
     <button class="settings-item" role="menuitem" type="button" id="jsonBtn">&#8595; Create Backup</button>
     <button class="settings-item" role="menuitem" type="button" id="importBtn">&#8593; Import Backup</button>
     <div class="settings-sep"></div>
@@ -1174,7 +1173,7 @@ var $supportOverlay = document.getElementById('supportOverlay');
 // ═══════════════════ STRINGS ═══════════════════
 var STRINGS = {
   reminders: 'Reminders', trackers: 'Trackers', breakRule: 'Timer Settings',
-  exportCsv: '↓ Export CSV', exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
+  exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
   help: 'Help', about: 'About INI:GO',
   ready: 'ready', focus: 'focus', paused: 'paused',
   breakDoneTitle: 'Break over', breakDoneBody: 'Ready for the next session!',
@@ -1211,7 +1210,7 @@ function applyStrings() {
   // Settings menu buttons
   var ids = {
     pauseSettingsBtn: 'breakRule',
-    csvBtn: 'exportCsv', jsonBtn: 'exportBackup', importBtn: 'importBackup'
+    jsonBtn: 'exportBackup', importBtn: 'importBackup'
   };
   Object.keys(ids).forEach(function(id) {
     var el = document.getElementById(id);
@@ -2236,19 +2235,7 @@ function closeCheckin() {
 $overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
 
 // ═══════════════════ EXPORT ═══════════════════
-document.getElementById('csvBtn').onclick = function() {
-  closeSettingsMenu();
-  var keys = Object.keys(DATA).sort();
-  if (!keys.length) return;
-  var csv = 'Date,Sleep,Steps,Activity,MorningMood,Meditation,Note\n';
-  keys.forEach(function(k) {
-    var e = DATA[k];
-    csv += k + ',' + (e.sleep||'') + ',' + (e.steps||'') + ',' + (e.sport||'') + ',' + (e.mood||'') + ',' + (e.meditation||'') + ',"' + (e.note||'').replace(/"/g,'""') + '"\n';
-  });
-  dl(csv, 'dailyflow_' + today() + '.csv', 'text/csv');
-};
-
-document.getElementById('jsonBtn').onclick = function() { closeSettingsMenu(); dl(JSON.stringify(DATA, null, 2), 'dailyflow_backup_' + today() + '.json', 'application/json'); };
+document.getElementById('jsonBtn').onclick = function() { closeSettingsMenu(); dl(JSON.stringify(DATA, null, 2), 'INIGO_backup_' + today() + '.json', 'application/json'); };
 
 function dl(c, n, t) { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], {type:t})); a.download = n; a.click(); }
 
@@ -2701,7 +2688,7 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
   <div class="modal" style="max-width:360px;text-align:center;padding:40px 36px">
     <button id="aboutCloseBtn" class="modal-x">✕</button>
     <img src="assets/INIGO-Lockup-Horizontal.png" style="max-width:200px;height:auto;display:block;margin:0 auto 28px">
-    <div id="aboutVersion" style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:300;color:var(--text);letter-spacing:2px;margin-bottom:8px">v1.0.0</div>
+    <div id="aboutVersion" style="font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:300;color:var(--text);letter-spacing:2px;margin-bottom:8px">v1.0.2</div>
     <div style="font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;margin-bottom:28px">stable</div>
     <div style="width:40px;height:1px;background:var(--border);margin:0 auto 24px"></div>
     <div style="font-size:12px;color:var(--text-muted);line-height:1.7">Designed &amp; built by<br><span style="color:var(--text)">TheDevAlan</span></div>
