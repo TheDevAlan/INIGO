@@ -2,6 +2,19 @@ const { app, BrowserWindow, Tray, Menu, Notification, ipcMain, nativeImage } = r
 const path = require('path');
 const fs = require('fs');
 
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+}
+
 // ═══════════════════ DATA ═══════════════════
 const DATA_DIR  = path.join(app.getPath('userData'), 'INIGO-data');
 const DATA_FILE = path.join(DATA_DIR, 'data.json');
@@ -37,7 +50,15 @@ app.setName(APP_DISPLAY_NAME);
 app.setAppUserModelId('inigo');
 
 ipcMain.handle('show-notification', (_event, title, body) => {
-  new Notification({ title, body, icon: APP_ICON_PATH, silent: false }).show();
+  const n = new Notification({ title, body, icon: APP_ICON_PATH, silent: false });
+  n.on('click', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+  n.show();
   return true;
 });
 

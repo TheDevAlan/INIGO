@@ -2394,6 +2394,87 @@ $trackerOverlay.onclick = function(e) { if (e.target === $trackerOverlay) $track
 // ═══════════════════ STATISTIK MODAL ═══════════════════
 var $statistikOverlay = document.getElementById('statistikOverlay');
 
+function buildSessionChart() {
+  var log = loadSessionLog().filter(function(s) { return s.type === 'focus'; });
+  if (log.length === 0) return '<div style="color:var(--text-dim);font-size:11px;padding:8px 0">No sessions logged yet</div>';
+
+  var byDate = {};
+  log.forEach(function(s) {
+    if (!byDate[s.date]) byDate[s.date] = { count: 0, totalSecs: 0 };
+    byDate[s.date].count++;
+    byDate[s.date].totalSecs += s.durationSecs;
+  });
+
+  var dates = Object.keys(byDate).sort();
+  if (dates.length < 2) return '<div style="color:var(--text-dim);font-size:11px;padding:8px 0">Not enough data yet</div>';
+
+  var totalSessions = log.length;
+  var activeDays    = dates.length;
+  var avg           = totalSessions / activeDays;
+
+  var pts = dates.map(function(d) { return { date: d, val: byDate[d].count }; });
+  var vals = pts.map(function(p) { return p.val; });
+  var dataMax = Math.max.apply(null, vals);
+  var range   = dataMax || 1;
+
+  var W = 560, H = 48, padX = 4, padY = 6;
+  var step = (W - padX * 2) / (pts.length - 1);
+  var svgPts = pts.map(function(p, i) {
+    return {
+      x: (padX + i * step).toFixed(1),
+      y: (H - padY - (p.val / range) * (H - padY * 2)).toFixed(1)
+    };
+  });
+  var pathD  = svgPts.map(function(p, i) { return (i === 0 ? 'M' : 'L') + p.x + ',' + p.y; }).join(' ');
+  var avgY   = (H - padY - (avg / range) * (H - padY * 2)).toFixed(1);
+  var lastPt = svgPts[svgPts.length - 1];
+
+  var metaHtml =
+    '<div class="stat-chart-label">' +
+      '<span>' + dates[0].split('-').reverse().join('.') + ' – ' + dates[dates.length - 1].split('-').reverse().join('.') + ' · ' + activeDays + ' days · ' + totalSessions + ' total</span>' +
+      '<span class="stat-chart-avg">Ø ' + avg.toFixed(1) + ' / day</span>' +
+    '</div>';
+
+  var svgHtml =
+    '<svg class="stat-chart-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<line x1="' + padX + '" y1="' + avgY + '" x2="' + (W - padX) + '" y2="' + avgY + '" stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"/>' +
+      '<path d="' + pathD + '" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<circle cx="' + lastPt.x + '" cy="' + lastPt.y + '" r="3" fill="var(--accent)"/>' +
+    '</svg>';
+
+  // Trend: last 7 days vs previous 7 days
+  var todayD = new Date(); todayD.setHours(0, 0, 0, 0);
+  var w1 = [], w2 = [];
+  for (var i = 1; i <= 14; i++) {
+    var dd = new Date(todayD); dd.setDate(dd.getDate() - i);
+    var v = byDate[dk(dd)] ? byDate[dk(dd)].count : 0;
+    if (i <= 7) w1.push(v); else w2.push(v);
+  }
+  var trendHtml = '';
+  if (w1.length && w2.length) {
+    var avg1  = w1.reduce(function(a, b) { return a + b; }, 0) / w1.length;
+    var avg2  = w2.reduce(function(a, b) { return a + b; }, 0) / w2.length;
+    var delta = avg1 - avg2;
+    var norm  = Math.abs(delta) / range;
+    var arrow, tLabel, tColor;
+    if (norm > 0.06) {
+      if (delta > 0) { arrow = '↑'; tLabel = 'more sessions'; tColor = 'var(--trend-up)'; }
+      else           { arrow = '↓'; tLabel = 'fewer sessions'; tColor = 'var(--trend-down)'; }
+    } else           { arrow = '▶'; tLabel = 'stable';         tColor = 'var(--text-dim)'; }
+    trendHtml = '<div class="stat-trend-row"><span class="stat-trend-label">TREND</span><span class="stat-trend-val" style="color:' + tColor + '">' + arrow + ' ' + tLabel + '</span></div>';
+  }
+
+  return metaHtml +
+    '<div class="stat-yaxis-wrap">' +
+      '<div class="stat-yaxis-labels">' +
+        '<span class="stat-yaxis-val">' + dataMax + '</span>' +
+        '<span class="stat-yaxis-val">0</span>' +
+      '</div>' +
+      '<div class="stat-chart-col">' + svgHtml + '</div>' +
+    '</div>' +
+    trendHtml;
+}
+
 function buildTrendRow(trackerId, range) {
   var today = new Date(); today.setHours(0, 0, 0, 0);
   var w1 = [], w2 = [];
@@ -2485,8 +2566,9 @@ function buildFullSparkline(trackerId, type) {
 
 function openStatistikModal() {
   var content = document.getElementById('statistikContent');
-  var html = '';
-  trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
+  var html = '<div class="stat-section-title">Focus Sessions</div>' +
+             '<div class="stat-chart-wrap">' + buildSessionChart() + '</div>';
+  trackersConfig.filter(function(t) { return t.enabled && t.type !== 'yesno'; }).forEach(function(t) {
     html += '<div class="stat-section-title">' + escHtml(t.label) + '</div>';
     if (t.type === 'text' || t.type === 'yesno') {
       var count = Object.keys(DATA).filter(function(k) { return DATA[k] && DATA[k][t.id] != null && DATA[k][t.id] !== ''; }).length;
@@ -2568,7 +2650,8 @@ function checkDailyPopup() {
 
   // Build stat block — label shows actual day being reported
   var isYesterday = yStr === yesterdayStr();
-  var dayLabel = isYesterday ? 'yesterday' : yStr;
+  var yDate = new Date(yStr + 'T12:00:00');
+  var dayLabel = isYesterday ? 'yesterday' : MONTH_NAMES[yDate.getMonth()] + ' ' + yDate.getDate();
   var statsHtml, messageHtml;
 
   if (focusSessions.length === 0) {
@@ -2580,14 +2663,13 @@ function checkDailyPopup() {
     var durLabel = formatDuration(totalFocusSecs);
     var sessionWord = focusSessions.length === 1 ? 'session' : 'sessions';
     statsHtml = '<div class="dp-stat-num">' + focusSessions.length + '</div>' +
-                '<div class="dp-stat-label">focus ' + sessionWord + ' on ' + dayLabel + ' · ' + durLabel + ' total</div>';
+                '<div class="dp-stat-label">focus ' + sessionWord + ' ' + dayLabel + ' · ' + durLabel + ' total</div>';
 
     if (overworked) {
       messageHtml = '<p class="dp-motivation">You logged over <strong>8 hours</strong> of focused work on ' + dayLabel + '.</p>' +
                     '<p class="dp-warning">Remember that rest is just as important as work.<br>Please take it easy today. 🌿</p>';
     } else {
-      messageHtml = '<p class="dp-motivation">On ' + dayLabel + ' you completed <strong>' + focusSessions.length + '</strong> focus ' + sessionWord + '.</p>' +
-                    '<p class="dp-motivation">Ready to beat your score today? <strong>Let\'s go!</strong></p>';
+      messageHtml = '<p class="dp-motivation">On ' + dayLabel + ' you completed <strong>' + focusSessions.length + '</strong> focus ' + sessionWord + '.</p>';
     }
   }
 
