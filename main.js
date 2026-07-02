@@ -32,15 +32,19 @@ ipcMain.handle('load-data', () => {
 });
 
 ipcMain.handle('save-data', (_event, data) => {
-  ensureDataDir();
-  // Atomic write: write to .tmp then rename to prevent corruption on crash
-  fs.writeFileSync(DATA_TMP, JSON.stringify(data, null, 2), 'utf-8');
-  fs.renameSync(DATA_TMP, DATA_FILE);
-  return true;
+  try {
+    ensureDataDir();
+    // Atomic write: write to .tmp then rename to prevent corruption on crash
+    fs.writeFileSync(DATA_TMP, JSON.stringify(data, null, 2), 'utf-8');
+    fs.renameSync(DATA_TMP, DATA_FILE);
+    return true;
+  } catch (err) {
+    console.error('save-data failed:', err);
+    return false;
+  }
 });
 
 ipcMain.handle('get-data-path', () => DATA_DIR);
-ipcMain.handle('is-dev', () => !app.isPackaged);
 
 // ═══════════════════ NOTIFICATIONS ═══════════════════
 const APP_ICON_PATH   = path.join(__dirname, 'assets', 'INIGO-logo-mark.png');

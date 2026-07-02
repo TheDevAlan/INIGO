@@ -498,23 +498,6 @@
 
   .timer-meta { font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
 
-  .queue-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--deepwork); opacity: 0; transition: opacity 0.3s; height: 16px; }
-  .queue-badge.visible { opacity: 1; }
-
-  /* ═══════════ BANNERS ═══════════ */
-  .banner-container { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 150; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
-  .banner { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); pointer-events: auto; animation: bannerIn 0.4s ease; max-width: 420px; }
-  .banner.healthy-style { border-color: var(--accent); box-shadow: 0 0 20px rgba(240,151,42,0.2), 0 12px 40px rgba(0,0,0,0.6); }
-  .banner.queued-style { border-color: var(--deepwork); box-shadow: 0 0 20px rgba(212,82,42,0.2), 0 12px 40px rgba(0,0,0,0.6); }
-  .banner-icon { font-size: 20px; flex-shrink: 0; }
-  .banner-text { display: flex; flex-direction: column; gap: 2px; }
-  .banner-title { font-size: 13px; font-weight: 500; color: var(--text); }
-  .banner-body { font-size: 11px; color: var(--text-muted); }
-  .banner-close { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 4px; margin-left: 8px; transition: color 0.15s; }
-  .banner-close:hover { color: var(--text); }
-  @keyframes bannerIn { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
-  .banner.removing { animation: bannerOut 0.3s ease forwards; }
-  @keyframes bannerOut { to { opacity:0; transform:translateY(-12px); } }
 
   /* ═══════════ TREND LINE ═══════════ */
   .trend-line-wrap {
@@ -784,11 +767,39 @@
     font-size: 13px;
     color: var(--break-accent);
     line-height: 1.65;
-    margin: 8px 0 0;
+    margin: 0 0 16px;
     padding: 12px 16px;
     border: 1px solid var(--break-accent);
     border-radius: 10px;
     background: rgba(107,112,53,0.08);
+  }
+  .dp-split {
+    display: flex;
+    margin: 20px 0 24px;
+  }
+  .dp-split-col {
+    flex: 1;
+    text-align: center;
+  }
+  .dp-divider {
+    width: 1px;
+    background: var(--border);
+    margin: 6px 20px;
+    flex-shrink: 0;
+  }
+  .dp-split-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 44px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+  .dp-split-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
   }
 
   @media (max-width: 640px) {
@@ -831,7 +842,6 @@
   </div>
 </div>
 <div class="focus-backdrop" id="focusBackdrop"></div>
-<div class="banner-container" id="bannerContainer"></div>
 <div class="support-wrap">
   <button
     class="support-btn"
@@ -888,7 +898,6 @@
       </div>
       <div class="timer-side-slot"></div>
     </div>
-    <div class="queue-badge" id="queueBadge"></div>
     <div class="timer-meta" id="timerMeta"></div>
     <div class="break-reminders">
       <div class="break-reminder-item">
@@ -1111,7 +1120,10 @@ async function loadData() {
 }
 
 async function saveAllData() {
-  if (window.api) { await window.api.saveData(DATA); }
+  if (window.api) {
+    var ok = await window.api.saveData(DATA);
+    if (ok === false) alert('Could not save your data. Please check disk space or permissions.');
+  }
   else { localStorage.setItem('df', JSON.stringify(DATA)); }
 }
 
@@ -1161,10 +1173,8 @@ function getSessionsForDate(dateStr) {
 
 // ═══════════════════ MODE ═══════════════════
 var mode = 'healthy';
-var notificationQueue = [];
 var $modeHealthy = document.getElementById('modeHealthy');
 var $modeDeep = document.getElementById('modeDeep');
-var $queueBadge = document.getElementById('queueBadge');
 var $settingsToggle = document.getElementById('settingsToggle');
 var $settingsMenu = document.getElementById('settingsMenu');
 var $supportToggle = document.getElementById('supportToggle');
@@ -1175,7 +1185,7 @@ var STRINGS = {
   reminders: 'Reminders', trackers: 'Trackers', breakRule: 'Timer Settings',
   exportBackup: '↓ Create Backup', importBackup: '↑ Import Backup',
   help: 'Help', about: 'About INI:GO',
-  ready: 'ready', focus: 'focus', paused: 'paused',
+  ready: 'ready', focus: 'focus', deepFocus: 'deep focus', paused: 'paused',
   breakDoneTitle: 'Break over', breakDoneBody: 'Ready for the next session!',
   sessionMeta: '{m}m total · {n} session', sessionMetaPlural: '{m}m total · {n} sessions',
   entries: '{n} entries in {y}', noEntries: 'No entries yet',
@@ -1218,7 +1228,7 @@ function applyStrings() {
   });
   // Support modal
   var staticMap = {
-    'i18n-support-title': 'supportTitle', 'i18n-support-sub': 'supportSub',
+    'i18n-support-title': 'supportTitle',
     'i18n-support-btn': 'supportBtn'
   };
   Object.keys(staticMap).forEach(function(id) {
@@ -1256,10 +1266,12 @@ document.addEventListener('click', function(e) {
 });
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeSettingsMenu();
-    closeSupportModal();
-  }
+  if (e.key !== 'Escape') return;
+  closeSettingsMenu();
+  closeSupportModal();
+  // Check-in needs its own close logic (marks the day as shown); handle it first
+  if (typeof $overlay !== 'undefined' && $overlay && $overlay.classList.contains('open')) { closeCheckin(); return; }
+  document.querySelectorAll('.overlay.open').forEach(function(ov) { ov.classList.remove('open'); });
 });
 
 function openSupportModal() {
@@ -1324,7 +1336,7 @@ document.getElementById('bugSubmitBtn').onclick = function() {
   var body = '**What went wrong?**\n' + desc +
     (steps ? '\n\n**Steps to reproduce:**\n' + steps : '') +
     '\n\n---\n_' + versionInfo + '_';
-  var url = 'https://github.com/TheDevAlan/Zenith/issues/new' +
+  var url = 'https://github.com/TheDevAlan/INIGO/issues/new' +
     '?title=' + encodeURIComponent('[Bug] ' + desc.slice(0, 60)) +
     '&body=' + encodeURIComponent(body) +
     '&labels=bug';
@@ -1406,52 +1418,10 @@ function setMode(m) {
     $status.textContent = m === 'deep' ? S('deepFocus') : S('focus');
     $status.style.color = m === 'deep' ? 'var(--deepwork)' : 'var(--accent)';
   }
-  updateQueueBadge();
 }
 
 $modeHealthy.onclick = function() { setMode('healthy'); };
 $modeDeep.onclick = function() { setMode('deep'); };
-
-function updateQueueBadge() {
-  if (notificationQueue.length > 0 && mode === 'deep') {
-    var n = notificationQueue.length;
-    $queueBadge.textContent = n === 1 ? Sf('reminderQueued', {n: 1}) : Sf('remindersQueued', {n: n});
-    $queueBadge.classList.add('visible');
-  } else { $queueBadge.classList.remove('visible'); }
-}
-
-// ═══════════════════ BANNERS ═══════════════════
-var $banners = document.getElementById('bannerContainer');
-
-function showBanner(icon, title, body, cls) {
-  var b = document.createElement('div');
-  b.className = 'banner ' + (cls || '');
-  b.innerHTML = '<span class="banner-icon">' + icon + '</span><div class="banner-text"><div class="banner-title">' + title + '</div><div class="banner-body">' + body + '</div></div><button class="banner-close">&#10005;</button>';
-  b.querySelector('.banner-close').onclick = function() { b.classList.add('removing'); setTimeout(function() { b.remove(); }, 300); };
-  $banners.appendChild(b);
-  setTimeout(function() { if (b.parentNode) { b.classList.add('removing'); setTimeout(function() { if (b.parentNode) b.remove(); }, 300); } }, 8000);
-}
-
-function sendReminder(icon, title, body, isHealth) {
-  if (isHealth && mode === 'deep' && timerRunning) {
-    notificationQueue.push({ icon: icon, title: title, body: body });
-    updateQueueBadge();
-    return;
-  }
-  showBanner(icon, title, body, isHealth ? 'healthy-style' : '');
-  if (window.api) window.api.showNotification(title, body);
-}
-
-function flushQueue() {
-  if (notificationQueue.length === 0) return;
-  var c = notificationQueue.length;
-  var qTitle = c === 1 ? S('queuedSingle') : Sf('queuedPlural', {n: c});
-  var mTitle = c === 1 ? S('missedSingle') : Sf('missedPlural', {n: c});
-  showBanner('\ud83d\udccb', qTitle, notificationQueue.map(function(n) { return n.title; }).join(' \u00b7 '), 'queued-style');
-  if (window.api) window.api.showNotification(mTitle, notificationQueue.map(function(n) { return n.body; }).join(' | '));
-  notificationQueue = [];
-  updateQueueBadge();
-}
 
 // ═══════════════════ POMODORO TIMER ═══════════════════
 // States: idle → focus → break → focus → ...
@@ -1558,7 +1528,6 @@ function focusTick() {
     timerRunning = false;
     timerState = 'break-ready';
     onBreak = true;
-    if (mode === 'deep') flushQueue();
     setFocusMode(false);
     $time.classList.remove('warning');
     $time.classList.add('break-mode');
@@ -1581,8 +1550,6 @@ function focusTick() {
     $time.classList.remove('warning');
   }
 }
-
-function setSessionInputEnabled(enabled, clear) {}
 
 function startFocus() {
   currentSessionTask = '';
@@ -1609,7 +1576,6 @@ function pauseFocus() {
   timerState = 'focus-paused';
   $status.textContent = S('paused');
   $status.style.color = 'var(--text-dim)';
-  if (mode === 'deep') flushQueue();
   setFocusMode(false);
   updateControlVisibility();
 }
@@ -1631,7 +1597,6 @@ function resetTimer() {
   updateTimerDisplay();
   updateControlVisibility();
   currentSessionTask = '';
-  setSessionInputEnabled(true, true);
 }
 
 $play.onclick = function() {
@@ -1758,7 +1723,6 @@ function endBreak(natural) {
     setTimeout(function() { document.body.classList.add('post-break'); }, 80);
     updateControlVisibility();
     currentSessionTask = '';
-    setSessionInputEnabled(true, true);
     // OS notification
     var doneTitle = '✅ ' + S('breakDoneTitle');
     var doneBody  = S('breakDoneBody');
@@ -1772,29 +1736,12 @@ function endBreak(natural) {
     updateTimerDisplay();
     updateControlVisibility();
     currentSessionTask = '';
-    setSessionInputEnabled(true, true);
   }
 }
 
 function clearPostBreak() {
   document.body.classList.remove('post-break');
   timerState = 'idle';
-}
-
-// ═══════════════════ BREAK CONFIG ═══════════════════
-var BREAK_CONFIG_DEFAULT = { mode: 'auto', percent: 20, fixedMins: 5 };
-var breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT);
-
-function loadBreakConfig() {
-  try {
-    var saved = localStorage.getItem('inigo-break-config');
-    if (saved) breakConfig = Object.assign({}, BREAK_CONFIG_DEFAULT, JSON.parse(saved));
-  } catch(e) {}
-}
-
-function saveBreakConfig(cfg) {
-  breakConfig = cfg;
-  localStorage.setItem('inigo-break-config', JSON.stringify(cfg));
 }
 
 var $breakOverlay = document.getElementById('breakOverlay');
@@ -1895,76 +1842,6 @@ function saveTrackers(list) {
 // ═══════════════════ HEATMAP ═══════════════════
 var viewYear = new Date().getFullYear();
 var MO, DA; // set in renderMap from S('months') / S('days')
-
-// ─── Context Stats ────────────────────────────────────────────────────────────
-function computeContextStats() {
-  // Streak
-  var streak = 0;
-  var t = new Date(); t.setHours(0, 0, 0, 0);
-  for (var i = 0; i < 400; i++) {
-    var d = new Date(t); d.setDate(d.getDate() - i);
-    var k = dk(d);
-    if (DATA[k] && DATA[k].mood) { streak++; } else { break; }
-  }
-  // Year average
-  var yearKeys = Object.keys(DATA).filter(function(k) { return k.startsWith(viewYear + '-'); });
-  var moodTotal = 0, moodCount = 0;
-  yearKeys.forEach(function(k) {
-    if (DATA[k] && DATA[k].mood) { moodTotal += Number(DATA[k].mood); moodCount++; }
-  });
-  var yearAvg = moodCount > 0 ? (moodTotal / moodCount).toFixed(1) : '–';
-  // Best week
-  var weekMap = {};
-  yearKeys.forEach(function(k) {
-    if (!DATA[k] || !DATA[k].mood) return;
-    var date = new Date(k);
-    var jan4 = new Date(date.getFullYear(), 0, 4);
-    var kw = Math.ceil(((date - jan4) / 86400000 + jan4.getDay() + 1) / 7);
-    if (!weekMap[kw]) weekMap[kw] = { sum: 0, count: 0 };
-    weekMap[kw].sum += Number(DATA[k].mood);
-    weekMap[kw].count++;
-  });
-  var bestKW = '–', bestAvg = -1;
-  Object.keys(weekMap).forEach(function(kw) {
-    var a = weekMap[kw].sum / weekMap[kw].count;
-    if (a > bestAvg) { bestAvg = a; bestKW = 'KW ' + kw; }
-  });
-  // Trend vs prev month
-  var now = new Date();
-  var pad2 = function(n) { return String(n).padStart(2, '0'); };
-  var thisM = now.getMonth(), thisY = now.getFullYear();
-  var lastM = thisM === 0 ? 11 : thisM - 1;
-  var lastY = thisM === 0 ? thisY - 1 : thisY;
-  var thisPrefix = thisY + '-' + pad2(thisM + 1);
-  var lastPrefix = lastY + '-' + pad2(lastM + 1);
-  var thisMoods = [], lastMoods = [];
-  Object.keys(DATA).forEach(function(k) {
-    if (!DATA[k] || !DATA[k].mood) return;
-    if (k.startsWith(thisPrefix)) thisMoods.push(Number(DATA[k].mood));
-    if (k.startsWith(lastPrefix)) lastMoods.push(Number(DATA[k].mood));
-  });
-  var trendStr = '–';
-  if (thisMoods.length > 0 && lastMoods.length > 0) {
-    var tA = thisMoods.reduce(function(a, b) { return a + b; }, 0) / thisMoods.length;
-    var lA = lastMoods.reduce(function(a, b) { return a + b; }, 0) / lastMoods.length;
-    var diff = (tA - lA).toFixed(1);
-    var arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '▶';
-    var color = diff > 0 ? 'var(--trend-up)' : diff < 0 ? 'var(--trend-down)' : 'var(--text-dim)';
-    trendStr = '<span style="color:' + color + '">' + arrow + ' ' + (diff > 0 ? '+' : '') + diff + '</span>';
-  }
-  return { streak: streak, bestKW: bestKW, yearAvg: yearAvg, trend: trendStr };
-}
-
-function renderContextStats() {
-  var el = document.getElementById('heatmapStats');
-  if (!el) return;
-  var s = computeContextStats();
-  el.innerHTML =
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + S('statStreak') + '</div><div class="heatmap-stat-value">' + Sf('statStreakDays', {n: s.streak}) + '</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + Sf('statBestWeek', {y: viewYear}) + '</div><div class="heatmap-stat-value">' + s.bestKW + '</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + Sf('statYearAvg', {y: viewYear}) + '</div><div class="heatmap-stat-value">' + s.yearAvg + (s.yearAvg !== '–' ? ' / 5' : '') + '</div></div>' +
-    '<div class="heatmap-stat-item"><div class="heatmap-stat-label">' + S('statTrend') + '</div><div class="heatmap-stat-value">' + s.trend + '</div></div>';
-}
 
 function alignButtons() {
   var section = document.querySelector('.heatmap-section');
@@ -2100,10 +1977,10 @@ function showTip(e, key, entry) {
   if (entry) {
     trackersConfig.filter(function(t) { return t.enabled; }).forEach(function(t) {
       var val = entry[t.id];
-      var display = val != null && val !== '' ? (t.type === 'number' ? Number(val).toLocaleString('en-US') : val) : '\u2013';
-      h += '<div class="tip-row"><span class="tip-label">' + t.label + '</span><span class="tip-val">' + display + '</span></div>';
+      var display = val != null && val !== '' ? (t.type === 'number' ? Number(val).toLocaleString('en-US') : escHtml(val)) : '\u2013';
+      h += '<div class="tip-row"><span class="tip-label">' + escHtml(t.label) + '</span><span class="tip-val">' + display + '</span></div>';
     });
-    if (entry.note) h += '<div class="tip-note">' + entry.note + '</div>';
+    if (entry.note) h += '<div class="tip-note">' + escHtml(entry.note) + '</div>';
   } else {
     h += '<div class="tip-empty">No entry \u2014 click to add</div>';
   }
@@ -2235,14 +2112,52 @@ function closeCheckin() {
 $overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
 
 // ═══════════════════ EXPORT ═══════════════════
-document.getElementById('jsonBtn').onclick = function() { closeSettingsMenu(); dl(JSON.stringify(DATA, null, 2), 'INIGO_backup_' + today() + '.json', 'application/json'); };
+document.getElementById('jsonBtn').onclick = function() {
+  closeSettingsMenu();
+  var backup = { _inigo: true, version: 2, exportedAt: new Date().toISOString(), data: DATA, sessions: loadSessionLog() };
+  dl(JSON.stringify(backup, null, 2), 'INIGO_backup_' + today() + '.json', 'application/json');
+};
 
-function dl(c, n, t) { var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], {type:t})); a.download = n; a.click(); }
+function dl(c, n, t) {
+  var url = URL.createObjectURL(new Blob([c], { type: t }));
+  var a = document.createElement('a');
+  a.href = url; a.download = n; a.click();
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
 
 document.getElementById('importBtn').onclick = function() { closeSettingsMenu(); document.getElementById('importFile').click(); };
 document.getElementById('importFile').onchange = async function(e) {
   var file = e.target.files[0]; if (!file) return;
-  try { var imp = JSON.parse(await file.text()); Object.assign(DATA, imp); await saveAllData(); renderMap(); }
+  try {
+    var imp = JSON.parse(await file.text());
+    if (!imp || typeof imp !== 'object' || Array.isArray(imp)) throw new Error('not an object');
+    // v2 backups wrap data in { data, sessions }; legacy backups are the raw DATA map
+    var incomingData, incomingSessions = null;
+    if (imp.data && typeof imp.data === 'object' && !Array.isArray(imp.data)) {
+      incomingData = imp.data;
+      if (Array.isArray(imp.sessions)) incomingSessions = imp.sessions;
+    } else {
+      incomingData = imp;
+    }
+    // Validate day entries before merging
+    Object.keys(incomingData).forEach(function(k) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(k)) throw new Error('bad date key: ' + k);
+      if (!incomingData[k] || typeof incomingData[k] !== 'object') throw new Error('bad entry: ' + k);
+    });
+    Object.assign(DATA, incomingData);
+    // Merge session log, de-duplicating by completedAt timestamp
+    if (incomingSessions) {
+      var merged = loadSessionLog();
+      var seen = {};
+      merged.forEach(function(s) { if (s && s.completedAt) seen[s.completedAt] = true; });
+      incomingSessions.forEach(function(s) {
+        if (s && s.completedAt && !seen[s.completedAt]) { merged.push(s); seen[s.completedAt] = true; }
+      });
+      localStorage.setItem(SESSION_LOG_KEY, JSON.stringify(merged));
+    }
+    await saveAllData();
+    renderMap();
+  }
   catch(err) { alert('Invalid JSON file.'); }
   e.target.value = '';
 };
@@ -2568,7 +2483,7 @@ function openStatistikModal() {
   var content = document.getElementById('statistikContent');
   var html = '<div class="stat-section-title">Focus Sessions</div>' +
              '<div class="stat-chart-wrap">' + buildSessionChart() + '</div>';
-  trackersConfig.filter(function(t) { return t.enabled && t.type !== 'yesno'; }).forEach(function(t) {
+  trackersConfig.filter(function(t) { return t.enabled && t.type !== 'yesno' && t.type !== 'text'; }).forEach(function(t) {
     html += '<div class="stat-section-title">' + escHtml(t.label) + '</div>';
     if (t.type === 'text' || t.type === 'yesno') {
       var count = Object.keys(DATA).filter(function(k) { return DATA[k] && DATA[k][t.id] != null && DATA[k][t.id] !== ''; }).length;
@@ -2654,41 +2569,45 @@ function checkDailyPopup() {
   var dayLabel = isYesterday ? 'yesterday' : MONTH_NAMES[yDate.getMonth()] + ' ' + yDate.getDate();
   var statsHtml, messageHtml;
 
-  if (focusSessions.length === 0) {
-    statsHtml   = '<div class="dp-stat-num">—</div>' +
-                  '<div class="dp-stat-label">no focus sessions logged</div>';
-    messageHtml = '<p class="dp-motivation">No sessions logged yet.</p>' +
-                  '<p class="dp-motivation">Today is a fresh start — <strong>let\'s go!</strong></p>';
-  } else {
-    var durLabel = formatDuration(totalFocusSecs);
-    var sessionWord = focusSessions.length === 1 ? 'session' : 'sessions';
-    statsHtml = '<div class="dp-stat-num">' + focusSessions.length + '</div>' +
-                '<div class="dp-stat-label">focus ' + sessionWord + ' ' + dayLabel + ' · ' + durLabel + ' total</div>';
+  var subtitleText = 'A quick look at how much focused work you got done ' + dayLabel + '.';
 
-    if (overworked) {
-      messageHtml = '<p class="dp-motivation">You logged over <strong>8 hours</strong> of focused work on ' + dayLabel + '.</p>' +
-                    '<p class="dp-warning">Remember that rest is just as important as work.<br>Please take it easy today. 🌿</p>';
-    } else {
-      messageHtml = '<p class="dp-motivation">On ' + dayLabel + ' you completed <strong>' + focusSessions.length + '</strong> focus ' + sessionWord + '.</p>';
-    }
+  if (focusSessions.length === 0) {
+    statsHtml = '<div class="dp-split">' +
+      '<div class="dp-split-col"><div class="dp-split-num" style="color:var(--text-dim)">—</div><div class="dp-split-label">focus sessions</div></div>' +
+      '<div class="dp-divider"></div>' +
+      '<div class="dp-split-col"><div class="dp-split-num" style="color:var(--text-dim)">—</div><div class="dp-split-label">hours focused</div></div>' +
+      '</div>';
+    messageHtml = '';
+  } else {
+    var sessionWord = focusSessions.length === 1 ? 'session' : 'sessions';
+    var fh = Math.floor(totalFocusSecs / 3600);
+    var fm = Math.floor((totalFocusSecs % 3600) / 60);
+    var durShort = fh > 0 ? fh + ':' + String(fm).padStart(2, '0') : fm + 'm';
+    statsHtml = '<div class="dp-split">' +
+      '<div class="dp-split-col"><div class="dp-split-num">' + focusSessions.length + '</div><div class="dp-split-label">focus ' + sessionWord + '</div></div>' +
+      '<div class="dp-divider"></div>' +
+      '<div class="dp-split-col"><div class="dp-split-num">' + durShort + '</div><div class="dp-split-label">hours focused</div></div>' +
+      '</div>';
+    messageHtml = overworked
+      ? '<p class="dp-warning">You logged over 8 hours of focused work. Rest is just as important — take it easy today. 🌿</p>'
+      : '';
   }
 
   // Inject content and show the popup (with short delay to let the app render first)
   var modal = document.getElementById('dailyPopupModal');
-  modal.querySelector('.dp-date').textContent = dateLabel;
-  modal.querySelector('.dp-stats').innerHTML  = statsHtml;
-  modal.querySelector('.dp-message').innerHTML = messageHtml;
+  modal.querySelector('.dp-date').textContent     = dateLabel;
+  modal.querySelector('.dp-subtitle').textContent = subtitleText;
+  modal.querySelector('.dp-stats').innerHTML      = statsHtml;
+  modal.querySelector('.dp-message').innerHTML    = messageHtml;
   setTimeout(function() {
     document.getElementById('dailyPopupOverlay').classList.add('open');
   }, 600);
 }
 
 // ═══════════════════ INIT ═══════════════════
-// GitHub URL hier eintragen sobald das Repo erstellt ist:
-var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
+var GITHUB_URL = 'https://github.com/TheDevAlan/INIGO';
 
 (async function() {
-  loadBreakConfig();
   updateModeTooltips();
   loadTrackers();
   await loadData();
@@ -2752,15 +2671,12 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/Zenith';
 
 <!-- DAILY STARTUP POPUP -->
 <div class="overlay" id="dailyPopupOverlay">
-  <div class="modal" id="dailyPopupModal" style="max-width:380px;text-align:center;padding:44px 36px 36px">
+  <div class="modal" id="dailyPopupModal" style="max-width:360px;padding:28px">
     <button id="dailyPopupXBtn" class="modal-x">✕</button>
-    <!-- Header -->
-    <div class="dp-date" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:32px"></div>
-    <!-- Stats block -->
-    <div class="dp-stats" style="margin-bottom:24px"></div>
-    <!-- Motivational or health message -->
-    <div class="dp-message" style="margin-bottom:32px"></div>
-    <!-- CTA -->
+    <div class="dp-date" style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px"></div>
+    <div class="dp-subtitle" style="font-size:12px;color:var(--text-muted);line-height:1.5"></div>
+    <div class="dp-stats"></div>
+    <div class="dp-message"></div>
     <button id="dailyPopupBtn" class="btn btn-fill" style="width:100%;font-size:13px;padding:12px">Let's go →</button>
   </div>
 </div>
