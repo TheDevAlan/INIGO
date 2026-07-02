@@ -1,6 +1,6 @@
 {
   "name": "INIGO",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Personal productivity timer and daily wellbeing tracker",
   "author": "Alan Gawlik",
   "main": "main.js",
