@@ -2580,14 +2580,6 @@ function lastSessionDay() {
   return log.reduce(function(best, s) { return s.date > best ? s.date : best; }, log[0].date);
 }
 
-/** Format a total seconds value as a human-readable string e.g. "1h 45m" or "25m". */
-function formatDuration(totalSecs) {
-  var h = Math.floor(totalSecs / 3600);
-  var m = Math.floor((totalSecs % 3600) / 60);
-  if (h > 0) return h + 'h' + (m > 0 ? ' ' + m + 'm' : '');
-  return m + 'm';
-}
-
 /**
  * Show the daily startup popup exactly once per calendar day.
  * Calculates yesterday's focus session count and total focused time,
