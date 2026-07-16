@@ -51,7 +51,9 @@ const APP_ICON_PATH   = path.join(__dirname, 'assets', 'INIGO-logo-mark.png');
 const APP_DISPLAY_NAME = 'INI:GO';
 
 app.setName(APP_DISPLAY_NAME);
-app.setAppUserModelId('inigo');
+// Packaged (MSIX/Store) builds get their AUMID from the package identity automatically;
+// overriding it would break notification/taskbar grouping under that identity.
+if (!process.windowsStore) app.setAppUserModelId('inigo');
 
 ipcMain.handle('show-notification', (_event, title, body) => {
   const n = new Notification({ title, body, icon: APP_ICON_PATH, silent: false });
