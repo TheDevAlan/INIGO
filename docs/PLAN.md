@@ -21,4 +21,16 @@ Tracking, keine Werbung.
 ## Änderungen
 - [ ] 01 — Tagesblatt: vollflächige Tagesansicht mit neuen Kategorien
   (Journal, Training, Skincare, Emotionen) (Update) →
-  docs/changes/01-update-tagesblatt.md · geplant
+  docs/changes/01-update-tagesblatt.md → docs/segments/v2/ · in Umsetzung
+
+## Segmente
+
+### v2 — Änderung 01: Tagesblatt — vollflächige Tagesansicht mit neuen Kategorien
+- [ ] 01 — Tagesblatt-Grundgerüst: Check-in zieht in die Vollbild-Ansicht um → `docs/segments/v2/01-tagesblatt-grundgeruest.md`
+- [ ] 02 — Abschnitt "Emotionen" (Stimmung + Notiz) → `docs/segments/v2/02-emotionen.md`
+- [ ] 03 — Abschnitt "Training" (Art, Dauer, Notiz) → `docs/segments/v2/03-training.md`
+- [ ] 04 — Abschnitt "Skincare": Checkliste mit Standard-Schritten → `docs/segments/v2/04-skincare-checkliste.md`
+- [ ] 05 — Skincare-Schritte selbst konfigurieren → `docs/segments/v2/05-skincare-konfiguration.md`
+- [ ] 06 — Abschnitt "Journal" (mehrere Einträge pro Tag) → `docs/segments/v2/06-journal.md`
+
+_Frühere Runden: keine — v1 (Erstaufbau) wurde ohne Segmente gebaut._

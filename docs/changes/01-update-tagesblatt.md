@@ -1,5 +1,5 @@
 # Änderung 01: Tagesblatt — vollflächige Tagesansicht mit neuen Kategorien
-Typ: Update · Stand: 2026-09-28 · Status: geplant
+Typ: Update · Stand: 2026-09-28 · Status: in Umsetzung
 Zweig: change/01-tagesblatt
 
 ## Anliegen
@@ -225,4 +225,35 @@ bringt dich zurück auf den unangetasteten alten Stand, der Zweig bleibt
 daneben erhalten und kann jederzeit weiterverwendet oder verworfen werden.
 
 ## Segmente
-Ablage: `docs/segments/v2/` — _(Ordner und Inhalt legt /dev-split-code an)_
+Ablage: `docs/segments/v2/`
+
+- [ ] 01 — Tagesblatt-Grundgerüst: Check-in zieht in die Vollbild-Ansicht um
+  → `docs/segments/v2/01-tagesblatt-grundgeruest.md`
+- [ ] 02 — Abschnitt "Emotionen" (Stimmung + Notiz)
+  → `docs/segments/v2/02-emotionen.md`
+- [ ] 03 — Abschnitt "Training" (Art, Dauer, Notiz)
+  → `docs/segments/v2/03-training.md`
+- [ ] 04 — Abschnitt "Skincare": Checkliste mit Standard-Schritten
+  → `docs/segments/v2/04-skincare-checkliste.md`
+- [ ] 05 — Skincare-Schritte selbst konfigurieren (inkl. Import-Anpassung)
+  → `docs/segments/v2/05-skincare-konfiguration.md`
+- [ ] 06 — Abschnitt "Journal" (mehrere Einträge pro Tag)
+  → `docs/segments/v2/06-journal.md`
+
+**Reihenfolge:** 01 zuerst — es trägt alles Weitere und enthält das größte
+Risiko (Umbau der Schließ- und Auto-Öffnen-Verkettung) sowie den notwendigen
+Fix, dass Speichern den Tageseintrag ergänzt statt ihn zu ersetzen. Danach
+sind 02, 03, 04 und 06 voneinander unabhängig und in beliebiger Reihenfolge
+baubar; 05 setzt zwingend auf 04 auf. 05 trägt das zweitgrößte Risiko, weil
+es als einziges Segment den Backup-Import anfasst.
+
+**Zwei Befunde aus dem Segment-Zuschnitt, die in der Ist-Analyse noch nicht
+standen:**
+1. Der Save-Handler des Check-ins **ersetzt** heute den kompletten
+   Tageseintrag in `DATA` (eine gelesene Variable `existing` bleibt
+   ungenutzt). Ohne Korrektur würde jedes Speichern des Check-ins die neuen
+   Tagesblatt-Daten löschen — behoben in Segment 01.
+2. Der Backup-Import prüft **jeden** Schlüssel gegen ein Datumsmuster und
+   bricht sonst ab. Da die Skincare-Konfiguration backup-sicher in `DATA`
+   abgelegt wird (siehe `docs/decisions.md`), muss diese Prüfung erweitert
+   werden — Teil von Segment 05.
