@@ -5,6 +5,34 @@ er aussieht. Neue Einträge oben anfügen.
 
 ---
 
+## 2026-09-28 — Tabs innerhalb des Tagesblatts, trotz Ablehnung einer
+Tab-Leiste im App-Kopf
+**Kontext:** Alan möchte das Tagesblatt (bisher gestapelte Abschnitte:
+Check-in, Emotions) in eine Tab-Leiste umbauen: Daily Check-in, Logbook,
+Training, Skincare, Journal (Journal nur montags sichtbar). Die bereits
+geloggte Entscheidung "Tagesblatt statt Tab-Leiste" (siehe unten) hatte Tabs
+explizit abgelehnt.
+
+**Alternativen:**
+- Beim gestapelten Layout bleiben, neue Bereiche einfach unten anhängen.
+- Tabs einführen, wie jetzt gewünscht.
+
+**Begründung:** Die frühere Entscheidung bezog sich auf den bereits vollen
+App-Kopfbereich (980×580) — eine Tab-Leiste dort hätte den Pomodoro-Timer als
+Herzstück der App entwertet. Das Tagesblatt selbst ist dagegen eine eigene,
+vollflächige Ansicht ohne diese Platznot; Tabs dort betreffen eine andere
+Ebene und stehen nicht im Widerspruch zur ursprünglichen Begründung. Bei
+inzwischen fünf Bereichen (Check-in, Logbook, Training, Skincare, Journal)
+wäre ein einziges langes Scroll-Dokument zudem unübersichtlich geworden.
+
+**Konsequenz:** Ab Änderung 02 bekommt das Tagesblatt eine Tab-Leiste. Damit
+verbunden: alle Tab-Inhalte bleiben beim Wechsel im DOM, nur die Sichtbarkeit
+wird umgeschaltet (kein Neu-Rendern) — sonst würde der bestehende globale
+Save-Button, der alle Felder aus dem DOM ausliest, Werte aus nicht aktiven
+Reitern verlieren. Siehe `docs/changes/02-umbau-tagesblatt-tabs.md`.
+
+---
+
 ## 2026-09-28 — Tagesblatt statt Tab-Leiste für neue Kategorien
 **Kontext:** Vier neue Tages-Kategorien (Journal, Training, Skincare,
 Emotionen) sollten in INI:GO eingebaut werden. Der Kopfbereich der App

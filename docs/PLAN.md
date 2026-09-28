@@ -22,6 +22,9 @@ Tracking, keine Werbung.
 - [ ] 01 — Tagesblatt: vollflächige Tagesansicht mit neuen Kategorien
   (Journal, Training, Skincare, Emotionen) (Update) →
   docs/changes/01-update-tagesblatt.md → docs/segments/v2/ · in Umsetzung
+- [ ] 02 — Tagesblatt-Tabs: gestapelte Abschnitte werden zur Tab-Leiste
+  (Umbau) → docs/changes/02-umbau-tagesblatt-tabs.md → docs/segments/v3/ ·
+  geplant
 
 ## Segmente
 
