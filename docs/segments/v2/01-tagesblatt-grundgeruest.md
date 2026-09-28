@@ -1,5 +1,5 @@
 # Segment 01: Tagesblatt-Grundgerüst — Check-in zieht in die Vollbild-Ansicht um
-Status: offen · Hängt ab von: —
+Status: erledigt · Hängt ab von: —
 Aus: docs/changes/01-update-tagesblatt.md
 
 ## Kontext
@@ -144,4 +144,4 @@ prüfen:
 Nach bestandenem Test: git add + commit mit sprechender Nachricht,
 Status in dieser Datei und in docs/PLAN.md auf "erledigt" setzen,
 kurz in Klartext erklären, was gebaut wurde und wie man es ausführt.
-Grounding-Befunde: _(trägt /dev-build ein)_
+Grounding-Befunde: 0

@@ -635,6 +635,18 @@
   .modal-x { position: absolute; top: 22px; right: 20px; background: none; border: none; color: var(--text-dim); font-size: 15px; cursor: pointer; padding: 4px 7px; border-radius: 6px; line-height: 1; transition: color 0.15s, background 0.15s; }
   .modal-x:hover { color: var(--text); background: rgba(255,255,255,0.07); }
 
+  /* ═══════════ DAYSHEET (Vollbild-Tagesansicht) ═══════════ */
+  .app.hidden { display: none; }
+  .daysheet { position: fixed; inset: 32px 0 0 0; background: var(--bg); z-index: 150; overflow-y: auto; display: none; }
+  .daysheet.open { display: block; }
+  .daysheet-inner { max-width: 640px; margin: 0 auto; padding: 28px 14px 40px; }
+  .daysheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .daysheet-header h2 { font-size: 17px; font-weight: 500; margin: 0; }
+  .daysheet-x { background: none; border: none; color: var(--text-dim); font-size: 15px; cursor: pointer; padding: 6px 9px; border-radius: 6px; line-height: 1; transition: color 0.15s, background 0.15s; }
+  .daysheet-x:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+  .daysheet-section { margin-bottom: 28px; }
+  .daysheet-section h3 { font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 14px; }
+
   /* ═══════════ ONBOARDING MODAL ═══════════ */
   .onb-modal { max-width: 460px; text-align: center; padding: 40px 36px 32px; }
   .onb-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
@@ -1004,8 +1016,15 @@
 <div class="tip" id="tip"></div>
 
 <!-- CHECK-IN MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal" id="mainModal"></div>
+<div class="daysheet" id="daysheet">
+  <div class="daysheet-inner">
+    <div class="daysheet-header">
+      <h2 id="daysheetDate"></h2>
+      <button class="daysheet-x" id="daysheetXBtn">✕</button>
+    </div>
+    <div id="daysheetContent"></div>
+  </div>
+</div>
 </div>
 
 <!-- SUPPORT MODAL -->
@@ -1317,8 +1336,8 @@ document.addEventListener('keydown', function(e) {
   if (e.key !== 'Escape') return;
   closeSettingsMenu();
   closeSupportModal();
-  // Check-in needs its own close logic (marks the day as shown); handle it first
-  if (typeof $overlay !== 'undefined' && $overlay && $overlay.classList.contains('open')) { closeCheckin(); return; }
+  // Daysheet needs its own close logic (marks the day as shown); handle it first
+  if (typeof $daysheet !== 'undefined' && $daysheet && $daysheet.classList.contains('open')) { closeDaysheet(); return; }
   document.querySelectorAll('.overlay.open').forEach(function(ov) { ov.classList.remove('open'); });
 });
 
@@ -1429,7 +1448,7 @@ function onbRender(step) {
 function onbFinish() {
   localStorage.setItem(ONBOARDING_KEY, '1');
   $onbOverlay.classList.remove('open');
-  setTimeout(function() { openCheckin(today()); }, 250);
+  setTimeout(function() { openDaysheet(today()); }, 250);
 }
 
 document.getElementById('onbNextBtn').onclick = function() {
@@ -1979,7 +1998,7 @@ function renderMap() {
     (function(cellEl, k, ent) {
       cellEl.addEventListener('mouseenter', function(e) { showTip(e, k, ent); });
       cellEl.addEventListener('mouseleave', hideTip);
-      cellEl.addEventListener('click', function() { if (!cellEl.classList.contains('future')) openCheckin(k); });
+      cellEl.addEventListener('click', function() { if (!cellEl.classList.contains('future')) openDaysheet(k); });
     })(c, key, entry);
 
     grid.appendChild(c);
@@ -2058,11 +2077,13 @@ function hideTip() { $tip.classList.remove('show'); }
 
 // ═══════════════════ CHECK-IN MODAL ═══════════════════
 var editKey = null;
-var $overlay = document.getElementById('overlay');
-var $modal = document.getElementById('mainModal');
+var $app = document.querySelector('.app');
+var $daysheet = document.getElementById('daysheet');
+var $daysheetContent = document.getElementById('daysheetContent');
+var $daysheetDate = document.getElementById('daysheetDate');
 var vals = { mood: null };
 
-function openCheckin(key) {
+function openDaysheet(key) {
   editKey = key;
   var p = key.split('-');
   // Always read fresh from DATA
@@ -2071,7 +2092,9 @@ function openCheckin(key) {
   vals = {};
   trackersConfig.forEach(function(t) { if (t.type === 'scale' || t.type === 'yesno') vals[t.id] = entry[t.id] || null; });
 
-  var html = '<button class="modal-x" id="checkinXBtn">✕</button><h2>' + S('checkinTitle') + '</h2><div class="modal-sub">' + p[2] + '.' + p[1] + '.' + p[0] + '</div>';
+  $daysheetDate.textContent = p[2] + '.' + p[1] + '.' + p[0];
+
+  var html = '<div class="daysheet-section"><h3>' + S('checkinTitle') + '</h3>';
 
   trackersConfig.filter(function(t) { return t.enabled && !t.locked; }).forEach(function(t) {
     if (t.type === 'scale') {
@@ -2103,13 +2126,13 @@ function openCheckin(key) {
   }
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
+  html += '</div>';
 
-  $modal.innerHTML = html;
-  document.getElementById('checkinXBtn').onclick = closeCheckin;
+  $daysheetContent.innerHTML = html;
 
   // Wire up scale buttons after DOM is set
   setTimeout(function() {
-    $modal.querySelectorAll('.scale').forEach(function(g) {
+    $daysheetContent.querySelectorAll('.scale').forEach(function(g) {
       var field = g.dataset.field;
       g.querySelectorAll('button').forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -2132,24 +2155,26 @@ function openCheckin(key) {
           else if (t.type === 'text') { var el2 = document.getElementById('f_' + t.id); newEntry[t.id] = el2 && el2.value.trim() ? el2.value.trim() : null; }
           else if (t.type === 'yesno') { newEntry[t.id] = vals[t.id] || null; }
         });
-        DATA[editKey] = newEntry;
+        DATA[editKey] = Object.assign({}, existing, newEntry);
         await saveAllData();
-        closeCheckin();
+        closeDaysheet();
         renderMap();
       });
     }
 
     var skipEl = document.getElementById('skipBtn');
     if (skipEl) {
-      skipEl.addEventListener('click', closeCheckin);
+      skipEl.addEventListener('click', closeDaysheet);
     }
   }, 10);
 
-  $overlay.classList.add('open');
+  $app.classList.add('hidden');
+  $daysheet.classList.add('open');
 }
 
-function closeCheckin() {
-  $overlay.classList.remove('open');
+function closeDaysheet() {
+  $daysheet.classList.remove('open');
+  $app.classList.remove('hidden');
   editKey = null;
   localStorage.setItem(CHECKIN_DATE_KEY, today()); // mark check-in as shown today
   if (pendingDailyPopup) {
@@ -2157,7 +2182,7 @@ function closeCheckin() {
     setTimeout(checkDailyPopup, 350);
   }
 }
-$overlay.onclick = function(e) { if (e.target === $overlay) closeCheckin(); };
+document.getElementById('daysheetXBtn').onclick = closeDaysheet;
 
 // ═══════════════════ EXPORT ═══════════════════
 document.getElementById('jsonBtn').onclick = function() {
@@ -2702,7 +2727,7 @@ var GITHUB_URL = 'https://github.com/TheDevAlan/INIGO';
     setTimeout(function() { openOnboarding(); }, 400);
   } else if (localStorage.getItem(CHECKIN_DATE_KEY) !== today()) {
     pendingDailyPopup = true;
-    setTimeout(function() { openCheckin(today()); }, 400);
+    setTimeout(function() { openDaysheet(today()); }, 400);
   } else {
     checkDailyPopup();
   }

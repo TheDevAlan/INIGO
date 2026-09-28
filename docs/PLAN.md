@@ -26,7 +26,7 @@ Tracking, keine Werbung.
 ## Segmente
 
 ### v2 — Änderung 01: Tagesblatt — vollflächige Tagesansicht mit neuen Kategorien
-- [ ] 01 — Tagesblatt-Grundgerüst: Check-in zieht in die Vollbild-Ansicht um → `docs/segments/v2/01-tagesblatt-grundgeruest.md`
+- [x] 01 — Tagesblatt-Grundgerüst: Check-in zieht in die Vollbild-Ansicht um → `docs/segments/v2/01-tagesblatt-grundgeruest.md`
 - [ ] 02 — Abschnitt "Emotionen" (Stimmung + Notiz) → `docs/segments/v2/02-emotionen.md`
 - [ ] 03 — Abschnitt "Training" (Art, Dauer, Notiz) → `docs/segments/v2/03-training.md`
 - [ ] 04 — Abschnitt "Skincare": Checkliste mit Standard-Schritten → `docs/segments/v2/04-skincare-checkliste.md`
