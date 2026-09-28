@@ -2116,7 +2116,10 @@ function openDaysheet(key) {
     }
   });
 
+  html += '</div>';
+
   var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
+  html += '<div class="daysheet-section"><h3>Emotions</h3>';
   if (moodTracker && moodTracker.enabled) {
     html += '<div class="field final-field"><label>' + moodTracker.question + '</label><div class="scale" data-field="' + moodTracker.id + '">';
     for (var mv = 1; mv <= 5; mv++) {
@@ -2124,9 +2127,10 @@ function openDaysheet(key) {
     }
     html += '</div></div>';
   }
+  html += '<div class="field"><label>What shaped your day?</label><textarea class="input" id="f_emotionNote" rows="3">' + escHtml(entry.emotionNote || '') + '</textarea></div>';
+  html += '</div>';
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
-  html += '</div>';
 
   $daysheetContent.innerHTML = html;
 
@@ -2155,6 +2159,8 @@ function openDaysheet(key) {
           else if (t.type === 'text') { var el2 = document.getElementById('f_' + t.id); newEntry[t.id] = el2 && el2.value.trim() ? el2.value.trim() : null; }
           else if (t.type === 'yesno') { newEntry[t.id] = vals[t.id] || null; }
         });
+        var noteEl = document.getElementById('f_emotionNote');
+        newEntry.emotionNote = noteEl && noteEl.value.trim() ? noteEl.value.trim() : null;
         DATA[editKey] = Object.assign({}, existing, newEntry);
         await saveAllData();
         closeDaysheet();
