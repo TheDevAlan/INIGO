@@ -165,7 +165,7 @@ Reihenfolge nach Risiko: Zuerst kommt die Tab-Mechanik selbst, inklusive des
 Speichertests über Reitergrenzen. Danach werden die Platzhalter-Reiter
 angehängt, und zum Schluss die Journal-Montagsregel.
 
-- [ ] 01 — Tab-Mechanik mit "Daily Check-in" und "Logbook" (inkl. Speichern
+- [x] 01 — Tab-Mechanik mit "Daily Check-in" und "Logbook" (inkl. Speichern
   über Reitergrenzen) → `docs/segments/v3/01-tab-mechanik.md`
 - [ ] 02 — Reiter "Training" und "Skincare" als Platzhalter →
   `docs/segments/v3/02-reiter-training-skincare.md`

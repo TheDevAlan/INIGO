@@ -111,4 +111,4 @@ Nach bestandenem Test:
   `docs/changes/02-umbau-tagesblatt-tabs.md` auf "erledigt" setzen.
 - In Klartext kurz erklären, was gebaut wurde und wie man es ausführt.
 
-Grounding-Befunde: _(trägt /dev-build ein)_
+Grounding-Befunde: 5

@@ -2127,6 +2127,9 @@ function openDaysheet(key) {
     }
   });
 
+  html += '</div></div>';
+
+  html += '<div class="tab-panel" data-panel="logbook"><div class="daysheet-section"><h3>Logbook</h3>';
   var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
   if (moodTracker && moodTracker.enabled) {
     html += '<div class="field final-field"><label>' + moodTracker.question + '</label><div class="scale" data-field="' + moodTracker.id + '">';
@@ -2135,10 +2138,8 @@ function openDaysheet(key) {
     }
     html += '</div></div>';
   }
+  html += '<div class="field"><label>What shaped your day?</label><textarea class="input" id="f_emotionNote" rows="3">' + escHtml(entry.emotionNote || '') + '</textarea></div>';
   html += '</div></div>';
-
-  // Logbook: bewusst leer (Inhalt folgt später)
-  html += '<div class="tab-panel" data-panel="logbook"></div>';
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
 
@@ -2180,8 +2181,7 @@ function openDaysheet(key) {
           else if (t.type === 'yesno') { newEntry[t.id] = vals[t.id] || null; }
         });
         var noteEl = document.getElementById('f_emotionNote');
-        // Feld existiert nur, wenn das Logbook es rendert; sonst bestehende Notiz nicht überschreiben
-        if (noteEl) newEntry.emotionNote = noteEl.value.trim() ? noteEl.value.trim() : null;
+        newEntry.emotionNote = noteEl && noteEl.value.trim() ? noteEl.value.trim() : null;
         DATA[editKey] = Object.assign({}, existing, newEntry);
         await saveAllData();
         closeDaysheet();
