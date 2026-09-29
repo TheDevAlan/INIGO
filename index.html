@@ -1204,6 +1204,7 @@ async function saveAllData() {
 
 function dk(d) { return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 function today() { return dk(new Date()); }
+function isMondayKey(key) { var p = key.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]).getDay() === 1; }
 function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ═══════════════════ SESSION LOG ═══════════════════
@@ -2107,6 +2108,7 @@ function openDaysheet(key) {
     '<button class="daysheet-tab" data-tab="logbook">Logbook</button>' +
     '<button class="daysheet-tab" data-tab="training">Training</button>' +
     '<button class="daysheet-tab" data-tab="skincare">Skincare</button>' +
+    (isMondayKey(key) ? '<button class="daysheet-tab" data-tab="journal">Journal</button>' : '') +
     '</div>';
   html += '<div class="tab-panel active" data-panel="checkin"><div class="daysheet-section"><h3>' + S('checkinTitle') + '</h3>';
 
@@ -2146,6 +2148,9 @@ function openDaysheet(key) {
 
   html += '<div class="tab-panel" data-panel="training"><div class="daysheet-section"><h3>Training</h3><p class="tab-placeholder">Coming soon</p></div></div>';
   html += '<div class="tab-panel" data-panel="skincare"><div class="daysheet-section"><h3>Skincare</h3><p class="tab-placeholder">Coming soon</p></div></div>';
+  if (isMondayKey(key)) {
+    html += '<div class="tab-panel" data-panel="journal"><div class="daysheet-section"><h3>Journal</h3><p class="tab-placeholder">Coming soon</p></div></div>';
+  }
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
 

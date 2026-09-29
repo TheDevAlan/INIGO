@@ -1,5 +1,5 @@
 # Segment 03: Reiter "Journal", nur an Montagen sichtbar
-Status: offen · Hängt ab von: 02
+Status: erledigt · Hängt ab von: 02
 Aus: docs/changes/02-umbau-tagesblatt-tabs.md
 
 ## Kontext
@@ -85,4 +85,4 @@ Nach bestandenem Test:
   setzen, weil das das letzte Segment dieser Runde ist.
 - In Klartext kurz erklären, was gebaut wurde und wie man es ausführt.
 
-Grounding-Befunde: _(trägt /dev-build ein)_
+Grounding-Befunde: 0

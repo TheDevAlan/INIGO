@@ -24,15 +24,15 @@ Tracking, keine Werbung.
   docs/changes/01-update-tagesblatt.md → docs/segments/v2/ · abgelöst durch
   Änderung 02 (v2/01 erledigt, v2/02 geht in v3/01 auf, v2/03–06 überholt,
   Inhalte von Training/Skincare/Journal werden neu geplant)
-- [ ] 02 — Tagesblatt-Tabs: gestapelte Abschnitte werden zur Tab-Leiste
+- [x] 02 — Tagesblatt-Tabs: gestapelte Abschnitte werden zur Tab-Leiste
   (Umbau) → docs/changes/02-umbau-tagesblatt-tabs.md → docs/segments/v3/ ·
-  in Umsetzung
+  erledigt
 
 ## Segmente
 
 ### v3 — Änderung 02: Tagesblatt-Tabs
 - [x] 01 — Tab-Mechanik mit "Daily Check-in" und "Logbook" → `docs/segments/v3/01-tab-mechanik.md`
 - [x] 02 — Reiter "Training" und "Skincare" als Platzhalter → `docs/segments/v3/02-reiter-training-skincare.md`
-- [ ] 03 — Reiter "Journal", nur an Montagen sichtbar → `docs/segments/v3/03-reiter-journal-montag.md`
+- [x] 03 — Reiter "Journal", nur an Montagen sichtbar → `docs/segments/v3/03-reiter-journal-montag.md`
 
 _Frühere Runden: `docs/segments/v2/` (Änderung 01; v1 wurde ohne Segmente gebaut)._

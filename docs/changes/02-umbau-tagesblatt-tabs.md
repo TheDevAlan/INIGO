@@ -1,5 +1,5 @@
 # Änderung 02: Tagesblatt-Tabs
-Typ: Umbau · Stand: 2026-09-29 · Status: in Umsetzung
+Typ: Umbau · Stand: 2026-09-29 · Status: erledigt
 Zweig: change/02-tagesblatt-tabs
 
 ## Anliegen
@@ -169,5 +169,5 @@ angehängt, und zum Schluss die Journal-Montagsregel.
   über Reitergrenzen) → `docs/segments/v3/01-tab-mechanik.md`
 - [x] 02 — Reiter "Training" und "Skincare" als Platzhalter →
   `docs/segments/v3/02-reiter-training-skincare.md`
-- [ ] 03 — Reiter "Journal", nur an Montagen sichtbar →
+- [x] 03 — Reiter "Journal", nur an Montagen sichtbar →
   `docs/segments/v3/03-reiter-journal-montag.md`
