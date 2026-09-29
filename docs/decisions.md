@@ -5,6 +5,22 @@ er aussieht. Neue Einträge oben anfügen.
 
 ---
 
+## 2026-09-29 — Mood-Regler bleibt im Reiter "Daily Check-in"
+**Kontext:** Änderung 02 hatte mood (`How do you feel overall today?`) mit dem
+Notizfeld in den Reiter "Logbook" verschoben. Alan wollte die Frage nach dem
+ersten Test wieder im Check-in.
+
+**Alternativen:** mood im Logbook (Plan) · mood im Check-in (gewählt).
+
+**Begründung:** mood ist der Kern-Tracker des Tages-Check-ins und färbt die
+Heatmap. Er gehört zum täglichen Ablauf, nicht zum freien Logbuch.
+
+**Konsequenz:** Im Check-in-Panel steht mood als letztes Feld, im Logbook nur
+`emotionNote`. Das ist gewollt und kein Fehler der Tab-Umstellung. Datenfeld
+`mood` unverändert.
+
+---
+
 ## 2026-09-28 — Tabs innerhalb des Tagesblatts, trotz Ablehnung einer
 Tab-Leiste im App-Kopf
 **Kontext:** Alan möchte das Tagesblatt (bisher gestapelte Abschnitte:

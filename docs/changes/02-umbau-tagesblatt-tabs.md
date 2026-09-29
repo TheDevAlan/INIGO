@@ -73,8 +73,9 @@ Test-Skript vorhanden (unverändert seit Änderung 01, `package.json` hat kein
    speichert weiterhin die Werte aller Reiter auf einmal — kein
    Reiter-eigenes Speichern. Durch Punkt 3 ist das ohne Umbau der
    Save-Logik selbst weiterhin möglich.
-5. Inhalt "Daily Check-in" (bestehende Tracker) und "Logbook" (mood +
-   `emotionNote`, bisher "Emotions" genannt) ziehen fachlich unverändert in
+5. Inhalt "Daily Check-in" (bestehende Tracker plus mood, siehe
+   `docs/decisions.md` 2026-09-29) und "Logbook" (`emotionNote`, bisher
+   "Emotions" genannt) ziehen fachlich unverändert in
    ihre jeweiligen Tabs um — keine neuen Felder, keine geänderten
    Feldnamen.
 6. "Training" und "Skincare" bekommen in dieser Änderung **nur den

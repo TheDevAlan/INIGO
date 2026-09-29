@@ -2132,9 +2132,6 @@ function openDaysheet(key) {
     }
   });
 
-  html += '</div></div>';
-
-  html += '<div class="tab-panel" data-panel="logbook"><div class="daysheet-section"><h3>Logbook</h3>';
   var moodTracker = trackersConfig.find(function(t) { return t.locked && t.type === 'scale'; });
   if (moodTracker && moodTracker.enabled) {
     html += '<div class="field final-field"><label>' + moodTracker.question + '</label><div class="scale" data-field="' + moodTracker.id + '">';
@@ -2143,6 +2140,9 @@ function openDaysheet(key) {
     }
     html += '</div></div>';
   }
+  html += '</div></div>';
+
+  html += '<div class="tab-panel" data-panel="logbook"><div class="daysheet-section"><h3>Logbook</h3>';
   html += '<div class="field"><label>What shaped your day?</label><textarea class="input" id="f_emotionNote" rows="3">' + escHtml(entry.emotionNote || '') + '</textarea></div>';
   html += '</div></div>';
 
