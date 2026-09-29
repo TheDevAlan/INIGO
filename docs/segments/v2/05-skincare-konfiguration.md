@@ -1,5 +1,5 @@
 # Segment 05: Skincare-Schritte selbst konfigurieren
-Status: offen · Hängt ab von: 04
+Status: überholt durch Änderung 02 (wird neu geplant) · Hängt ab von: 04
 Aus: docs/changes/01-update-tagesblatt.md
 
 ## Kontext

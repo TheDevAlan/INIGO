@@ -1,5 +1,5 @@
 # Segment 02: Abschnitt "Emotionen" im Tagesblatt
-Status: offen · Hängt ab von: 01
+Status: aufgegangen in v3/01 (Änderung 02) · Hängt ab von: 01
 Aus: docs/changes/01-update-tagesblatt.md
 
 ## Kontext

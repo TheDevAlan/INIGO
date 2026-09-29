@@ -1,5 +1,5 @@
 # Segment 06: Abschnitt "Journal" im Tagesblatt
-Status: offen · Hängt ab von: 01
+Status: überholt durch Änderung 02 (wird neu geplant) · Hängt ab von: 01
 Aus: docs/changes/01-update-tagesblatt.md
 
 ## Kontext

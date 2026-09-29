@@ -1,5 +1,5 @@
 # Änderung 02: Tagesblatt-Tabs
-Typ: Umbau · Stand: 2026-09-28 · Status: geplant
+Typ: Umbau · Stand: 2026-09-29 · Status: in Umsetzung
 Zweig: change/02-tagesblatt-tabs
 
 ## Anliegen
@@ -159,4 +159,15 @@ der alte Zweig bleibt unangetastet und enthält weiterhin den gestapelten
 "Emotions"-Abschnitt als Ausgangsbasis, falls der Tab-Umbau verworfen wird.
 
 ## Segmente
-Ablage: `docs/segments/v3/` — _(Ordner und Inhalt legt /dev-split-code an)_
+Ablage: `docs/segments/v3/`
+
+Reihenfolge nach Risiko: Zuerst kommt die Tab-Mechanik selbst, inklusive des
+Speichertests über Reitergrenzen. Danach werden die Platzhalter-Reiter
+angehängt, und zum Schluss die Journal-Montagsregel.
+
+- [ ] 01 — Tab-Mechanik mit "Daily Check-in" und "Logbook" (inkl. Speichern
+  über Reitergrenzen) → `docs/segments/v3/01-tab-mechanik.md`
+- [ ] 02 — Reiter "Training" und "Skincare" als Platzhalter →
+  `docs/segments/v3/02-reiter-training-skincare.md`
+- [ ] 03 — Reiter "Journal", nur an Montagen sichtbar →
+  `docs/segments/v3/03-reiter-journal-montag.md`

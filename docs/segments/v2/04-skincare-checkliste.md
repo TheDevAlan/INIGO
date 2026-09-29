@@ -1,5 +1,5 @@
 # Segment 04: Abschnitt "Skincare" — Checkliste mit Standard-Schritten
-Status: offen · Hängt ab von: 01 _(Muster aus 02/03 übernehmen, wenn bereits gebaut)_
+Status: überholt durch Änderung 02 (wird neu geplant) · Hängt ab von: 01 _(Muster aus 02/03 übernehmen, wenn bereits gebaut)_
 Aus: docs/changes/01-update-tagesblatt.md
 
 ## Kontext
