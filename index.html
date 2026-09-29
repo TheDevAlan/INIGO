@@ -653,6 +653,7 @@
   .daysheet-tab:focus-visible { outline: 1px solid var(--ember-dot-active); outline-offset: 1px; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+  .tab-placeholder { margin: 0; font-size: 13px; color: var(--text-dim); }
 
   /* ═══════════ ONBOARDING MODAL ═══════════ */
   .onb-modal { max-width: 460px; text-align: center; padding: 40px 36px 32px; }
@@ -2104,6 +2105,8 @@ function openDaysheet(key) {
   var html = '<div class="daysheet-tabs">' +
     '<button class="daysheet-tab active" data-tab="checkin">' + S('checkinTitle') + '</button>' +
     '<button class="daysheet-tab" data-tab="logbook">Logbook</button>' +
+    '<button class="daysheet-tab" data-tab="training">Training</button>' +
+    '<button class="daysheet-tab" data-tab="skincare">Skincare</button>' +
     '</div>';
   html += '<div class="tab-panel active" data-panel="checkin"><div class="daysheet-section"><h3>' + S('checkinTitle') + '</h3>';
 
@@ -2140,6 +2143,9 @@ function openDaysheet(key) {
   }
   html += '<div class="field"><label>What shaped your day?</label><textarea class="input" id="f_emotionNote" rows="3">' + escHtml(entry.emotionNote || '') + '</textarea></div>';
   html += '</div></div>';
+
+  html += '<div class="tab-panel" data-panel="training"><div class="daysheet-section"><h3>Training</h3><p class="tab-placeholder">Coming soon</p></div></div>';
+  html += '<div class="tab-panel" data-panel="skincare"><div class="daysheet-section"><h3>Skincare</h3><p class="tab-placeholder">Coming soon</p></div></div>';
 
   html += '<div class="modal-btns"><button class="btn btn-ghost" id="skipBtn">Skip</button><button class="btn btn-fill" id="saveBtn">Save</button></div>';
 

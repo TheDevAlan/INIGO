@@ -1,5 +1,5 @@
 # Segment 02: Reiter "Training" und "Skincare" als Platzhalter
-Status: offen · Hängt ab von: 01
+Status: erledigt · Hängt ab von: 01
 Aus: docs/changes/02-umbau-tagesblatt-tabs.md
 
 ## Kontext
@@ -74,4 +74,4 @@ Nach bestandenem Test:
   `docs/changes/02-umbau-tagesblatt-tabs.md` auf "erledigt" setzen.
 - In Klartext kurz erklären, was gebaut wurde und wie man es ausführt.
 
-Grounding-Befunde: _(trägt /dev-build ein)_
+Grounding-Befunde: 3

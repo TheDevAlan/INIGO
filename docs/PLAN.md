@@ -32,7 +32,7 @@ Tracking, keine Werbung.
 
 ### v3 — Änderung 02: Tagesblatt-Tabs
 - [x] 01 — Tab-Mechanik mit "Daily Check-in" und "Logbook" → `docs/segments/v3/01-tab-mechanik.md`
-- [ ] 02 — Reiter "Training" und "Skincare" als Platzhalter → `docs/segments/v3/02-reiter-training-skincare.md`
+- [x] 02 — Reiter "Training" und "Skincare" als Platzhalter → `docs/segments/v3/02-reiter-training-skincare.md`
 - [ ] 03 — Reiter "Journal", nur an Montagen sichtbar → `docs/segments/v3/03-reiter-journal-montag.md`
 
 _Frühere Runden: `docs/segments/v2/` (Änderung 01; v1 wurde ohne Segmente gebaut)._

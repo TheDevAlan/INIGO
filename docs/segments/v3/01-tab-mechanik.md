@@ -1,5 +1,5 @@
 # Segment 01: Tab-Mechanik mit "Daily Check-in" und "Logbook"
-Status: offen · Hängt ab von: — (baut auf v2/01 Tagesblatt-Grundgerüst auf, bereits erledigt)
+Status: erledigt · Hängt ab von: — (baut auf v2/01 Tagesblatt-Grundgerüst auf, bereits erledigt)
 Aus: docs/changes/02-umbau-tagesblatt-tabs.md
 
 ## Kontext
